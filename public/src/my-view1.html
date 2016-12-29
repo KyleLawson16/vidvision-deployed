@@ -67,6 +67,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin-left: 15px;
       }
       .labelSkip {
+        font-size: 16px;
+        width: 50%;
+        margin-top: 10px;
         margin-right: 5px;
       }
       .inputVideo {
@@ -237,7 +240,80 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin-top: 115px;
       }
 
-      @media only screen and (max-width : 480px) {
+      @media only screen and (max-width : 320px) {
+        .container {
+          width: 97%;
+          padding: 0px 5px;
+        }
+        .col-sm-8 {
+          padding: 0px;
+          width: 100%;
+          margin-top: -5px;
+        }
+        .col-sm-4 {
+          padding: 0px;
+          width: 100%;
+          margin-top: 0px;
+          margin-bottom: 20px;
+        }
+        .inputVideo {
+          height: 40px;
+          width: 68%;
+        }
+        .buttons {
+          height: 44px;
+          width: 25%;
+          font-size: 16px;
+        }
+        .inputStyles {
+          height: 40px;
+        }
+        #emailAddress {
+          height: 40px;
+          width: 63%;
+        }
+        #generateCode {
+          height: 44px;
+          width: 30%;
+          font-size: 14px;
+        }
+        .labelsColor {
+          display: block;
+          width: 60%;
+        }
+        .labelButton {
+          margin-left: 0px;
+        }
+        .labelSkip {
+          margin-top: 15px;
+        }
+        #introText {
+          font-size: 12px;
+          padding-top: 11%;
+          margin-bottom: 5px;
+        }
+        #email {
+          width: 200px;
+          height: 25px;
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+          font-size: 14px;
+        }
+        #submit {
+          width: 100px;
+          height: 25px;
+          font-size: 14px;
+        }
+        #form input {
+          margin-top: 5px;
+        }
+        #skipEmail {
+          font-size: 12px;
+          margin-top: 0px;
+        }
+      }
+      @media only screen and (min-width : 321px) and (max-width : 480px) {
         .container {
           width: 97%;
           padding: 0px 10px;
@@ -272,6 +348,38 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           height: 44px;
           width: 25%;
           font-size: 16px;
+        }
+        .labelsColor {
+          display: block;
+        }
+        .labelButton {
+          margin-left: 0px;
+        }
+        .labelSkip {
+          margin-top: 15px;
+        }
+        #introText {
+          font-size: 14px;
+          padding-top: 12.5%;
+          margin-bottom: 5px;
+        }
+        #email {
+          width: 200px;
+          height: 30px;
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        #submit {
+          width: 100px;
+          height: 30px;
+        }
+        #form input {
+          margin-top: 5px;
+        }
+        #skipEmail {
+          font-size: 14px;
+          margin-top: 0px;
         }
       }
       @media only screen and (min-width : 481px) and (max-width : 768px) {
@@ -380,7 +488,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <paper-swatch-picker color="{{buttonColor}}"></paper-swatch-picker>
       <br />
       <paper-checkbox on-change="hideSkip"></paper-checkbox>
-      <label class="labelsColor labelSkip" for="skipBox">Hide Skip Option</label>
+      <label class="labelSkip" for="skipBox">Hide Skip Option</label>
     </div>
     <div class="col-sm-8">
       <label class="mainLabels" >Finished customizing?</label>
