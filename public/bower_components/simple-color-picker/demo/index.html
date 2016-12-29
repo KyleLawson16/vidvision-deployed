@@ -1,0 +1,93 @@
+<!doctype html>
+<!--
+@license
+-->
+<html>
+  <head>
+    <title>simple-color-picker demo</title>
+
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="../simple-color-picker.html">
+    <link rel="import" href="../../paper-icon-button/paper-icon-button.html">
+    <link rel="import" href="../../iron-icons/editor-icons.html">
+    <link rel="import" href="../../paper-material/paper-material.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+  </head>
+  <style is="custom-style" include="demo-pages-shared-styles">
+  </style>
+  <style>
+    .centered-demo {
+      text-align: center;
+    }
+    pre {
+      text-align: left;
+    }
+  </style>
+  <body unresolved>
+    
+    <div class="vertical-section-container centered">
+      <h3>A color picker</h3>
+      <demo-snippet class="centered-demo">
+        <template>
+          <simple-color-picker></simple-color-picker>
+        </template>
+      </demo-snippet>
+
+      <h3>A color picker with preview</h3>
+      <demo-snippet class="centered-demo">
+        <template>
+          <simple-color-picker preview></simple-color-picker>
+        </template>
+      </demo-snippet>
+
+
+      <dom-module id="color-picker-with-button">
+        <template>
+          <paper-icon-button
+            id="iconButton"
+            icon="editor:format-color-fill"
+            on-tap="_tapHandler"></paper-icon-button>
+          <br/>
+          <simple-color-picker id="colorPicker"
+                                width="200"
+                                height="100"
+                                on-color-changed="_colorChanged"
+                                on-color-track="_onColorTrack"></simple-color-picker>
+        </template>
+        <script>
+          HTMLImports.whenReady(function () {
+            Polymer({
+              is: 'color-picker-with-button',
+              ready: function() {
+                this.$.colorPicker.close();
+              },
+              _tapHandler: function() {
+                this.$.colorPicker.open();
+              },
+              _colorChanged: function(e) {
+                this.$.iconButton.style.color = e.detail.value.hex;
+                this.$.colorPicker.close();
+              },
+              _onColorTrack: function(e) {
+                this.$.iconButton.style.color = e.detail.hex;
+              }
+            });
+          });
+        </script>
+      </dom-module>
+
+      <h3>A color picker customized</h3>
+      <demo-snippet class="centered-demo">
+        <template>
+          <color-picker-with-button></color-picker-with-button>
+        </template>
+      </demo-snippet>
+    </div>
+    
+  </body>
+</html>

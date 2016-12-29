@@ -1,0 +1,56 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-auth.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="my-view2">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+    </style>
+    <firebase-auth
+      id="auth"
+      user="{{user}}"
+      on-error="showError">
+    </firebase-auth>
+
+    <template is="dom-if" if="[[user]]">
+      <h1>Welcome, [[user.displayName]]</h1>
+    </template>
+    <form is="iron-form" id="form" method="post" action="/form/handler">
+    <div class="card">
+      <input id="email" value="{{email}}" >
+      <input id="password" value="{{password}}" >
+      <button id="signIn" on-tap="login">Sign In</button>
+      <a href="/view3"><button id="signUp">Sign Up</button></a>
+    </div>
+    </form>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'my-view2',
+      login: function (e){
+        if (e) { e.preventDefault(); }
+        if (document.getElementById('form').validate()) {
+          email = document.getElementById('form').serialize()["email"];
+          password = document.getElementById('form').serialize()["password"];
+          this.$.auth.createUserWithEmailAndPassword(email, password).then(function(response){}).catch(function(error){});
+        }
+      }
+    });
+  </script>
+</dom-module>

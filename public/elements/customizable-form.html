@@ -1,0 +1,46 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-swatch-picker/paper-swatch-picker.html">
+
+<dom-module id="customizable-form">
+  <template>
+  <style>
+paper-button#formButton {
+  color: white;
+}
+
+paper-button[disabled],
+paper-button[toggles][active] {
+  background: red;
+}
+  </style>
+    <form id="form" method="post" name="installer" onsubmit="showHide(); return false;" style$="background: {{backgroundStyle}};">
+      <p id="introText">{{intro}}</p>
+      <input id="email" class="inputIframe" type="email" name="email" value="{{inputText}}"/>
+      <paper-button id="formButton" raised style$="background: {{buttonColor}};">{{buttonText}}</paper-button>
+      <div id="skipEmail" type="button" onClick="javascript:showHide()">Skip Entering Email</div>
+    </form>
+    <label class="labels" for="introText">Intro Text: </label>
+    <input id="intro" name="intro" class="inputStyles" type="text" value="{{intro::input}}">
+    <label class="labels" for="buttonText">Button Text: </label>
+    <input id="buttonText" name="buttonText" class="inputStyles" type="text" value="{{buttonText::input}}">
+    <label class="labels" for="inputText">Input Text: </label>
+    <input id="inputText" name="inputText" class="inputStyles" type="text" value="{{inputText::input}}">
+    <label class="labels" for="color">Background Color: </label>
+    <paper-swatch-picker color="{{backgroundStyle}}"></paper-swatch-picker>
+    <label class="labels" for="buttonColor">Button Color: </label>
+    <paper-swatch-picker color="{{buttonColor}}"></paper-swatch-picker>
+
+  </template>
+  <script>
+    Polymer({
+      is: 'customizable-form',
+      ready: function () {
+      	this.intro = "Please enter your email in order to watch video.";
+      	this.buttonText = "Submit";
+      	this.inputText = "Email Address";
+      	this.backgroundStyle = "rgba(0,0,0,0.7)";
+      	this.buttonColor = "#82b1ff";
+      }
+    })
+  </script>
+</dom-module>

@@ -1,0 +1,68 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="video-link" attributes="link">
+  <template>
+  <style>
+  .labels {
+    font-size: 16px;
+    width: 100%;
+    margin-top: 20px;
+    display: block;
+  }
+  .inputVideo {
+    width: 75%;
+    height: 50px;
+    border: 2px solid lightgrey !important;
+    font-size: 18px;
+    padding-left: 10px;
+    margin-right: -3px;
+    padding-right: 0px;
+    display: inline-block;
+  }
+  .buttons {
+    width: 23%;
+    height: 56px;
+    border: solid 2px lightgrey;
+    font-size: 20px;
+    background-color: #82b1ff;
+    color: white;
+    margin-left: -3px;
+    padding-left: 0px;
+    margin-right: -2px;
+    display: inline-block;
+  }
+  .buttons:hover {
+    background-color: #a2d1ff;
+    color: white;
+  }
+  #myIframe {
+    margin-top: 20px;
+    width: 100%;
+    height: 100%;
+  }
+  </style>
+    <label class="labels" for="link">Insert link to your video</label>
+    <input class="inputVideo" type="text" name="link" id="link" value="{{link::input}}">
+    <button class="buttons" type="button" on-click="changeLink">Submit</button>
+    <iframe id="myIframe" src="{{link}}" frameborder="0" allowfullscreen></iframe>
+  </template>
+  <script>
+    Polymer({
+      is: 'video-link',
+      changeLink: function () {
+      	var url = this.link;
+      	if (url.charAt(12) == 'y') {
+      	  var number = url.substring(32);
+      	  var embed = "https://www.youtube.com/embed/" + number;
+      	  this.link = embed;
+      	}
+        else if (url.charAt(12) == 'o') {
+          var number = url.substring(18);
+          var embed = "https://player.vimeo.com/video/" + number;
+          this.link = embed;
+        }
+        else {}
+      }
+    })
+  </script>
+</dom-module>

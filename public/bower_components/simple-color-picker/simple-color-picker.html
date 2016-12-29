@@ -1,0 +1,171 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+A simple color picker element.
+
+Example:
+
+    <simple-color-picker></simple-color-picker>
+
+@demo
+-->
+
+<dom-module id="simple-color-picker">
+  <style>
+    #preview {
+      margin-bottom: -3px;
+    }
+  </style>
+  <template>
+    <div id="preview"></div>
+    <canvas id="colorPicker" width="[[width]]" height="[[height]]" on-tap="_handleTap" on-track="_handleTrack"></canvas>
+  </template>
+</dom-module>
+
+
+<script>
+  (function () {
+    Polymer({
+      is: 'simple-color-picker',
+
+      /**
+       * Fires 'color-changed' event on changing color:
+       * {
+       *  hex: '#00FF00',
+       *  rgb: {r: 0, g: 255, b: 0}
+       * }
+       */
+      properties: {
+        width: {
+          type: Number,
+          value: 300
+        },
+        height: {
+          type: Number,
+          value: 200
+        },
+        color: {
+          type: Object,
+          notify: true
+        },
+        previewColor: {
+          type: String,
+          value: '#E8E8E8'
+        },
+        preview: {
+          type: Boolean,
+          value: false
+        },
+        previewHeight: {
+          type: Number,
+          value: 40
+        }
+      },
+
+      open: function() {
+        this.style.display = 'block';
+      },
+
+      close: function() {
+        this.style.display = 'none';
+      },
+
+      _handleTrack: function(e) {
+        switch(e.detail.state) {
+          case 'track':
+            var color = this._onColorSelect(e.detail);
+            this._updatePreview(color);
+            this.fire('color-track', color);
+            break;
+          case 'end':
+            this.color = this._onColorSelect(e.detail);
+            this._updatePreview(this.color);
+            break;
+        }
+      },
+
+      _handleTap: function(e) {
+        this.color = this._onColorSelect(e.detail);
+        this._updatePreview(this.color);
+      },
+
+      _onColorSelect: function (e, coords) {
+        if (this._context) {
+          coords = coords || this._relativeMouseCoordinates(e);
+          var data = this._context.getImageData(coords.x, coords.y, 1, 1).data;
+          return this._makeColor({
+            r: data[0],
+            g: data[1],
+            b: data[2]
+          });
+        }
+      },
+
+      _updatePreview: function(color) {
+        if (this.preview) {
+          this.$.preview.style.backgroundColor = color.hex;
+        }
+      },
+
+      _relativeMouseCoordinates: function (e) {
+        var rect = this.$.colorPicker.getBoundingClientRect();
+        var x = e.x - rect.left;
+        var y = e.y - rect.top;
+        return { x: x, y: y };
+      },
+
+      _makeColor: function (rgb) {
+        return {
+          hex: this._rgbToHex(rgb),
+          rgb: rgb
+        };
+      },
+
+      /**
+       * given red, green, blue values, return the equivalent hexidecimal value
+       * base source: http://stackoverflow.com/a/5624139
+       */
+      _componentToHex: function (c) {
+        var hex = c.toString(16);
+        return hex.length === 1 ? '0' + hex : hex;
+      },
+
+      _rgbToHex: function (color) {
+        return '#' + this._componentToHex(color.r) + this._componentToHex(color.g) + this._componentToHex(color.b);
+      },
+
+      _initPreview: function() {
+        this.$.preview.style.width = this.width + 'px';
+        this.$.preview.style.height = this.previewHeight + 'px';
+        this.$.preview.style.backgroundColor = (this.color && this.color.hex) ? this.color.hex : this.previewColor;
+        this.$.preview.style.display = this.preview ? 'inline-block' : 'none';
+      },
+
+      attached: function () {
+        this.$.colorPicker.setAttribute('style', 'cursor:crosshair');
+        this.$.colorPicker.setAttribute('class', 'simpleColorPicker');
+        this._context = this.$.colorPicker.getContext('2d');
+        var colorGradient = this._context.createLinearGradient(0, 0, this.$.colorPicker.width, 0);
+        colorGradient.addColorStop(0, 'rgb(255,0,0)');
+        colorGradient.addColorStop(0.16, 'rgb(255,0,255)');
+        colorGradient.addColorStop(0.32, 'rgb(0,0,255)');
+        colorGradient.addColorStop(0.48, 'rgb(0,255,255)');
+        colorGradient.addColorStop(0.64, 'rgb(0,255,0)');
+        colorGradient.addColorStop(0.80, 'rgb(255,255,0)');
+        colorGradient.addColorStop(1, 'rgb(255,0,0)');
+        this._context.fillStyle = colorGradient;
+        this._context.fillRect(0, 0, this.$.colorPicker.width, this.$.colorPicker.height);
+        var bwGradient = this._context.createLinearGradient(0, 0, 0, this.$.colorPicker.height);
+        bwGradient.addColorStop(0, 'rgba(255,255,255,1)');
+        bwGradient.addColorStop(0.5, 'rgba(255,255,255,0)');
+        bwGradient.addColorStop(0.5, 'rgba(0,0,0,0)');
+        bwGradient.addColorStop(1, 'rgba(0,0,0,1)');
+        this._context.fillStyle = bwGradient;
+        this._context.fillRect(0, 0, this.$.colorPicker.width, this.$.colorPicker.height);
+
+        this._initPreview();
+      }
+
+    });
+  })();
+</script>

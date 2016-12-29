@@ -1,0 +1,35 @@
+{
+  "name": "simple-color-picker",
+  "version": "0.0.1",
+  "description": "A Polymer simple color picker element",
+  "authors": [
+    "Andrey Stelmashenko"
+  ],
+  "keywords": [
+    "web-components",
+    "polymer",
+    "color",
+    "picker"
+  ],
+  "main": [
+    "simple-color-picker.html"
+  ],
+  "ignore": [],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/astelmashenko/simple-color-picker.git"
+  },
+  "license": "http://opensource.org/licenses/MIT",
+  "homepage": "https://github.com/astelmashenko/simple-color-picker",
+  "ignore": [],
+  "dependencies": {
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
+    "polymer": "Polymer/polymer#^1.2.0"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.2",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0",
+    "paper-icon-button": "PolymerElements/paper-icon-button#^1.0.0",
+    "iron-icons": "PolymerElements/iron-icons#^1.0.0"
+  }
+}

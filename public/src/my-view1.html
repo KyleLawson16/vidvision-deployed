@@ -1,0 +1,465 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="shared-styles.html">
+<link rel="import" href="../elements/video-link.html">
+<link rel="import" href="../elements/customizable-form.html">
+
+<dom-module id="my-view1">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+      paper-checkbox {
+        --paper-checkbox-checkmark-color: black;
+        --paper-checkbox-size: 25px;
+      }
+      .options {
+        width: 100%;
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
+
+      .firstOption {
+        width: 100%;
+        margin-bottom: 20px;
+      }
+      .mainLabels {
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 20px;
+        margin-bottom: 5px;
+        display: block;
+        color: #555555;
+      }
+      .labels {
+        font-size: 16px;
+        width: 100%;
+        margin-top: 10px;
+        margin-bottom: 5px;
+        display: block;
+      }
+      .firstLabel {
+        font-size: 16px;
+        width: 100%;
+      }
+      .labelsColor {
+        font-size: 16px;
+        width: 50%;
+        margin-top: 10px;
+        margin-right: -10px;
+      }
+      .labelButton {
+        margin-left: 15px;
+      }
+      .labelSkip {
+        margin-right: 5px;
+      }
+      .inputVideo {
+        width: 75%;
+        height: 55px;
+        border: 1px solid grey !important;
+        border-radius: 3px;
+        font-size: 18px;
+        padding-left: 10px;
+      }
+      .inputStyles {
+        width: 95%;
+        height: 45px;
+        border: 1px solid grey !important;
+        border-radius: 3px;
+        font-size: 15px;
+        padding-left: 10px;
+        margin-bottom: 10px;
+      }
+      #emailAddress {
+        width: 70%;
+        height: 45px;
+        border: 1px solid grey !important;
+        border-radius: 3px;
+        font-size: 15px;
+        padding-left: 10px;
+        margin-bottom: 10px;
+      }
+      .buttons {
+        width: 22%;
+        height: 59px;
+        border: none;
+        border-radius: 3px;
+        font-size: 20px;
+        background-color: #78caff;
+        color: white;
+        float: right;
+      }
+      .buttons:hover {
+        background-color: #58aaee;
+        color: white;
+        cursor: pointer;
+      }
+      #generateCode {
+        width: 27%;
+        height: 49px;
+        border: none;
+        border-radius: 3px;
+        font-size: 20px;
+        background-color: #78caff;
+        color: white;
+        float: right;
+      }
+      #generateCode:hover {
+        background-color: #58aaee;
+        color: white;
+        cursor: pointer;
+      }
+      textarea {
+        width: 100%;
+        height: 150px;
+        border: 1px solid grey !important;
+        border-radius: 3px;
+        font-size: 12px;
+        padding-left: 0px;
+        padding-right: 0px;
+        margin-bottom: 10px;
+      }
+
+      /* Iframe Styling */
+
+      .outer {
+        text-align: center;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 10px;
+      }
+      .inner {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        margin-top: -30px;
+      }
+      .myIframe {
+      position: relative;
+      padding-bottom: 50.25%;
+      padding-top: 30px;
+      height: 0;
+      overflow: auto; 
+      -webkit-overflow-scrolling:touch; //<<--- THIS IS THE KEY 
+      border: solid black 1px;
+      }
+      .myIframe iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      }
+      #form {
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+        top: 0;
+        left: 0;
+        margin-top: -16px;
+      }
+      #form input {
+        margin-top: 5px;
+      }
+      #email {
+        width: 250px;
+        height: 35px;
+        border-radius: 5px;
+        background-color: #ffffff;
+        border: none;
+        margin-right: 10px;
+        font-size: 15px;
+        padding-left: 5px;
+      }
+      #submit {
+        width: 120px;
+        height: 35px;
+        border-radius: 5px;
+        border: none;
+        color: #ffffff;
+        font-size: 15px;
+        text-align: center;
+      }
+      #submit:hover {
+        background-color: ;
+        cursor: pointer;
+      }
+      #introText {
+        text-align: center;
+        font-size: 16px;
+        color: #ffffff;
+        padding-top: 20%;
+      }
+      #skipEmail {
+        background-color: transparent;
+        border: none;
+        padding-top: 10px;
+        color: #ffffff;
+      }
+      #skipEmail:hover {
+        text-decoration: underline;
+        cursor: pointer;
+      }
+
+      /* Columns */
+      .container {
+        width: 97%;
+        padding: 0px 20px;
+      }
+      .col-sm-8 {
+        padding-left: 40px;
+        width: 60%;
+        display: inline-block;
+        top: 0;
+      }
+      .col-sm-4 {
+        padding-right: 4%;
+        width: 30%;
+        display: inline-block;
+        float: right;
+        margin-top: 115px;
+      }
+
+      @media only screen and (max-width : 480px) {
+        .container {
+          width: 97%;
+          padding: 0px 10px;
+        }
+        .col-sm-8 {
+          padding: 0px;
+          width: 100%;
+          margin-top: -5px;
+        }
+        .col-sm-4 {
+          padding: 0px;
+          width: 100%;
+          margin-top: 0px;
+          margin-bottom: 20px;
+        }
+        .inputVideo {
+          height: 40px;
+          width: 70%;
+        }
+        .buttons {
+          height: 44px;
+          width: 25%;
+          font-size: 16px;
+        }
+        .inputStyles {
+          height: 40px;
+        }
+        #emailAddress {
+          height: 40px;
+        }
+        #generateCode {
+          height: 44px;
+          width: 25%;
+          font-size: 16px;
+        }
+      }
+      @media only screen and (min-width : 481px) and (max-width : 768px) {
+        .container {
+          width: 97%;
+          padding: 0px 10px;
+        }
+        .col-sm-8 {
+          padding: 0px;
+          width: 100%;
+          margin-top: -5px;
+        }
+        .col-sm-4 {
+          padding: 0px;
+          width: 100%;
+          margin-top: 0px;
+          margin-bottom: 20px;
+        }
+        .inputVideo {
+          height: 45px;
+        }
+        .buttons {
+          height: 49px;
+          font-size: 18px;
+        }
+        #generateCode {
+          font-size: 18px;
+        }
+      }
+      @media only screen and (min-width : 769px) and (max-width : 992px) {
+        .container {
+          width: 97%;
+          padding: 0px 10px;
+        }
+        .col-sm-8 {
+          padding-left: 0px;
+        }
+        .col-sm-4 {
+          width: 38%;
+          padding-right: 0px;
+        }
+        .inputStyles {
+          width: 100%;
+        }
+        paper-swatch-picker {
+          margin-right: 35.5%;
+        }
+        .labelButton {
+          margin-left: 0px;
+        }
+        #generateCode {
+          font-size: 18px;
+        }
+      }
+      @media only screen and (min-width : 993px) and (max-width : 1200px) {
+        .container {
+          width: 97%;
+          padding: 0px 10px;
+        }
+        .col-sm-8 {
+          padding-left: 10px;
+        }
+        .col-sm-4 {
+          width: 36%;
+          padding-right: 10px;
+        }
+        #generateCode {
+          font-size: 18px;
+        }
+      }
+    </style>
+    <div class="container">
+    <div class="col-xs-12 col-sm-8">
+      <div class="options">
+        <label class="mainLabels" id="iframeLabel" for="link">Insert link to your video</label>
+        <input class="inputVideo" type="text" name="link" id="link" value="{{link::input}}">
+        <button class="buttons" type="button" on-click="changeLink">Submit</button>
+      </div>
+      <label class="mainLabels" for="iframe">Preview below:</label>
+      <div class="outer">
+        <div class="myIframe">
+          <iframe id="myIframe" src="{{link}}" frameborder="0" allowfullscreen></iframe>
+          <div id="dissapear" class="inner">
+            <form id="form" name="installer" style$="background: {{backgroundStyle}}; display: {{hideForm}};">
+              <p id="introText">{{intro}}</p>
+              <input id="email" class="inputIframe" type="email" name="email" placeholder="{{inputText}}"/>
+              <input id="submit" on-click="showHide" value="{{buttonText}}" style$="background: {{buttonColor}};"/>
+              <div id="skipEmail" style$="display: {{onOff}};" type="button" on-click="showHide">Skip Form</div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-4">
+      <label class="mainLabels" for="videoEditor">Video editor</label>
+      <label class="labels" for="introText">Intro Text</label>
+      <input id="intro" name="intro" class="inputStyles" type="text" on-focus="resetIntro" on-blur="replaceIntro" value="{{intro::input}}">
+      <label class="labels" for="buttonText">Button Text</label>
+      <input id="buttonText" name="buttonText" class="inputStyles" type="text" on-focus="resetButton" on-blur="replaceButton" value="{{buttonText::input}}">
+      <label class="labels" for="inputText">Input Text</label>
+      <input id="inputText" name="inputText" class="inputStyles" type="text" on-focus="resetInput" on-blur="replaceInput" value="{{inputText::input}}">
+      <br />
+      <label class="labelsColor" for="color">Background Color</label>
+      <paper-swatch-picker color="{{backgroundStyle}}"></paper-swatch-picker>
+      <label class="labelsColor labelButton" for="buttonColor">Button Color</label>
+      <paper-swatch-picker color="{{buttonColor}}"></paper-swatch-picker>
+      <br />
+      <paper-checkbox on-change="hideSkip"></paper-checkbox>
+      <label class="labelsColor labelSkip" for="skipBox">Hide Skip Option</label>
+    </div>
+    <div class="col-sm-8">
+      <label class="mainLabels" >Finished customizing?</label>
+      <label class="labels" for="hostEmail">Your email address</label>
+      <input id="emailAddress" name="emailAddress" type="text" value="{{emailAddress::input}}">
+      <button id="generateCode" on-click="clipBoard">Generate code</button>
+      <textarea>{{code}}</textarea>
+    </div>
+  </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'my-view1',
+      changeLink: function () {
+        var url = this.link;
+        if (url.charAt(12) == 'y') {
+          var number = url.substring(32);
+          var embed = "https://www.youtube.com/embed/" + number;
+          this.link = embed;
+        }
+        else if (url.charAt(12) == 'o') {
+          var number = url.substring(18);
+          var embed = "https://player.vimeo.com/video/" + number;
+          this.link = embed;
+        }
+        else {}
+      },
+      hideSkip: function () {
+        if (event.target.checked) {
+          this.onOff = "none";
+        }
+        else {
+          this.onOff = "";
+        }
+      },
+      showHide: function () {
+        this.hideForm = "none";
+      },
+      resetIntro: function () {
+        if (this.intro == "Please enter your email in order to watch video.") {
+          this.intro = "";
+        }
+      },
+      replaceIntro: function () {
+        if (this.intro == "") {
+          this.intro = "Please enter your email in order to watch video.";
+        }
+      },
+      resetButton: function () {
+        if (this.buttonText == "Submit") {
+          this.buttonText = "";
+        }
+      },
+      replaceButton: function () {
+        if (this.buttonText == "") {
+          this.buttonText = "Submit";
+        }
+      },
+      resetInput: function () {
+        if (this.inputText == "Email Address") {
+          this.inputText = "";
+        }
+      },
+      replaceInput: function () {
+        if (this.inputText == "") {
+          this.inputText = "Email Address";
+        }
+      },
+      clipBoard: function () {
+        this.code = '<div style="text-align:center; border: none; display:block; margin-left:auto; margin-right:auto; margin-top:10px"> <div style="position:relative; padding-bottom:50.25%; padding-top:30px; border: none; height:0; overflow:auto; -webkit-overflow-scrolling:touch;"> <iframe id="iframe" src="' + this.link + '" frameborder="0" allowfullscreen style="position:absolute; top:0; left:0; width:100%; height:100%; border: none;"></iframe> <div id="dissapear" style="position:absolute; width:100%; height:100%; margin-top:-30px"> <form id="foo" style="width:100%; height:100%; border: none; background-color: ' + this.backgroundStyle + '; z-index:2; top:0; left:0" onsubmit="showHide(); return false;"> <div class="drag" style="text-align:center; font-size:16px; color:#fff; padding-top:20%">' + this.intro + '</div> <input id="hostEmail" name="hostEmail" value="' + this.emailAddress + '" style="display: none;"><input id="email" class="inputIframe" type="email" name="email" required placeholder="' + this.inputText + '" style="margin-top:20px; padding-left:5px; width:250px; height:35px; border-radius:5px; background-color:#fff; border:none; margin-right:10px; font-size:15px"/> <input id="submit" type="submit" value="' + this.buttonText + '" name="submit" style="margin-top:20px; padding-left:0px; width:120px; height:35px; border-radius:5px; border:none; color:#fff; background-color: ' + this.buttonColor + '; font-size:15px"/> <div id="skipEmail" type="button" style="background-color:transparent; border:none; padding-top:10px; color:#fff; display: ' + this.onOff + '; cursor: pointer;" onClick="javascript:showHide()">Skip Entering Email</div> </form> </div> </div> </div><script type="text/javascript">function showHide() {var div = document.getElementById("dissapear"); if (div.style.display == "none") {div.style.display = "";} else {div.style.display = "none";}}' + '</scr' + 'ipt><script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></scr' + 'ipt><script>var request; $("#foo").submit(function(event){if (request) {request.abort();} var $form = $(this); var $inputs = $form.find("input, select, button, textarea"); var serializedData = $form.serialize(); $inputs.prop("disabled", true); request = $.ajax({url: "https://script.google.com/macros/s/AKfycbzHpV0bYr0oKbFmLR6Xg1dKAAKWfJIafy7qsy7oRiQJXPxZ7v8/exec", type: "post", data: serializedData}); request.done(function (response, textStatus, jqXHR){console.log("Hooray, it worked!"); console.log(response); console.log(textStatus); console.log(jqXHR);}); request.fail(function (jqXHR, textStatus, errorThrown){console.error("The following error occurred: "+ textStatus, errorThrown);}); request.always(function () {$inputs.prop("disabled", false);}); event.preventDefault();});</scr' + 'ipt>';
+      },
+      ready: function () {
+        this.intro = "Please enter your email in order to watch video.";
+        this.buttonText = "Submit";
+        this.inputText = "Email Address";
+        this.backgroundStyle = "rgba(0,0,0,0.7)";
+        this.buttonColor = "#78caff";
+      },
+    });
+  </script>
+</dom-module>
