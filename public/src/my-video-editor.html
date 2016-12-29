@@ -16,7 +16,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../elements/video-link.html">
 <link rel="import" href="../elements/customizable-form.html">
 
-<dom-module id="my-view1">
+<dom-module id="my-video-editor">
   <template>
     <style include="shared-styles">
       :host {
@@ -138,6 +138,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         padding-right: 0px;
         margin-bottom: 10px;
       }
+      .info {
+        font-size: 14px;
+        color: red;
+        margin-top: -10px;
+      }
 
       /* Iframe Styling */
 
@@ -258,11 +263,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
         .inputVideo {
           height: 40px;
-          width: 68%;
+          width: 60%;
         }
         .buttons {
           height: 44px;
-          width: 25%;
+          width: 30%;
           font-size: 16px;
         }
         .inputStyles {
@@ -270,7 +275,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
         #emailAddress {
           height: 40px;
-          width: 63%;
+          width: 60%;
         }
         #generateCode {
           height: 44px;
@@ -331,7 +336,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
         .inputVideo {
           height: 40px;
-          width: 70%;
+          width: 65%;
         }
         .buttons {
           height: 44px;
@@ -343,6 +348,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
         #emailAddress {
           height: 40px;
+          width: 65%;
         }
         #generateCode {
           height: 44px;
@@ -400,10 +406,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
         .inputVideo {
           height: 45px;
+          width: 70%;
         }
         .buttons {
           height: 49px;
           font-size: 18px;
+        }
+        #emailAddress {
+          width: 65%;
         }
         #generateCode {
           font-size: 18px;
@@ -432,6 +442,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
         #generateCode {
           font-size: 18px;
+          width: 30%;
+        }
+        .inputVideo {
+          width: 70%;
+        }
+        #emailAddress {
+          width: 65%;
         }
       }
       @media only screen and (min-width : 993px) and (max-width : 1200px) {
@@ -456,7 +473,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <div class="options">
         <label class="mainLabels" id="iframeLabel" for="link">Insert link to your video</label>
         <input class="inputVideo" type="text" name="link" id="link" value="{{link::input}}">
-        <button class="buttons" type="button" on-click="changeLink">Submit</button>
+        <button class="buttons" type="button" on-tap="changeLink">Submit</button>
       </div>
       <label class="mainLabels" for="iframe">Preview below:</label>
       <div class="outer">
@@ -466,8 +483,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <form id="form" name="installer" style$="background: {{backgroundStyle}}; display: {{hideForm}};">
               <p id="introText">{{intro}}</p>
               <input id="email" class="inputIframe" type="email" name="email" placeholder="{{inputText}}"/>
-              <input id="submit" on-click="showHide" value="{{buttonText}}" style$="background: {{buttonColor}};"/>
-              <div id="skipEmail" style$="display: {{onOff}};" type="button" on-click="showHide">Skip Form</div>
+              <input id="submit" on-tap="showHide" value="{{buttonText}}" style$="background: {{buttonColor}};"/>
+              <div id="skipEmail" style$="display: {{onOff}};" type="button" on-tap="showHide">Skip Form</div>
             </form>
           </div>
         </div>
@@ -494,15 +511,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <label class="mainLabels" >Finished customizing?</label>
       <label class="labels" for="hostEmail">Your email address</label>
       <input id="emailAddress" name="emailAddress" type="text" value="{{emailAddress::input}}">
-      <button id="generateCode" on-click="clipBoard">Generate code</button>
+      <button id="generateCode" on-tap="clipBoard">Generate code</button>
+      <p class="info">*Your email is needed in order to send you any leads your video generates.</p>
       <textarea>{{code}}</textarea>
+      <p class="info">*Embed this code into your website by wrapping it in a container of your desired size.</p>
     </div>
   </div>
   </template>
 
   <script>
     Polymer({
-      is: 'my-view1',
+      is: 'my-video-editor',
       changeLink: function () {
         var url = this.link;
         if (url.charAt(12) == 'y') {
