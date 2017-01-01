@@ -225,7 +225,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         text-decoration: underline;
         cursor: pointer;
       }
-
+      #iframeLogo {
+        width: 80px;
+        margin-top: -23px;
+        margin-right: 10px;
+        float: right;
+      }
       /* Columns */
       .container {
         width: 97%;
@@ -486,6 +491,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <input id="submit" on-tap="showHide" value="{{buttonText}}" style$="background: {{buttonColor}};"/>
               <div id="skipEmail" style$="display: {{onOff}};" type="button" on-tap="showHide">Skip Form</div>
             </form>
+            <a href="http://www.getvidvision.com/" target="__blank"><img id="iframeLogo" src="http://res.cloudinary.com/hrscywv4p/image/upload/c_limit,h_1440,w_720,f_auto/v1/204930/vidvisionv3_sggpov.png" /></a>
           </div>
         </div>
       </div>
@@ -512,8 +518,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <label class="labels" for="hostEmail">Your email address</label>
       <input id="emailAddress" name="emailAddress" type="text" value="{{emailAddress::input}}">
       <button id="generateCode" on-tap="clipBoard">Generate code</button>
+      <button class="buttons" on-click="copyCode">Copy code</button>
       <p class="info">*Your email is needed in order to send you any leads your video generates.</p>
-      <textarea>{{code}}</textarea>
+      <textarea id="codeString">{{code}}</textarea>
       <p class="info">*Embed this code into your website by wrapping it in a container of your desired size.</p>
     </div>
   </div>
@@ -578,7 +585,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
       clipBoard: function () {
-        this.code = '<div style="text-align:center; border: none; display:block; margin-left:auto; margin-right:auto; margin-top:10px"> <div style="position:relative; padding-bottom:50.25%; padding-top:30px; border: none; height:0; overflow:auto; -webkit-overflow-scrolling:touch;"> <iframe id="iframe" src="' + this.link + '" frameborder="0" allowfullscreen style="position:absolute; top:0; left:0; width:100%; height:100%; border: none;"></iframe> <div id="dissapear" style="position:absolute; width:100%; height:100%; margin-top:-30px"> <form id="foo" style="width:100%; height:100%; border: none; background-color: ' + this.backgroundStyle + '; z-index:2; top:0; left:0" onsubmit="showHide(); return false;"> <div class="drag" style="text-align:center; font-size:16px; color:#fff; padding-top:20%">' + this.intro + '</div> <input id="hostEmail" name="hostEmail" value="' + this.emailAddress + '" style="display: none;"><input id="email" class="inputIframe" type="email" name="email" required placeholder="' + this.inputText + '" style="margin-top:20px; padding-left:5px; width:250px; height:35px; border-radius:5px; background-color:#fff; border:none; margin-right:10px; font-size:15px"/> <input id="submit" type="submit" value="' + this.buttonText + '" name="submit" style="margin-top:20px; padding-left:0px; width:120px; height:35px; border-radius:5px; border:none; color:#fff; background-color: ' + this.buttonColor + '; font-size:15px"/> <div id="skipEmail" type="button" style="background-color:transparent; border:none; padding-top:10px; color:#fff; display: ' + this.onOff + '; cursor: pointer;" onClick="javascript:showHide()">Skip Entering Email</div> </form> </div> </div> </div><script type="text/javascript">function showHide() {var div = document.getElementById("dissapear"); if (div.style.display == "none") {div.style.display = "";} else {div.style.display = "none";}}' + '</scr' + 'ipt><script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></scr' + 'ipt><script>var request; $("#foo").submit(function(event){if (request) {request.abort();} var $form = $(this); var $inputs = $form.find("input, select, button, textarea"); var serializedData = $form.serialize(); $inputs.prop("disabled", true); request = $.ajax({url: "https://script.google.com/macros/s/AKfycbzHpV0bYr0oKbFmLR6Xg1dKAAKWfJIafy7qsy7oRiQJXPxZ7v8/exec", type: "post", data: serializedData}); request.done(function (response, textStatus, jqXHR){console.log("Hooray, it worked!"); console.log(response); console.log(textStatus); console.log(jqXHR);}); request.fail(function (jqXHR, textStatus, errorThrown){console.error("The following error occurred: "+ textStatus, errorThrown);}); request.always(function () {$inputs.prop("disabled", false);}); event.preventDefault();});</scr' + 'ipt>';
+        this.code = '<div style="text-align:center; border: none; display:block; margin-left:auto; margin-right:auto; margin-top:10px"> <div style="position:relative; padding-bottom:50.25%; padding-top:30px; border: none; height:0; overflow:auto; -webkit-overflow-scrolling:touch;"> <iframe id="iframe" src="' + this.link + '" frameborder="0" allowfullscreen style="position:absolute; top:0; left:0; width:100%; height:100%; border: none;"></iframe> <div id="dissapear" style="position:absolute; width:100%; height:100%; margin-top:-30px"> <form id="foo" style="width:100%; height:100%; border: none; background-color: ' + this.backgroundStyle + '; z-index:2; top:0; left:0" onsubmit="showHide(); return false;"> <div class="drag" style="text-align:center; font-size:16px; color:#fff; padding-top:20%">' + this.intro + '</div> <input id="hostEmail" name="hostEmail" value="' + this.emailAddress + '" style="display: none;"><input id="email" class="inputIframe" type="email" name="email" required placeholder="' + this.inputText + '" style="margin-top:20px; padding-left:5px; width:250px; height:35px; border-radius:5px; background-color:#fff; border:none; margin-right:10px; font-size:15px"/> <input id="submit" type="submit" value="' + this.buttonText + '" name="submit" style="margin-top:20px; padding-left:0px; width:120px; height:35px; border-radius:5px; border:none; color:#fff; background-color: ' + this.buttonColor + '; font-size:15px"/> <div id="skipEmail" type="button" style="background-color:transparent; border:none; padding-top:10px; color:#fff; display: ' + this.onOff + '; cursor: pointer;" onClick="javascript:showHide()">Skip Entering Email</div> </form> <a href="http://www.getvidvision.com/" target="__blank"><img style="width: 80px; position: absolute; bottom: 10px; right: 10px; margin-bottom: 0px;" src="http://res.cloudinary.com/hrscywv4p/image/upload/c_limit,h_1440,w_720,f_auto/v1/204930/vidvisionv3_sggpov.png" /></a> </div> </div> </div><script type="text/javascript">function showHide() {var div = document.getElementById("dissapear"); if (div.style.display == "none") {div.style.display = "";} else {div.style.display = "none";}}' + '</scr' + 'ipt><script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></scr' + 'ipt><script>var request; $("#foo").submit(function(event){if (request) {request.abort();} var $form = $(this); var $inputs = $form.find("input, select, button, textarea"); var serializedData = $form.serialize(); $inputs.prop("disabled", true); request = $.ajax({url: "https://script.google.com/macros/s/AKfycbzHpV0bYr0oKbFmLR6Xg1dKAAKWfJIafy7qsy7oRiQJXPxZ7v8/exec", type: "post", data: serializedData}); request.done(function (response, textStatus, jqXHR){console.log("Hooray, it worked!"); console.log(response); console.log(textStatus); console.log(jqXHR);}); request.fail(function (jqXHR, textStatus, errorThrown){console.error("The following error occurred: "+ textStatus, errorThrown);}); request.always(function () {$inputs.prop("disabled", false);}); event.preventDefault();});</scr' + 'ipt>';
+        this.code.select();
+        document.execCommand('copy');
       },
       ready: function () {
         this.intro = "Please enter your email in order to watch video.";
