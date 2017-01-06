@@ -1,0 +1,85 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-auth.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="my-home">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+      h1 {
+        text-align: center;
+        color: black;
+        font-size: 30px;
+        margin-top: 10px;
+        margin-bottom: 0px;
+      }
+      h2 {
+        text-align: center;
+        color: white;
+        font-size: 25px;
+        font-weight: normal;
+        margin-top: -5px;
+        margin-bottom: 5px;
+      }
+      a {
+        text-decoration: none;
+      }
+      #videoGate {
+        width: 100%;
+      }
+      .col-sm-left {
+        width: 50%;
+        float: left;
+      }
+      .col-sm-right {
+        width: 50%;
+        float: left;
+      }
+      .card {
+        background-color: #78caff;
+      }
+      @media only screen and (max-width: 768px) {
+        .col-sm-left {
+          width: 100%;
+        }
+        .col-sm-right {
+          width: 100%;
+        }
+      }
+    </style>
+    <h1>Welcome to our video marketing suite.</h1>
+    <div class="col-sm-left">
+      <a href="/video-editor">
+      <div class="card">
+        <h2>Video Gate Builder</h2>
+        <img id="videoGate" src="../images/video-gate.PNG" />
+      </div>
+      </a>
+    </div>
+    <div class="col-sm-right">
+      <div class="card">
+        <h2>More tools coming soon!</h2>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'my-home',
+    });
+  </script>
+</dom-module>

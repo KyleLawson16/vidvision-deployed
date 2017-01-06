@@ -12,6 +12,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../bower_components/paper-toggle-button/paper-toggle-button.html">
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="../elements/video-link.html">
 <link rel="import" href="../elements/customizable-form.html">
@@ -27,6 +28,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       paper-checkbox {
         --paper-checkbox-checkmark-color: black;
         --paper-checkbox-size: 25px;
+      }
+      paper-toggle-button {
+        --paper-toggle-button-checked-bar-color: #78caff;
       }
       .options {
         width: 100%;
@@ -481,9 +485,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <button class="buttons" type="button" on-tap="changeLink">Submit</button>
       </div>
       <label class="mainLabels" for="iframe">Preview below:</label>
-      <div class="outer">
+      <div class="outer" style$="width: {{iframeWidth}};">
         <div class="myIframe">
-          <iframe id="myIframe" src="{{link}}" frameborder="0" allowfullscreen></iframe>
+          <iframe id="myIframe" src="{{link}}" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
           <div id="dissapear" class="inner">
             <form id="form" name="installer" style$="background: {{backgroundStyle}}; display: {{hideForm}};">
               <p id="introText">{{intro}}</p>
@@ -497,7 +501,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </div>
     </div>
     <div class="col-xs-12 col-sm-4">
-      <label class="mainLabels" for="videoEditor">Video editor</label>
+      <label class="mainLabels" style$="margin-top: {{rightColMarginTop}}" for="videoEditor">Iframe sizing</label>
+      <paper-toggle-button on-change="changeLabel">{{toggleLabel}}</paper-toggle-button>
+      <label class="labels" for="width" style="display: {{showMeasurements}}">Width</label>
+      <input id="width" name="width" class="inputStyles" style="display: {{showMeasurements}}" type="text" value="{{width::input}}" on-focus="resetWidth" on-blur="replaceWidth">
+      <label class="mainLabels" for="videoEditor">Text and colors</label>
       <label class="labels" for="introText">Intro Text</label>
       <input id="intro" name="intro" class="inputStyles" type="text" on-focus="resetIntro" on-blur="replaceIntro" value="{{intro::input}}">
       <label class="labels" for="buttonText">Button Text</label>
@@ -518,10 +526,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <label class="labels" for="hostEmail">Your email address</label>
       <input id="emailAddress" name="emailAddress" type="text" value="{{emailAddress::input}}">
       <button id="generateCode" on-tap="clipBoard">Generate code</button>
-      <button class="buttons" on-click="copyCode">Copy code</button>
       <p class="info">*Your email is needed in order to send you any leads your video generates.</p>
       <textarea id="codeString">{{code}}</textarea>
-      <p class="info">*Embed this code into your website by wrapping it in a container of your desired size.</p>
+      <p class="info">*Embed this HTML code anywhere on your website the same way you would a YouTube video. Feel free to wrap it in a container of your desired size.</p>
     </div>
   </div>
   </template>
@@ -584,10 +591,68 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.inputText = "Email Address";
         }
       },
+      changeLabel: function () {
+        if (this.toggleLabel == "Custom") {
+          this.toggleLabel = "Responsive";
+          this.showMeasurements = "none";
+          this.iframeWidth = "100%";
+          this.iframeHeight = "100%";
+          this.divHeight = "";
+          this.rightColMarginTop = "20px";
+        }
+        else {
+          this.toggleLabel = "Custom";
+          this.showMeasurements = "";
+          this.iframeWidth = this.width;
+          this.iframeHeight = "315px";
+          this.divHeight = "315px";
+        }
+      },
+      resetWidth: function () {
+          this.width = "";
+          this.iframeWidth = this.width;
+      },
+      replaceWidth: function () {
+        var noPX = parseInt(this.width, 10);
+        var windowWidth = window.innerWidth
+        || document.documentElement.clientWidth
+        || document.body.clientWidth;
+        var containerWidth = (windowWidth - 100) * 0.61;
+        if (noPX < 0) {
+          this.width = "560px";
+          this.iframeWidth = this.width;
+          this.rightColMarginTop = "20px";
+          this.iframeHeight = "315px";
+          this.divHeight = "315px";
+        }
+        else if (noPX > windowWidth) {
+          this.width = "560px";
+          this.iframeWidth = this.width;
+          this.rightColMarginTop = "20px";
+          this.iframeHeight = "315px";
+          this.divHeight = "315px";
+        }
+        else if (this.width == "") {
+          this.width = "560px";
+          this.iframeWidth = this.width;
+          this.rightColMarginTop = "20px";
+          this.iframeHeight = "315px";
+          this.divHeight = "315px";
+        }
+        else {
+          this.width = noPX + "px";
+          this.iframeWidth = this.width;
+          this.iframeHeight = (noPX * 0.5625) + "px";
+          this.divHeight = (noPX * 0.5625) + "px";
+          if (noPX > containerWidth) {
+            var bigger = (noPX - containerWidth) * 0.55;
+            var size = bigger + 460;
+            this.rightColMarginTop = size + "px";
+          }
+        }
+      },
       clipBoard: function () {
-        this.code = '<div style="text-align:center; border: none; display:block; margin-left:auto; margin-right:auto; margin-top:10px"> <div style="position:relative; padding-bottom:50.25%; padding-top:30px; border: none; height:0; overflow:auto; -webkit-overflow-scrolling:touch;"> <iframe id="iframe" src="' + this.link + '" frameborder="0" allowfullscreen style="position:absolute; top:0; left:0; width:100%; height:100%; border: none;"></iframe> <div id="dissapear" style="position:absolute; width:100%; height:100%; margin-top:-30px"> <form id="foo" style="width:100%; height:100%; border: none; background-color: ' + this.backgroundStyle + '; z-index:2; top:0; left:0" onsubmit="showHide(); return false;"> <div class="drag" style="text-align:center; font-size:16px; color:#fff; padding-top:20%">' + this.intro + '</div> <input id="hostEmail" name="hostEmail" value="' + this.emailAddress + '" style="display: none;"><input id="email" class="inputIframe" type="email" name="email" required placeholder="' + this.inputText + '" style="margin-top:20px; padding-left:5px; width:250px; height:35px; border-radius:5px; background-color:#fff; border:none; margin-right:10px; font-size:15px"/> <input id="submit" type="submit" value="' + this.buttonText + '" name="submit" style="margin-top:20px; padding-left:0px; width:120px; height:35px; border-radius:5px; border:none; color:#fff; background-color: ' + this.buttonColor + '; font-size:15px"/> <div id="skipEmail" type="button" style="background-color:transparent; border:none; padding-top:10px; color:#fff; display: ' + this.onOff + '; cursor: pointer;" onClick="javascript:showHide()">Skip Entering Email</div> </form> <a href="http://www.getvidvision.com/" target="__blank"><img style="width: 80px; position: absolute; bottom: 10px; right: 10px; margin-bottom: 0px;" src="http://res.cloudinary.com/hrscywv4p/image/upload/c_limit,h_1440,w_720,f_auto/v1/204930/vidvisionv3_sggpov.png" /></a> </div> </div> </div><script type="text/javascript">function showHide() {var div = document.getElementById("dissapear"); if (div.style.display == "none") {div.style.display = "";} else {div.style.display = "none";}}' + '</scr' + 'ipt><script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></scr' + 'ipt><script>var request; $("#foo").submit(function(event){if (request) {request.abort();} var $form = $(this); var $inputs = $form.find("input, select, button, textarea"); var serializedData = $form.serialize(); $inputs.prop("disabled", true); request = $.ajax({url: "https://script.google.com/macros/s/AKfycbzHpV0bYr0oKbFmLR6Xg1dKAAKWfJIafy7qsy7oRiQJXPxZ7v8/exec", type: "post", data: serializedData}); request.done(function (response, textStatus, jqXHR){console.log("Hooray, it worked!"); console.log(response); console.log(textStatus); console.log(jqXHR);}); request.fail(function (jqXHR, textStatus, errorThrown){console.error("The following error occurred: "+ textStatus, errorThrown);}); request.always(function () {$inputs.prop("disabled", false);}); event.preventDefault();});</scr' + 'ipt>';
-        this.code.select();
-        document.execCommand('copy');
+        this.code = '<div style="text-align:center; border: none; display:block; margin-left:auto; margin-right:auto; margin-top:10px; height: ' + this.divHeight + ';"> <div style="width: ' + this.iframeWidth + '; position:relative; padding-bottom:50.25%; padding-top:30px; border: none; height:0; overflow:auto; -webkit-overflow-scrolling:touch;"> <iframe id="iframe" src="' + this.link + '" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position:absolute; top:0; left:0; width:100%; height: ' + this.iframeHeight + '; border: none;"></iframe> <div id="dissapear" style="position:absolute; width:100%; height: ' + this.iframeHeight + '; margin-top:-30px"> <form id="foo" style="width:100%; height:100%; border: none; background-color: ' + this.backgroundStyle + '; z-index:2; top:0; left:0" onsubmit="showHide(); return false;"> <div class="drag" style="text-align:center; font-size:16px; color:#fff; padding-top:20%">' + this.intro + '</div> <input id="hostEmail" name="hostEmail" value="' + this.emailAddress + '" style="display: none;"><input id="email" class="inputIframe" type="email" name="email" required placeholder="' + this.inputText + '" style="margin-top:20px; padding-left:5px; width:250px; height:35px; border-radius:5px; background-color:#fff; border:none; margin-right:10px; font-size:15px"/> <input id="submit" type="submit" value="' + this.buttonText + '" name="submit" style="margin-top:20px; padding-left:0px; width:120px; height:35px; border-radius:5px; border:none; color:#fff; background-color: ' + this.buttonColor + '; font-size:15px"/> <div id="skipEmail" type="button" style="background-color:transparent; border:none; padding-top:10px; color:#fff; display: ' + this.onOff + '; cursor: pointer;" onClick="javascript:showHide()">Skip Entering Email</div> </form> <a href="http://www.getvidvision.com/" target="__blank"><img style="width: 80px; position: absolute; bottom: 10px; right: 10px; margin-bottom: 0px;" src="http://res.cloudinary.com/hrscywv4p/image/upload/c_limit,h_1440,w_720,f_auto/v1/204930/vidvisionv3_sggpov.png" /></a> </div> </div> </div><script type="text/javascript">function showHide() {var div = document.getElementById("dissapear"); if (div.style.display == "none") {div.style.display = "";} else {div.style.display = "none";}}' + '</scr' + 'ipt><script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></scr' + 'ipt><script>var request; $("#foo").submit(function(event){if (request) {request.abort();} var $form = $(this); var $inputs = $form.find("input, select, button, textarea"); var serializedData = $form.serialize(); $inputs.prop("disabled", true); request = $.ajax({url: "https://script.google.com/macros/s/AKfycbzHpV0bYr0oKbFmLR6Xg1dKAAKWfJIafy7qsy7oRiQJXPxZ7v8/exec", type: "post", data: serializedData}); request.done(function (response, textStatus, jqXHR){console.log("Hooray, it worked!"); console.log(response); console.log(textStatus); console.log(jqXHR);}); request.fail(function (jqXHR, textStatus, errorThrown){console.error("The following error occurred: "+ textStatus, errorThrown);}); request.always(function () {$inputs.prop("disabled", false);}); event.preventDefault();});</scr' + 'ipt>';
       },
       ready: function () {
         this.intro = "Please enter your email in order to watch video.";
@@ -595,6 +660,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.inputText = "Email Address";
         this.backgroundStyle = "rgba(0,0,0,0.7)";
         this.buttonColor = "#78caff";
+        this.toggleLabel = "Responsive";
+        this.showMeasurements = "none";
+        this.width = "560px";
+        this.rightColMarginTop = "20px";
+        this.iframeHeight = "100%";
+        this.divHeight = "";
       },
     });
   </script>
