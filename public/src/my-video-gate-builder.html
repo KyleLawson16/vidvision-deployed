@@ -13,11 +13,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../bower_components/paper-toggle-button/paper-toggle-button.html">
+<link rel="import" href="../bower_components/paper-swatch-picker/paper-swatch-picker.html">
 <link rel="import" href="shared-styles.html">
-<link rel="import" href="../elements/video-link.html">
-<link rel="import" href="../elements/customizable-form.html">
 
-<dom-module id="my-video-editor">
+<dom-module id="my-video-gate-builder">
   <template>
     <style include="shared-styles">
       :host {
@@ -535,7 +534,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <script>
     Polymer({
-      is: 'my-video-editor',
+      is: 'my-video-gate-builder',
       changeLink: function () {
         var url = this.link;
         if (url.charAt(12) == 'y') {
