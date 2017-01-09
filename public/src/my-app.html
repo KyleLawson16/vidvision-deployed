@@ -21,6 +21,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/polymerfire/firebase-app.html">
+<link rel="import" href="firebase-auth.html">
 <link rel="import" href="my-icons.html">
 
 <dom-module id="my-app">
@@ -62,6 +63,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: inline-block;
         margin-right: 10px;
       }
+
+      #logoutButton {
+        background-color: transparent;
+        color: white;
+        font-size: 18px;
+        border: none;
+        cursor: pointer;
+      }
+
+      #logoutButton:hover {
+        color: lightgrey;
+      }
+
+      #userInfo {
+        font-size: 16px;
+        margin-right: 20px;
+      }
     </style>
     <firebase-app
       id="firebase" 
@@ -70,25 +88,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       api-key="AIzaSyBYOz53cI4bBehmdjjQ_8_st1owG11Ap8s">
     </firebase-app>
 
+    <firebase-auth id="auth" user="{{user}}" status-known="{{statusKnown}}" location="https://vidvission.firebaseio.com" provider="{{provider}}" on-error="errorHandler" on-user-created="userSuccessHandler" on-password-changed="userSuccessHandler" on-password-reset="userSuccessHandler" on-user-removed="userSuccessHandler"></firebase-auth>
+
     <app-location route="{{route}}"></app-location>
     <app-route
         route="{{route}}"
         pattern="/:page"
         data="{{routeData}}"
         tail="{{subroute}}"></app-route>
-
+    
     <app-drawer-layout fullbleed force-narrow>
       <!-- Drawer content -->
-      <app-drawer align="end" id="drawer" >
-        <app-toolbar>Menu</app-toolbar>
-        <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-          <a name="home" href="/home">Home</a>
-          <a name="video-gate-builder" href="/video-gate-builder">Video Gate Builder</a>
-          <a name="video-survey-builder" href="/video-survey-builder">Video Survey Builder</a>
-          More Features Coming Soon!
-        </iron-selector>
-      </app-drawer>
-
+      
       <!-- Main content -->
       <app-header-layout has-scrolling-region>
 
@@ -97,7 +108,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <img id="logo" src="../images/vidvision-icon-white.png">
             <div main-title>Vidvision</div>
             <span style="flex: 1;"></span>
-            <paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button>
+            <p id="userInfo" hidden$="{{computeLogoutHidden(statusKnown, user)}}">Welcome, {{user.email}}</p>
+            <button id="logoutButton" on-tap="logout" hidden$="{{computeLogoutHidden(statusKnown, user)}}">Log Out</button>
           </app-toolbar>
         </app-header>
 
@@ -108,7 +120,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             role="main">
           <my-home name="home"></my-home>
           <my-video-gate-builder name="video-gate-builder"></my-video-gate-builder>
-          <my-video-survey-builder name="video-survey-builder"></my-video-survey-builder>
+          <!--<my-video-survey-builder name="video-survey-builder"></my-video-survey-builder>-->
+          <my-login name="login"></my-login>
+          <my-sign-up name="sign-up"></my-sign-up>
           <my-view404 name="view404"></my-view404>
         </iron-pages>
       </app-header-layout>
@@ -125,6 +139,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           reflectToAttribute: true,
           observer: '_pageChanged',
         },
+        message: {
+          type: String,
+          value: ''
+        },
+        email: {
+          type: String,
+          value: ''
+        },
+        password: {
+          type: String,
+          value: ''
+        },
+        user: {
+          type: Object,
+          value: null
+        },
+        statusKnown: {
+          type: Boolean
+        },
       },
 
       observers: [
@@ -132,7 +165,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ],
 
       _routePageChanged: function(page) {
-        this.page = page || 'home';
+        this.page = page || 'login';
 
         if (!this.$.drawer.persistent) {
           this.$.drawer.close();
@@ -147,6 +180,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _showPage404: function() {
         this.page = 'view404';
+      },
+
+      logout: function() {
+        this.$.auth.signOut();
+        this.set('route.path', '/login');
+      },
+
+      computeLoginHidden: function(statusKnown, user) {
+        return !statusKnown || !!user;
+      },
+
+      computeLogoutHidden: function(statusKnown, user) {
+        return !statusKnown || !user;
       },
     });
   </script>

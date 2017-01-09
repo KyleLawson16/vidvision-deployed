@@ -17,18 +17,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <input value="https://polymer-tests.firebaseio.com" size="40" disabled>
     <br>
 
-    Provider type:
-    <select value="{{provider::change}}">
-      <option>anonymous</option>
-      <option>facebook</option>
-      <option>github</option>
-      <option>google</option>
-      <option>twitter</option>
-      <option>password</option>
-    </select>
-    <em>Only 'anonymous', 'google', and 'password' are activated for demo Firebase account</em>
-    <br>
-
     Login params (JSON):
     <input value="{{params::input}}" id="params">
     <em>Required by some provider types</em>
@@ -89,21 +77,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
     },
     login: function() {
-      var params;
-      try {
-        params = JSON.parse(this.params);
-      } catch (e) {
-        params = null;
-      }
-      if (this.provider == 'password') {
-        params = params || {};
-        params.email = this.email;
-        params.password = this.password;
-      }
-      this.$.auth.login(params);
+      this.$.auth.signInWithEmailAndPassword(this.email, this.password);
     },
     logout: function() {
-      this.$.auth.logout();
+      this.$.auth.signOut();
     },
     errorHandler: function(e) {
       this.message = 'Error: ' + e.detail.message;
@@ -122,9 +99,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
     removeUserHandler: function(e) {
       this.$.auth.removeUser(this.email, this.password);
-    },
-    computePasswordHidden: function(provider) {
-      return provider !== 'password';
     },
     computeCreateUserDisabled: function(email, password) {
       return !email || !password;

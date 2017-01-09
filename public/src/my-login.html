@@ -1,0 +1,203 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="shared-styles.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-auth.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+
+<dom-module id="my-login">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+        padding: 10px;
+        --app-primary-color: #78caff;
+      }
+      .card {
+        width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 25px;
+      }
+      #paddingCont {
+        margin-left: auto;
+        margin-right: auto;
+        padding: 20px;
+      }
+      .inputStyles {
+        width: 96%;
+        height: 45px;
+        border: 1px lightgrey solid;
+        border-radius: 3px;
+        margin-bottom: 15px;
+        margin-top: 5px;
+        font-size: 16px;
+        padding-left: 10px;
+      }
+      .labels {
+        font-size: 14px;
+      }
+      .login {
+        width: 95%;
+        height: 54px;
+        background-color: white;
+        border-radius: 3px;
+        border: solid 2px #78caff;
+        font-size: 16px;
+        color: grey;
+        margin-top: 10px;
+      }
+      .login:hover {
+        background-color: #78caff;
+        color: white;
+      }
+      #signUp {
+        font-size: 16px;
+        color: #78caff;
+        text-decoration: none;
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+        margin-top: 25px;
+      }
+      .col-left {
+        width: 50%;
+        float: left;
+      }
+      .col-right {
+        width: 50%;
+        float: left;
+      }
+      .buttonCont {
+        width: 100%;
+        height: 60px;
+      }
+      #forgotPassword {
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 16px;
+        color: white;
+      }
+      #background {
+        position: absolute;
+        width: 100%;
+        height: 100vh;
+        background-color: #78caff;
+        top: 0px;
+        left: 0px;
+        margin-bottom: 0px;
+        padding-bottom: 0px;
+      }
+      #logo {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 7%;
+      }
+      #message {
+        font-size: 13px;
+        color: red;
+      }
+    </style>
+    <firebase-auth id="auth" user="{{user}}" status-known="{{statusKnown}}" location="https://vidvission.firebaseio.com" provider="{{provider}}" on-error="errorHandler" on-user-created="userSuccessHandler" on-password-changed="userSuccessHandler" on-password-reset="userSuccessHandler" on-user-removed="userSuccessHandler"></firebase-auth>
+
+    <app-location route="{{route}}"></app-location>
+    <div id="background">
+    <img id="logo" src="../images/vidvision-icon-white.png">
+    <div class="card">
+      <div id="paddingCont">
+        <label class="labels" for="email">Email</label>
+        <input class="inputStyles" value="{{email::input}}">
+        <label class="labels" for="password">Password</label>
+        <input class="inputStyles" type="password" value="{{password::input}}">
+        <div id="message">[[message]]</div>
+        <div class="buttonCont">
+          <div class="col-left">
+            <button class="login" on-tap="login" hidden$="{{computeLoginHidden(statusKnown, user)}}">LOG IN</button>
+            <button class="login" on-tap="logout" hidden$="{{computeLogoutHidden(statusKnown, user)}}">LOG OUT</button>
+          </div>
+          <div class="col-right">
+            <a id="signUp" href="/sign-up">SIGN UP</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--<a id="forgotPassword"><p>Forgot Password?</p></a>-->
+
+    <div style="display: none;">
+    <h3>Login status:</h3>
+    <p>{{computeLoginStatus(statusKnown, user)}}</p>
+
+    <h3>User ID:</h3>
+    <pre>{{user.uid}}</pre>
+    </div>
+    </div>
+  </template>
+</dom-module>
+<script>
+  Polymer({
+    is: 'my-login',
+    properties: {
+      provider: {
+        type: String,
+        value: 'anonymous'
+      },
+      message: {
+        type: String,
+        value: ''
+      },
+      email: {
+        type: String,
+        value: ''
+      },
+      password: {
+        type: String,
+        value: ''
+      },
+      user: {
+        type: Object,
+        value: null
+      },
+      statusKnown: {
+        type: Boolean
+      },
+    },
+    login: function() {
+      this.$.auth.signInWithEmailAndPassword(this.email, this.password);
+    },
+    logout: function() {
+      this.$.auth.signOut();
+    },
+    errorHandler: function(e) {
+      this.message = e.detail.message;
+    },
+    userSuccessHandler: function(e) {
+      this.message = e.type + ' success!';
+    },
+    computeLoginHidden: function(statusKnown, user) {
+      return !statusKnown || !!user;
+    },
+    computeLogoutHidden: function(statusKnown, user) {
+      return !statusKnown || !user;
+    },
+    computeLoginStatus: function(statusKnown, user) {
+      if (statusKnown && user) {
+        this.set('route.path', '/home');
+        return 'Logged in';
+      }
+      if (statusKnown) {
+        return 'Logged out';
+      }
+      return 'Unknown (checking status...)';
+    },
+  });
+</script>
