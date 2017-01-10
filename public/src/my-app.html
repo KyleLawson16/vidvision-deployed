@@ -21,7 +21,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/polymerfire/firebase-app.html">
-<link rel="import" href="firebase-auth.html">
 <link rel="import" href="my-icons.html">
 
 <dom-module id="my-app">
@@ -130,6 +129,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </template>
 
   <script>
+    addEventListener('WebComponentsReady', function() {
     Polymer({
       is: 'my-app',
 
@@ -195,5 +195,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return !statusKnown || !user;
       },
     });
+  })
   </script>
 </dom-module>

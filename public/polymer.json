@@ -2,10 +2,11 @@
   "entrypoint": "index.html",
   "shell": "src/my-app.html",
   "fragments": [
-    "src/my-view1.html",
-    "src/my-view2.html",
-    "src/my-view3.html",
-    "src/my-view404.html"
+    "src/my-home.html",
+    "src/my-login.html",
+    "src/my-sign-up.html",
+    "src/my-video-gate-builder.html",
+    "src/my-video-survey-builder.html"
   ],
   "sourceGlobs": [
     "src/**/*",
