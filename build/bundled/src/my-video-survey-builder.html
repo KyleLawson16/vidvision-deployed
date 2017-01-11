@@ -1,0 +1,519 @@
+<html><head><meta charset="UTF-8"><link rel="import" href="my-app.html"></head><body><dom-module id="my-video-survey-builder">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+      paper-checkbox {
+        --paper-checkbox-checkmark-color: black;
+        --paper-checkbox-size: 25px;
+      }
+      paper-toggle-button {
+        --paper-toggle-button-checked-bar-color: #78caff;
+      }
+      .options {
+        width: 100%;
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
+
+      .firstOption {
+        width: 100%;
+        margin-bottom: 20px;
+      }
+      .mainLabels {
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 20px;
+        margin-bottom: 5px;
+        display: block;
+        color: #555555;
+      }
+      .labels {
+        font-size: 16px;
+        width: 100%;
+        margin-top: 10px;
+        margin-bottom: 5px;
+        display: block;
+      }
+      .firstLabel {
+        font-size: 16px;
+        width: 100%;
+      }
+      .labelsColor {
+        font-size: 16px;
+        width: 50%;
+        margin-top: 10px;
+        margin-right: -10px;
+      }
+      .labelButton {
+        margin-left: 15px;
+      }
+      .labelSkip {
+        font-size: 16px;
+        width: 50%;
+        margin-top: 10px;
+        margin-right: 5px;
+      }
+      .inputVideo {
+        width: 75%;
+        height: 55px;
+        border: 1px solid grey !important;
+        border-radius: 3px;
+        font-size: 18px;
+        padding-left: 10px;
+      }
+      .inputStyles {
+        width: 95%;
+        height: 45px;
+        border: 1px solid grey !important;
+        border-radius: 3px;
+        font-size: 15px;
+        padding-left: 10px;
+        margin-bottom: 10px;
+      }
+      #emailAddress {
+        width: 70%;
+        height: 45px;
+        border: 1px solid grey !important;
+        border-radius: 3px;
+        font-size: 15px;
+        padding-left: 10px;
+        margin-bottom: 10px;
+      }
+      .buttons {
+        width: 22%;
+        height: 59px;
+        border: none;
+        border-radius: 3px;
+        font-size: 20px;
+        background-color: #78caff;
+        color: white;
+        float: right;
+      }
+      .buttons:hover {
+        background-color: #58aaee;
+        color: white;
+        cursor: pointer;
+      }
+      #generateCode {
+        width: 27%;
+        height: 49px;
+        border: none;
+        border-radius: 3px;
+        font-size: 20px;
+        background-color: #78caff;
+        color: white;
+        float: right;
+      }
+      #generateCode:hover {
+        background-color: #58aaee;
+        color: white;
+        cursor: pointer;
+      }
+      textarea {
+        width: 100%;
+        height: 150px;
+        border: 1px solid grey !important;
+        border-radius: 3px;
+        font-size: 12px;
+        padding-left: 0px;
+        padding-right: 0px;
+        margin-bottom: 10px;
+      }
+      .info {
+        font-size: 14px;
+        color: red;
+        margin-top: -10px;
+      }
+
+      /* Iframe Styling */
+
+      .outer {
+        text-align: center;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 10px;
+      }
+      .inner {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        margin-top: -30px;
+      }
+      .myIframe {
+      position: relative;
+      padding-bottom: 50.25%;
+      padding-top: 30px;
+      height: 0;
+      overflow: auto; 
+      -webkit-overflow-scrolling:touch; //<<--- THIS IS THE KEY 
+      border: solid black 1px;
+      }
+      .myIframe iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      }
+      #form {
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+        top: 0;
+        left: 0;
+        margin-top: -16px;
+      }
+      #form input {
+        margin-top: 5px;
+      }
+      #email {
+        width: 250px;
+        height: 35px;
+        border-radius: 5px;
+        background-color: #ffffff;
+        border: none;
+        margin-right: 10px;
+        font-size: 15px;
+        padding-left: 5px;
+      }
+      #submit {
+        width: 120px;
+        height: 35px;
+        border-radius: 5px;
+        border: none;
+        color: #ffffff;
+        font-size: 15px;
+        text-align: center;
+      }
+      #submit:hover {
+        background-color: ;
+        cursor: pointer;
+      }
+      #introText {
+        text-align: center;
+        font-size: 16px;
+        color: #ffffff;
+        padding-top: 20%;
+      }
+      #skipEmail {
+        background-color: transparent;
+        border: none;
+        padding-top: 10px;
+        color: #ffffff;
+      }
+      #skipEmail:hover {
+        text-decoration: underline;
+        cursor: pointer;
+      }
+      #iframeLogo {
+        width: 80px;
+        margin-top: -23px;
+        margin-right: 10px;
+        float: right;
+      }
+      /* Columns */
+      .container {
+        width: 97%;
+        padding: 0px 20px;
+      }
+      .col-sm-8 {
+        padding-left: 40px;
+        width: 60%;
+        display: inline-block;
+        top: 0;
+      }
+      .col-sm-4 {
+        padding-right: 4%;
+        width: 30%;
+        display: inline-block;
+        float: right;
+        margin-top: 115px;
+      }
+
+      @media only screen and (max-width : 320px) {
+        .container {
+          width: 97%;
+          padding: 0px 5px;
+        }
+        .col-sm-8 {
+          padding: 0px;
+          width: 100%;
+          margin-top: -5px;
+        }
+        .col-sm-4 {
+          padding: 0px;
+          width: 100%;
+          margin-top: 0px;
+          margin-bottom: 20px;
+        }
+        .inputVideo {
+          height: 40px;
+          width: 60%;
+        }
+        .buttons {
+          height: 44px;
+          width: 30%;
+          font-size: 16px;
+        }
+        .inputStyles {
+          height: 40px;
+        }
+        #emailAddress {
+          height: 40px;
+          width: 60%;
+        }
+        #generateCode {
+          height: 44px;
+          width: 30%;
+          font-size: 14px;
+        }
+        .labelsColor {
+          display: block;
+          width: 60%;
+        }
+        .labelButton {
+          margin-left: 0px;
+        }
+        .labelSkip {
+          margin-top: 15px;
+        }
+        #introText {
+          font-size: 12px;
+          padding-top: 11%;
+          margin-bottom: 5px;
+        }
+        #email {
+          width: 200px;
+          height: 25px;
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+          font-size: 14px;
+        }
+        #submit {
+          width: 100px;
+          height: 25px;
+          font-size: 14px;
+        }
+        #form input {
+          margin-top: 5px;
+        }
+        #skipEmail {
+          font-size: 12px;
+          margin-top: 0px;
+        }
+      }
+      @media only screen and (min-width : 321px) and (max-width : 480px) {
+        .container {
+          width: 97%;
+          padding: 0px 10px;
+        }
+        .col-sm-8 {
+          padding: 0px;
+          width: 100%;
+          margin-top: -5px;
+        }
+        .col-sm-4 {
+          padding: 0px;
+          width: 100%;
+          margin-top: 0px;
+          margin-bottom: 20px;
+        }
+        .inputVideo {
+          height: 40px;
+          width: 65%;
+        }
+        .buttons {
+          height: 44px;
+          width: 25%;
+          font-size: 16px;
+        }
+        .inputStyles {
+          height: 40px;
+        }
+        #emailAddress {
+          height: 40px;
+          width: 65%;
+        }
+        #generateCode {
+          height: 44px;
+          width: 25%;
+          font-size: 16px;
+        }
+        .labelsColor {
+          display: block;
+        }
+        .labelButton {
+          margin-left: 0px;
+        }
+        .labelSkip {
+          margin-top: 15px;
+        }
+        #introText {
+          font-size: 14px;
+          padding-top: 12.5%;
+          margin-bottom: 5px;
+        }
+        #email {
+          width: 200px;
+          height: 30px;
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        #submit {
+          width: 100px;
+          height: 30px;
+        }
+        #form input {
+          margin-top: 5px;
+        }
+        #skipEmail {
+          font-size: 14px;
+          margin-top: 0px;
+        }
+      }
+      @media only screen and (min-width : 481px) and (max-width : 768px) {
+        .container {
+          width: 97%;
+          padding: 0px 10px;
+        }
+        .col-sm-8 {
+          padding: 0px;
+          width: 100%;
+          margin-top: -5px;
+        }
+        .col-sm-4 {
+          padding: 0px;
+          width: 100%;
+          margin-top: 0px;
+          margin-bottom: 20px;
+        }
+        .inputVideo {
+          height: 45px;
+          width: 70%;
+        }
+        .buttons {
+          height: 49px;
+          font-size: 18px;
+        }
+        #emailAddress {
+          width: 65%;
+        }
+        #generateCode {
+          font-size: 18px;
+        }
+      }
+      @media only screen and (min-width : 769px) and (max-width : 992px) {
+        .container {
+          width: 97%;
+          padding: 0px 10px;
+        }
+        .col-sm-8 {
+          padding-left: 0px;
+        }
+        .col-sm-4 {
+          width: 38%;
+          padding-right: 0px;
+        }
+        .inputStyles {
+          width: 100%;
+        }
+        paper-swatch-picker {
+          margin-right: 35.5%;
+        }
+        .labelButton {
+          margin-left: 0px;
+        }
+        #generateCode {
+          font-size: 18px;
+          width: 30%;
+        }
+        .inputVideo {
+          width: 70%;
+        }
+        #emailAddress {
+          width: 65%;
+        }
+      }
+      @media only screen and (min-width : 993px) and (max-width : 1200px) {
+        .container {
+          width: 97%;
+          padding: 0px 10px;
+        }
+        .col-sm-8 {
+          padding-left: 10px;
+        }
+        .col-sm-4 {
+          width: 36%;
+          padding-right: 10px;
+        }
+        #generateCode {
+          font-size: 18px;
+        }
+      }
+    </style>
+    <div class="container">
+    <div class="col-xs-12 col-sm-8">
+      <div class="options">
+        <label class="mainLabels" id="iframeLabel" for="link">Insert link to your video</label>
+        <input class="inputVideo" type="text" name="link" id="link" value="{{link::input}}">
+        <button class="buttons" type="button" on-tap="changeLink">Submit</button>
+      </div>
+      <label class="mainLabels" for="iframe">Preview below:</label>
+      <div class="outer" style$="width: {{iframeWidth}};">
+        <div class="myIframe">
+          <iframe id="myIframe" src="{{link}}" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>
+          <div id="dissapear" class="inner">
+            <form id="form" name="installer" style$="background: {{backgroundStyle}}; display: {{hideForm}};">
+              <p id="introText">{{intro}}</p>
+              <input id="answer1" name="answer1" class="answers" type="button" value="{{answer1::input}}">
+              <input id="answer2" name="answer2" class="answers" type="button" value="{{answer2::input}}">
+            </form>
+            <a href="http://www.getvidvision.com/" target="__blank"><img id="iframeLogo" src="http://res.cloudinary.com/hrscywv4p/image/upload/c_limit,h_1440,w_720,f_auto/v1/204930/vidvisionv3_sggpov.png"></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-4">
+      <label class="mainLabels" style$="margin-top: {{rightColMarginTop}}" for="videoEditor">Iframe sizing</label>
+      <paper-toggle-button on-change="changeLabel">{{toggleLabel}}</paper-toggle-button>
+      <label class="labels" for="width" style="display: {{showMeasurements}}">Width</label>
+      <input id="width" name="width" class="inputStyles" style="display: {{showMeasurements}}" type="text" value="{{width::input}}" on-focus="resetWidth" on-blur="replaceWidth">
+      <label class="mainLabels" for="videoEditor">Text and colors</label>
+      <label class="labels" for="introText">Intro</label>
+      <input id="intro" name="intro" class="inputStyles" type="text" on-focus="resetIntro" on-blur="replaceIntro" value="{{intro::input}}">
+      <label class="labels" for="questionText">Question</label>
+      <input id="questionText" name="questionText" class="inputStyles" type="text" value="{{question::input}}">
+      <label class="labels" for="answer1">Answer 1</label>
+      <input id="answer1Text" name="answer1Text" class="inputStyles" type="text" value="{{answer1::input}}">
+      <label class="labels" for="answer2">Answer 2</label>
+      <input id="answer2Text" name="answer2Text" class="inputStyles" type="text" value="{{answer2::input}}">
+      <br>
+      <label class="labelsColor" for="color">Background Color</label>
+      <paper-swatch-picker color="{{backgroundStyle}}"></paper-swatch-picker>
+      <label class="labelsColor labelButton" for="answerColor">Answer Color</label>
+      <paper-swatch-picker color="{{answerColor}}"></paper-swatch-picker>
+      <br>
+      <paper-checkbox on-change="hideSkip"></paper-checkbox>
+    </div>
+    <div class="col-sm-8">
+      <label class="mainLabels">Finished customizing?</label>
+      <label class="labels" for="hostEmail">Your email address</label>
+      <input id="emailAddress" name="emailAddress" type="text" value="{{emailAddress::input}}">
+      <button id="generateCode" on-tap="clipBoard">Generate code</button>
+      <p class="info">*Your email is needed in order to send you the data that your survey generates</p>
+      <textarea id="codeString">{{code}}</textarea>
+      <p class="info">*Embed this HTML code anywhere on your website the same way you would a YouTube video. Feel free to wrap it in a container of your desired size.</p>
+    </div>
+  </div>
+  </template>
+
+  <script>Polymer({is:"my-video-survey-builder",changeLink:function(){var t=this.link;if("y"==t.charAt(12)){var i=t.substring(32),e="https://www.youtube.com/embed/"+i;this.link=e}else if("o"==t.charAt(12)){var i=t.substring(18),e="https://player.vimeo.com/video/"+i;this.link=e}},hideSkip:function(){event.target.checked?this.onOff="none":this.onOff=""},showHide:function(){this.hideForm="none"},resetIntro:function(){"Please enter your email in order to watch video."==this.intro&&(this.intro="")},replaceIntro:function(){""==this.intro&&(this.intro="Please enter your email in order to watch video.")},resetButton:function(){"Submit"==this.buttonText&&(this.buttonText="")},replaceButton:function(){""==this.buttonText&&(this.buttonText="Submit")},resetInput:function(){"Email Address"==this.inputText&&(this.inputText="")},replaceInput:function(){""==this.inputText&&(this.inputText="Email Address")},changeLabel:function(){"Custom"==this.toggleLabel?(this.toggleLabel="Responsive",this.showMeasurements="none",this.iframeWidth="100%",this.iframeHeight="100%",this.divHeight="",this.rightColMarginTop="20px"):(this.toggleLabel="Custom",this.showMeasurements="",this.iframeWidth=this.width,this.iframeHeight="315px",this.divHeight="315px")},resetWidth:function(){this.width="",this.iframeWidth=this.width},replaceWidth:function(){var t=parseInt(this.width,10),i=window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth,e=.61*(i-100);if(t<0)this.width="560px",this.iframeWidth=this.width,this.rightColMarginTop="20px",this.iframeHeight="315px",this.divHeight="315px";else if(t>i)this.width="560px",this.iframeWidth=this.width,this.rightColMarginTop="20px",this.iframeHeight="315px",this.divHeight="315px";else if(""==this.width)this.width="560px",this.iframeWidth=this.width,this.rightColMarginTop="20px",this.iframeHeight="315px",this.divHeight="315px";else if(this.width=t+"px",this.iframeWidth=this.width,this.iframeHeight=.5625*t+"px",this.divHeight=.5625*t+"px",t>e){var o=.55*(t-e),s=o+460;this.rightColMarginTop=s+"px"}},clipBoard:function(){var t="<div style='text-align:center; border: none; display:block; margin-left:auto; ",i="margin-right:auto; margin-top:10px; height: "+this.divHeight+";'>",e="<div style='width: "+this.iframeWidth+"; position:relative; ",o="padding-bottom:50.25%; padding-top:30px; border: none; height:0; ",s="overflow:auto; -webkit-overflow-scrolling:touch;'>",r="<iframe id='iframe' src='"+this.link+"' frameborder='0' webkitallowfullscreen ",n="mozallowfullscreen allowfullscreen style='position:absolute; top:0; left:0; ",h="width:100%; height: "+this.iframeHeight+"; border: none;'></iframe>",a="<div id='dissapear' style='position:absolute; width:100%; ",d="height: "+this.iframeHeight+"; margin-top:-30px'>",l="<form id='foo' style='width:100%; height:100%; border: none; ",p="background-color: "+this.backgroundStyle+"; z-index:2; top:0; left:0' ",u="onsubmit='showHide(); return false;'>",f="<div class='drag' style='text-align:center; font-size:16px; color:#fff; ",c="padding-top:20%'>"+this.intro+"</div>",g="<input id='hostEmail' name='hostEmail' ",m="value='"+this.emailAddress+"' style='display: none;'>",x="<input id='email' class='inputIframe' type='email' name='email' required ",b="placeholder='"+this.inputText+"' style='margin-top:20px; padding-left:5px; ",v="width:250px; height:35px; border-radius:5px; background-color:#fff; border:none; ",w="margin-right:10px; font-size:15px'/>",y="<input id='submit' type='submit' value='"+this.buttonText+"' name='submit' ",H="style='margin-top:20px; padding-left:0px; width:120px; height:35px; ",k="border-radius:5px; border:none; color:#fff; ",T="background-color: "+this.buttonColor+"; font-size:15px'/>",q="<div id='skipEmail' type='button' style='background-color:transparent; ",W="border:none; padding-top:10px; color:#fff; display: "+this.onOff+"; cursor: ",j="pointer;' onClick='javascript:showHide()'>Skip Entering Email</div>",C="</form>",S="<a href='http://www.getvidvision.com/' target='__blank'><img style='width: 80px; ",E="position: absolute; bottom: 10px; right: 10px; margin-bottom: 0px;' ",z="src='http://res.cloudinary.com/hrscywv4p/image/upload/c_limit,h_1440,w_720,",A="f_auto/v1/204930/vidvisionv3_sggpov.png' /></a>",M="</div></div></div>",$=t+i+e+o+s+r+n+h+a+d+l+p+u+f+c+g+m+x+b+v+w,I=y+H+k+T+q+W+j+C+S+E+z+A+M,L=$+I,R="<script type = 'text/javascript' >function showHide() {",_="var div = document.getElementById('dissapear');",P="if (div.style.display == 'none') {div.style.display = ';}",X=" else {div.style.display = 'none';}} < /script>",B="<script src = 'https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js' >",K="< /script>",D="<script>var request; $('#foo').submit(function(event) {",O="if (request) {request.abort();}",F="var $form = $(this); var $inputs = $form.find('input, select, button, textarea'); ",J="var serializedData = $form.serialize(); $inputs.prop('disabled', true); ",Q="request = $.ajax({ url: 'https://script.google.com/macros/s/",V="AKfycbzHpV0bYr0oKbFmLR6Xg1dKAAKWfJIafy7qsy7oRiQJXPxZ7v8/exec', ",Y="type: 'post', data: serializedData});",Z="request.done(function(response, textStatus, jqXHR) {",G="console.log('Hooray, it worked!'); console.log(response); console.log(textStatus); ",N="console.log(jqXHR);}); request.fail(function(jqXHR, textStatus, errorThrown) {",U="console.error('The following error occurred: ' + textStatus, errorThrown);}); ",tt="request.always(function() {$inputs.prop('disabled', false);}); ",it="event.preventDefault();}); < /script>",et=R+_+P+X+B+K+D+O+F+J+Q+V+Y,ot=Z+G+N+U+tt+it,st=et+ot;this.code=L+st},ready:function(){this.intro="Please enter your email in order to watch video.",this.buttonText="Submit",this.inputText="Email Address",this.backgroundStyle="rgba(0,0,0,0.7)",this.buttonColor="#78caff",this.toggleLabel="Responsive",this.showMeasurements="none",this.width="560px",this.rightColMarginTop="20px",this.iframeHeight="100%",this.divHeight=""}});</script>
+</dom-module>
+</body></html>

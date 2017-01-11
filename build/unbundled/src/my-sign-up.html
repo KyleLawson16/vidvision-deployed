@@ -1,0 +1,161 @@
+<html><head><link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-auth.html">
+<link rel="import" href="shared-styles.html">
+
+</head><body><dom-module id="my-sign-up">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+        padding: 10px;
+        --app-primary-color: #78caff;
+      }
+      .col-left {
+        width: 625px;
+        background-color: white;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        min-height: 100vh;
+        box-shadow: 0px 0px 15px black ;
+      }
+      .paddingCont {
+        padding-left: 80px;
+        padding-top: 80px;
+        padding-bottom: 20px;
+        padding-right: 100px;
+      }
+      .logo {
+        width: 100px;
+        margin-top: 10px;
+      }
+      h1 {
+        font-size: 30px;
+        color: grey;
+        margin-bottom: 0px;
+        margin-top: 0px;
+      }
+      h2 {
+        font-size: 20px;
+        color: grey;
+        font-weight: normal;
+        margin-top: 0px;
+      }
+      .inputStyles {
+        width: 100%;
+        height: 45px;
+        border: 1px lightgrey solid;
+        border-radius: 3px;
+        margin-bottom: 15px;
+        margin-top: 5px;
+        font-size: 16px;
+        padding-left: 10px;
+      }
+      .labels {
+        font-size: 14px;
+        color: grey;
+      }
+      #signUp {
+        width: 50%;
+        height: 54px;
+        background-color: white;
+        border-radius: 3px;
+        border: solid 2px #78caff;
+        font-size: 16px;
+        color: grey;
+        margin-top: 10px;
+        margin-bottom: 0px;
+      }
+      #signUp:hover {
+        background-color: #78caff;
+        color: white;
+      }
+      #linkMessage {
+        color: grey;
+        font-size: 16px;
+      }
+      #message {
+        font-size: 13px;
+        color: red;
+      }
+      #background {
+        position: absolute;
+        width: 100%;
+        height: 100vh;
+        top: 0px;
+        left: 0px;
+        bottom: 0px;
+        margin-bottom: 0px;
+        padding-bottom: 0px;
+      }
+      #background img {
+        width: 100%;
+        height: 100%;
+        padding: 0px;
+        margin-bottom: -5px;
+      }
+      @media only screen and (min-width : 501px) and (max-width : 768px) {
+        .col-left {
+          width: 480px;
+        }
+        .paddingCont {
+          padding: 55px 20px 20px 20px;
+        }
+        .inputStyles {
+          width: 96%;
+        }
+      }
+      @media only screen and (max-width : 500px) {
+        .col-left {
+          width: 100%;
+        }
+        .paddingCont {
+          padding: 50px 20px 20px 20px;
+        }
+        .inputStyles {
+          width: 96%;
+        }
+        #background {
+          display: none;
+        }
+      }
+    </style>
+
+    <firebase-auth id="auth" user="{{user}}" status-known="{{statusKnown}}" location="https://vidvission.firebaseio.com" provider="{{provider}}" on-error="errorHandler" on-user-created="userSuccessHandler" on-password-changed="userSuccessHandler" on-password-reset="userSuccessHandler" on-user-removed="userSuccessHandler"></firebase-auth>
+
+    <firebase-document id="authDocument" data="{{userData}}">
+    </firebase-document>
+    <div id="background"><img src="../images/bridge.jpg"></div>
+    <div class="col-left">
+      <div class="paddingCont">
+        <div id="beforeSignUp" hidden$="{{computeLoginHidden(statusKnown, user)}}">
+          <img class="logo" src="../images/logo-icon-blue.png">
+          <h1>Let's get started</h1>
+          <h2>Make your video content help you generate leads.</h2>
+          
+          <label class="labels" for="email">Email</label>
+          <input class="inputStyles" value="{{email::input}}">
+          <label class="labels" for="password">Password</label>
+          <input class="inputStyles" type="password" value="{{password::input}}">
+          <div id="message">[[message]]</div>
+          <button id="signUp" on-tap="createUserHandler">SIGN UP</button>
+        </div>
+        <div id="afterSignUp" hidden$="{{computeLogoutHidden(statusKnown, user)}}">
+          <img class="logo" src="../images/logo-icon-blue.png">
+          <h2>Thank you for signing up for Vidvision!</h2>
+          <p id="linkMessage">Click the link below to enter our video marketing suite.</p>
+          <a id="homeButton" href="/home"><p>Video Marketing Suite</p></a>
+        </div>
+      </div>
+
+      <div style="display: none">
+      <h3>Login status:</h3>
+      <p>{{computeLoginStatus(statusKnown, user)}}</p>
+
+      <h3>User ID:</h3>
+      <pre>{{user.uid}}</pre>
+      </div>
+    </div>
+  </template>
+</dom-module>
+<script>Polymer({is:"my-sign-up",properties:{provider:{type:String,value:"anonymous"},message:{type:String,value:""},email:{type:String,value:""},password:{type:String,value:""},user:{type:Object,value:null},statusKnown:{type:Boolean}},login:function(){this.$.auth.signInWithEmailAndPassword(this.email,this.password)},logout:function(){this.$.auth.signOut()},errorHandler:function(e){this.message=e.detail.message},userSuccessHandler:function(e){this.message=e.type+" success!"},createUserHandler:function(e){this.$.auth.createUserWithEmailAndPassword(this.email,this.password)},computeCreateUserDisabled:function(e,t){return!e||!t},computeLoginHidden:function(e,t){return!e||!!t},computeLogoutHidden:function(e,t){return!e||!t},computeLoginStatus:function(e,t){return e&&t?"Logged in":e?"Logged out":"Unknown (checking status...)"}});</script></body></html>
