@@ -1,0 +1,20 @@
+<div id='vv-outer-container' style='height: " + this.divHeight + ";'>
+  <div id='vv-iframe-container' style='width: " + this.iframeWidth + ";'>
+    <iframe src='" + this.link + "' frameborder='0' webkitallowfullscreen mozallowfullscreen allowfullscreen style='height: " + this.iframeHeight + ";'></iframe>
+    <div id='vv-dissapear-container' style='height: " + this.iframeHeight + ";'>
+      <form id='vv-gate-form' style='background-color: " + this.backgroundStyle + ";' onsubmit='showHide(); return false;'>
+        <div id='vv-intro-text'>" + this.intro + "</div>
+        <input id='vv-hostEmail' name='vv-hostEmail' value='" + this.emailAddress + "'>
+        <input id='vv-email' type='email' name='vv-email' required placeholder='" + this.inputText + "'/>
+        <input id='vv-submit-btn' type='submit' value='" + this.buttonText + "' name='vv-submit-btn' style='background-color: " + this.buttonColor + ";'/>
+        <div id='vv-skip-btn' type='button' style='display: " + this.onOff + ";' onClick='javascript:showHide()'>Skip Entering Email</div>
+      </form>
+      <a href='http://www.getvidvision.com/' target='__blank'>
+        <img id='vv-form-logo' src='http://res.cloudinary.com/hrscywv4p/image/upload/c_limit,h_1440,w_720,f_auto/v1/204930/vidvisionv3_sggpov.png' />
+      </a>
+    </div>
+  </div>
+</div>
+
+
+

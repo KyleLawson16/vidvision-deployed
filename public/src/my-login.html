@@ -110,10 +110,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       @media only screen and (max-width : 480px) {
         #logo {
           width: 100px;
-          margin-top: 80px;
+          margin-top: 60px;
         }
         .card {
           width: 85%;
+          margin-top: 10px;
         }
         .col-left {
           width: 100%;
@@ -194,6 +195,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
     login: function() {
       this.$.auth.signInWithEmailAndPassword(this.email, this.password);
+    },
+    onKeyDown: function (e) {
+        if (e.which === 13 || e.keyCode === 13) {
+            this.login();
+        }
+    },
+    attached: function () {
+        this.onKeyDown = this.onKeyDown.bind(this);
+        document.addEventListener('keydown', this.onKeyDown);
+    },
+    detached: function () {
+        document.removeEventListener('keydown', this.onKeyDown);
     },
     logout: function() {
       this.$.auth.signOut();
