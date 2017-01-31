@@ -212,7 +212,7 @@
     </style>
     <firebase-auth id="auth" user="{{user}}" status-known="{{statusKnown}}" location="https://vidvission.firebaseio.com" provider="{{provider}}" on-error="errorHandler" on-user-created="userSuccessHandler" on-password-changed="userSuccessHandler" on-password-reset="userSuccessHandler" on-user-removed="userSuccessHandler"></firebase-auth>
 
-    <div hidden$="{{computeLogoutHidden(statusKnown, user)}}">
+    
     <div id="background">
     <h1>Interactive Video Marketing Suite</h1>
     <div class="col-sm-left">
@@ -229,9 +229,9 @@
       </div>
     </div>
     </div>
-    </div>
+    
   </template>
 
-  <script>Polymer({is:"my-home",Properties:{message:{type:String,value:""},email:{type:String,value:""},password:{type:String,value:""},user:{type:Object,value:null},statusKnown:{type:Boolean}},logout:function(){this.$.auth.signOut(),this.set("route.path","/login")},computeLoginHidden:function(t,e){return!t||!!e},computeLogoutHidden:function(t,e){return!t||!e},computeLoginStatus:function(t,e){return t&&e?"Logged in":t?"Logged out":"Unknown (checking status...)"}});</script>
+  <script>Polymer({is:"my-home",Properties:{message:{type:String,value:""},email:{type:String,value:""},password:{type:String,value:""},user:{type:Object,value:null},statusKnown:{type:Boolean}},computeLoginHidden:function(e,t){return!e||!!t},computeLogoutHidden:function(e,t){return!e||!t},computeLoginStatus:function(e,t){return e&&t?"Logged in":e?"Logged out":"Unknown (checking status...)"}});</script>
 </dom-module>
 </body></html>

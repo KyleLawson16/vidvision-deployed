@@ -1,0 +1,50 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-auth.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="my-help">
+  <link rel="import" type="css" href="css/help.css">
+  <template>
+
+    <firebase-auth id="auth" user="{{user}}" status-known="{{statusKnown}}" location="https://vidvission.firebaseio.com" provider="{{provider}}" on-error="errorHandler" on-user-created="userSuccessHandler" on-password-changed="userSuccessHandler" on-password-reset="userSuccessHandler" on-user-removed="userSuccessHandler"></firebase-auth>
+
+    <div class="paddingCont">
+
+    <h1>Website Builder Compatability</h1>
+
+    <h2 id="firstH2"><a href="http://www.wix.com/" target="__blank">Wix.com</a></h2>
+    <p>Click on the "add" button located on the left side of the Wix editor and, under the "more" section, select the "HTML Code" widget. Paste the Vidvision code in the pop-up and make sure the "code" option is selected.<br />
+    <a href="https://support.wix.com/en/article/adding-html-code">More information</a></p>
+
+    <h2><a href="https://www.squarespace.com/" target="__blank">SquareSpace</a></h2>
+    <p>Add a code content block to your webpage and paste the Vidvision code inside the pop-up.<br />
+    <a href="https://support.squarespace.com/hc/en-us/articles/206543617-Using-the-Embed-Block" target="__blank">More information</a></p>
+
+    <h2><a href="http://www.strikingly.com/" target="__blank">Strikingly</a></h2>
+    <p>For Pro Users: Add a "App Store &and; HTML" section to your website, select the HTML app from the list of apps in the App Store, and paste the Vidvision code in the pop-up. If you're adding HTML to a custom section, click on the HTML button and paste your code there.<br />
+    <a href="https://support.strikingly.com/hc/en-us/articles/215046527-HTML-Embed" target="__blank">More information</a></p>
+
+    <h2><a href="https://webflow.com/" target="__blank">Webflow</a></h2>
+    <p>Paste the Vidvision code in an embed component. Place the embed the component directly inside a container and not inside a "div" inside a container. Please note the script code won't be displayed after you paste it but will run when you publish your site.<br />
+    <a href="https://help.webflow.com/article/how-to-use-the-embed-widget-to-add-custom-code-to-a-webpage" target="__blank">More information</a></p>
+
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'my-help',
+    });
+  </script>
+</dom-module>

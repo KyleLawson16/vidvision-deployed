@@ -185,49 +185,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         z-index: 2;
         top: 0;
         left: 0;
-        margin-top: -16px;
+        margin-top: -24px;
       }
       #form input {
-        margin-top: 5px;
-      }
-      #email {
-        width: 250px;
-        height: 35px;
-        border-radius: 5px;
-        background-color: #ffffff;
-        border: none;
-        margin-right: 10px;
-        font-size: 15px;
-        padding-left: 5px;
-      }
-      #submit {
-        width: 120px;
-        height: 35px;
-        border-radius: 5px;
-        border: none;
-        color: #ffffff;
-        font-size: 15px;
-        text-align: center;
-      }
-      #submit:hover {
-        background-color: ;
-        cursor: pointer;
+        margin-top: 10px;
       }
       #introText {
         text-align: center;
+        font-size: 24px;
+        color: #ffffff;
+        padding-top: 20px;
+        margin-bottom: 8%;
+      }
+      #question {
+        color: #ffffff;
+        font-size: 18px;
+        text-align: center;
+      }
+      .answers {
+        padding: 15px;
+        width: 40%;
+        border: none;
+        border-radius: 4px;
         font-size: 16px;
         color: #ffffff;
-        padding-top: 20%;
-      }
-      #skipEmail {
-        background-color: transparent;
-        border: none;
-        padding-top: 10px;
-        color: #ffffff;
-      }
-      #skipEmail:hover {
-        text-decoration: underline;
-        cursor: pointer;
+        margin: 10px;
       }
       #iframeLogo {
         width: 80px;
@@ -491,8 +473,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <div id="dissapear" class="inner">
             <form id="form" name="installer" style$="background: {{backgroundStyle}}; display: {{hideForm}};">
               <p id="introText">{{intro}}</p>
-              <input id="answer1" name="answer1" class="answers" type="button" value="{{answer1::input}}">
-              <input id="answer2" name="answer2" class="answers" type="button" value="{{answer2::input}}">
+              <p id="question">{{questionText}}</p>
+              <input id="answer1" name="answer1" class="answers" type="button" value="{{answer1::input}}" style="background-color: {{answerColor}}">
+              <input id="answer2" name="answer2" class="answers" type="button" value="{{answer2::input}}" style="background-color: {{answerColor}}">
+              <input id="answer3" name="answer3" class="answers" type="button" value="{{answer3::input}}" style="display: {{answerThreeDisplay}}; background-color: {{answerColor}};">
+              <input id="answer4" name="answer4" class="answers" type="button" value="{{answer4::input}}" style="display: {{answerFourDisplay}}; background-color: {{answerColor}};">
             </form>
             <a href="http://www.getvidvision.com/" target="__blank"><img id="iframeLogo" src="http://res.cloudinary.com/hrscywv4p/image/upload/c_limit,h_1440,w_720,f_auto/v1/204930/vidvisionv3_sggpov.png" /></a>
           </div>
@@ -508,11 +493,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <label class="labels" for="introText">Intro</label>
       <input id="intro" name="intro" class="inputStyles" type="text" on-focus="resetIntro" on-blur="replaceIntro" value="{{intro::input}}">
       <label class="labels" for="questionText">Question</label>
-      <input id="questionText" name="questionText" class="inputStyles" type="text" value="{{question::input}}">
+      <input id="questionText" name="questionText" class="inputStyles" type="text" on-focus="resetQuestion" on-blur="replaceQuestion" value="{{questionText::input}}">
       <label class="labels" for="answer1">Answer 1</label>
-      <input id="answer1Text" name="answer1Text" class="inputStyles" type="text" value="{{answer1::input}}">
+      <input id="answer1Text" name="answer1Text" class="inputStyles" type="text" on-focus="resetAnswerOne" on-blur="replaceAnswerOne" value="{{answer1::input}}">
       <label class="labels" for="answer2">Answer 2</label>
-      <input id="answer2Text" name="answer2Text" class="inputStyles" type="text" value="{{answer2::input}}">
+      <input id="answer2Text" name="answer2Text" class="inputStyles" type="text" on-focus="resetAnswerTwo" on-blur="replaceAnswerTwo" value="{{answer2::input}}">
+      <div id="answerThree" style="display: {{answerThreeDisplay}}">
+      <label class="labels" for="answer3">Answer 3</label>
+      <input id="answer3Text" name="answer3Text" class="inputStyles" type="text" on-focus="resetAnswerThree" on-blur="replaceAnswerThree" value="{{answer3::input}}">
+      </div>
+      <div id="answerFour" style="display: {{answerFourDisplay}};">
+      <label class="labels" for="answer4">Answer 4</label>
+      <input id="answer4Text" name="answer4Text" class="inputStyles" type="text" on-focus="resetAnswerFour" on-blur="replaceAnswerFour" value="{{answer4::input}}">
+      </div>
+      <input type="button" id="addAnswer" on-tap="addAnswerFun" style="display: {{addAnswer}}" value="Add answer +" />
+      <input type="button" id="deleteAnswer" on-tap="deleteAnswerFun" style="display: {{deleteAnswer}}" value="Delete answer -" />
       <br />
       <label class="labelsColor" for="color">Background Color</label>
       <paper-swatch-picker color="{{backgroundStyle}}"></paper-swatch-picker>
@@ -536,6 +531,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>
     Polymer({
       is: 'my-video-survey-builder',
+      properties: {
+        addFirstAnswer: {
+          type: Object,
+          value: null
+        }
+      },
       changeLink: function () {
         var url = this.link;
         if (url.charAt(12) == 'y') {
@@ -562,23 +563,63 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.hideForm = "none";
       },
       resetIntro: function () {
-        if (this.intro == "Please enter your email in order to watch video.") {
+        if (this.intro == "Survey") {
           this.intro = "";
         }
       },
       replaceIntro: function () {
         if (this.intro == "") {
-          this.intro = "Please enter your email in order to watch video.";
+          this.intro = "Survey";
         }
       },
-      resetButton: function () {
-        if (this.buttonText == "Submit") {
-          this.buttonText = "";
+      resetQuestion: function () {
+        if (this.questionText == "Question") {
+          this.questionText = "";
         }
       },
-      replaceButton: function () {
-        if (this.buttonText == "") {
-          this.buttonText = "Submit";
+      replaceQuestion: function () {
+        if (this.questionText == "") {
+          this.questionText = "Question";
+        }
+      },
+      resetAnswerOne: function () {
+        if (this.answer1 == "Answer 1") {
+          this.answer1 = "";
+        }
+      },
+      replaceAnswerOne: function () {
+        if (this.answer1 == "") {
+          this.answer1 = "Answer 1";
+        }
+      },
+      resetAnswerTwo: function () {
+        if (this.answer2 == "Answer 2") {
+          this.answer2 = "";
+        }
+      },
+      replaceAnswerTwo: function () {
+        if (this.answer2 == "") {
+          this.answer2 = "Answer 2";
+        }
+      },
+      resetAnswerThree: function () {
+        if (this.answer3 == "Answer 3") {
+          this.answer3 = "";
+        }
+      },
+      replaceAnswerThree: function () {
+        if (this.answer3 == "") {
+          this.answer3 = "Answer 3";
+        }
+      },
+      resetAnswerFour: function () {
+        if (this.answer4 == "Answer 4") {
+          this.answer4 = "";
+        }
+      },
+      replaceAnswerFour: function () {
+        if (this.answer4 == "") {
+          this.answer4 = "Answer 4";
         }
       },
       resetInput: function () {
@@ -651,6 +692,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }
         }
       },
+      addAnswerFun: function () {
+        if (this.answerThreeDisplay == "none") {
+          this.answerThreeDisplay = "";
+          this.deleteAnswer = "";
+        }
+        else if (this.answerThreeDisplay == "") {
+          this.answerFourDisplay = "";
+          this.addAnswer = "none";
+        }
+        else {}
+      },
+      deleteAnswerFun: function () {
+        if (this.answerFourDisplay == "") {
+          this.answerFourDisplay = "none";
+          this.addAnswer = "";
+        }
+        else if (this.answerFourDisplay == "none") {
+          this.answerThreeDisplay = "none";
+          this.deleteAnswer = "none";
+        }
+      },
       clipBoard: function () {
         var a = "<div style='text-align:center; border: none; display:block; margin-left:auto; ";
         var b = "margin-right:auto; margin-top:10px; height: " + this.divHeight + ";'>";
@@ -714,7 +776,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.code = html + script;
       },
       ready: function () {
-        this.intro = "Please enter your email in order to watch video.";
+        this.intro = "Survey";
+        this.questionText = "Question";
         this.buttonText = "Submit";
         this.inputText = "Email Address";
         this.backgroundStyle = "rgba(0,0,0,0.7)";
@@ -725,6 +788,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.rightColMarginTop = "20px";
         this.iframeHeight = "100%";
         this.divHeight = "";
+        this.answerColor = "#78caff";
+        this.answerThreeDisplay = "none";
+        this.answerFourDisplay = "none";
+        this.addAnswer = "";
+        this.deleteAnswer = "none";
+        this.answer1 = "Answer 1";
+        this.answer2 = "Answer 2";
+        this.answer3 = "Answer 3";
+        this.answer4 = "Answer 4";
       },
     });
   </script>

@@ -5,11 +5,12 @@
 	margin-left:auto;
 	margin-right:auto;
 	margin-top:10px;
+	font-family: 'Montserrat', sans-serif;
 }
 #vv-iframe-container {
 	position:relative;
-	padding-bottom:50.25%;
-	padding-top:30px;
+	padding-bottom:56.25%;
+	padding-top:0px;
 	border: none;
 	height:0;
 	overflow:auto;
@@ -25,7 +26,7 @@
 #vv-dissapear-container {
 	position:absolute;
 	width:100%;
-	margin-top:-30px;
+	margin-top:0px;
 }
 #vv-gate-form {
 	width:100%;
@@ -78,4 +79,58 @@
 	bottom: 10px;
 	right: 10px;
 	margin-bottom: 0px;
+}
+
+@media only screen and (min-width : 321px) and (max-width : 480px) {
+	#vv-intro-text {
+		font-size: 14px;
+        padding-top: 12.5%;
+        margin-bottom: 5px;
+    }
+    #vv-email {
+    	width: 200px;
+        height: 30px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    #vv-submit-btn {
+    	width: 100px;
+        height: 30px;
+    }
+    #vv-gate-form input {
+    	margin-top: 5px;
+    }
+    #vv-skip-btn {
+    	font-size: 14px;
+        margin-top: 0px;
+    }
+}
+
+@media only screen and (max-width : 320px) {
+	#vv-intro-text {
+		font-size: 12px;
+        padding-top: 11%;
+        margin-bottom: 5px;
+    }
+    #vv-email {
+    	width: 200px;
+        height: 25px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 14px;
+    }
+    #vv-submit-btn {
+    	width: 100px;
+        height: 25px;
+        font-size: 14px;
+    }
+    #vv-gate-form input {
+    	margin-top: 5px;
+    }
+    #vv-skip-btn {
+    	font-size: 12px;
+        margin-top: 0px;
+    }
 }
