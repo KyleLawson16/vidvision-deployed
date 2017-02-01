@@ -86,10 +86,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <div class="col-xs-12 col-sm-4">
 
+      <div hidden$="{{compute(hiddenTime)}}">
       <label class="mainLabels" style$="margin-top: {{rightColMarginTop}}" for="videoEditor">Iframe timing</label>
       <paper-toggle-button on-change="changeTime">{{toggleTimeLabel}}</paper-toggle-button>
       <label class="labels" for="width" style="display: {{showTime}}">Seconds</label>
       <input id="time" name="time" class="inputStyles" style="display: {{showTime}}" type="text" value="{{time::input}}" on-focus="resetTime" on-blur="replaceTime">
+      </div>
 
       <label class="mainLabels" for="videoEditor">Iframe sizing</label>
       <paper-toggle-button on-change="changeLabel">{{toggleLabel}}</paper-toggle-button>
@@ -157,6 +159,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: Boolean,
           value: true
         },
+        hiddenTime: {
+          type: Boolean,
+          value: true
+        },
       },
       //logout: function() {
       //  this.$.auth.signOut();
@@ -184,6 +190,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
         return 'Unknown (checking status...)';
       },
+      compute: function() {
+                console.log("computing...");
+                return this.hiddenTime;
+            },
       changeLink: function () {
         var url = this.link;
         var api = "?enablejsapi=1";
@@ -196,6 +206,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           var number = url.substring(18);
           var embed = "https://player.vimeo.com/video/" + number;
           this.link = embed;
+          this.toggleTimeLabel = "Beginning";
+          this.hiddenTime = !this.hiddenTime;
         }
         else {}
       },
