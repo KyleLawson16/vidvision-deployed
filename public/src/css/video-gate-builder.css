@@ -277,7 +277,7 @@ height: 100%;
 #fullInfo {
   width: 100%;
   background-color: #ffffff;
-  border: 1px solid #78caff;
+  border: 1px solid #000000;
   border-radius: 4px;
   min-height: 300px;
 }
