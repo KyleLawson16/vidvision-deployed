@@ -15,450 +15,45 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-toggle-button/paper-toggle-button.html">
 <link rel="import" href="../bower_components/paper-swatch-picker/paper-swatch-picker.html">
 <link rel="import" href="../bower_components/polymerfire/firebase-auth.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-radio-button/paper-radio-button.html">
+<link rel="import" href="../bower_components/paper-radio-group/paper-radio-group.html">
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="my-video-survey-builder">
+  <link rel="import" type="css" href="css/video-survey-builder.css">
   <template>
     <style include="shared-styles">
-      :host {
-        display: block;
-
-        padding: 10px;
-      }
-      paper-checkbox {
-        --paper-checkbox-checkmark-color: black;
-        --paper-checkbox-size: 25px;
-      }
-      paper-toggle-button {
-        --paper-toggle-button-checked-bar-color: #78caff;
-      }
-      .options {
-        width: 100%;
-        margin-top: 20px;
-        margin-bottom: 20px;
-      }
-
-      .firstOption {
-        width: 100%;
-        margin-bottom: 20px;
-      }
-      .mainLabels {
-        font-size: 18px;
-        font-weight: bold;
-        margin-top: 20px;
-        margin-bottom: 5px;
-        display: block;
-        color: #555555;
-      }
-      .labels {
-        font-size: 16px;
-        width: 100%;
-        margin-top: 10px;
-        margin-bottom: 5px;
-        display: block;
-      }
-      .firstLabel {
-        font-size: 16px;
-        width: 100%;
-      }
-      .labelsColor {
-        font-size: 16px;
-        width: 50%;
-        margin-top: 10px;
-        margin-right: -10px;
-      }
-      .labelButton {
-        margin-left: 15px;
-      }
-      .labelSkip {
-        font-size: 16px;
-        width: 50%;
-        margin-top: 10px;
-        margin-right: 5px;
-      }
-      .inputVideo {
-        width: 75%;
-        height: 55px;
-        border: 1px solid grey !important;
-        border-radius: 3px;
-        font-size: 18px;
-        padding-left: 10px;
-      }
-      .inputStyles {
-        width: 95%;
-        height: 45px;
-        border: 1px solid grey !important;
-        border-radius: 3px;
-        font-size: 15px;
-        padding-left: 10px;
-        margin-bottom: 10px;
-      }
-      #emailAddress {
-        width: 70%;
-        height: 45px;
-        border: 1px solid grey !important;
-        border-radius: 3px;
-        font-size: 15px;
-        padding-left: 10px;
-        margin-bottom: 10px;
-      }
-      .buttons {
-        width: 22%;
-        height: 59px;
-        border: none;
-        border-radius: 3px;
-        font-size: 20px;
-        background-color: #78caff;
-        color: white;
-        float: right;
-      }
-      .buttons:hover {
-        background-color: #58aaee;
-        color: white;
-        cursor: pointer;
-      }
-      #generateCode {
-        width: 27%;
-        height: 49px;
-        border: none;
-        border-radius: 3px;
-        font-size: 20px;
-        background-color: #78caff;
-        color: white;
-        float: right;
-      }
-      #generateCode:hover {
-        background-color: #58aaee;
-        color: white;
-        cursor: pointer;
-      }
-      textarea {
-        width: 100%;
-        height: 150px;
-        border: 1px solid grey !important;
-        border-radius: 3px;
-        font-size: 12px;
-        padding-left: 0px;
-        padding-right: 0px;
-        margin-bottom: 10px;
-      }
-      .info {
-        font-size: 14px;
-        color: red;
-        margin-top: -10px;
-      }
-
-      /* Iframe Styling */
-
-      .outer {
-        text-align: center;
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 10px;
-      }
-      .inner {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        margin-top: -30px;
-      }
-      .myIframe {
-      position: relative;
-      padding-bottom: 50.25%;
-      padding-top: 30px;
-      height: 0;
-      overflow: auto; 
-      -webkit-overflow-scrolling:touch; //<<--- THIS IS THE KEY 
-      border: solid black 1px;
-      }
-      .myIframe iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      }
-      #form {
-        width: 100%;
-        height: 100%;
-        z-index: 2;
-        top: 0;
-        left: 0;
-        margin-top: -24px;
-      }
-      #form input {
-        margin-top: 10px;
-      }
-      #introText {
-        text-align: center;
-        font-size: 24px;
-        color: #ffffff;
-        padding-top: 20px;
-        margin-bottom: 8%;
-      }
-      #question {
-        color: #ffffff;
-        font-size: 18px;
-        text-align: center;
-      }
-      .answers {
-        padding: 15px;
-        width: 40%;
-        border: none;
-        border-radius: 4px;
-        font-size: 16px;
-        color: #ffffff;
-        margin: 10px;
-      }
-      #iframeLogo {
-        width: 80px;
-        margin-top: -23px;
-        margin-right: 10px;
-        float: right;
-      }
-      /* Columns */
-      .container {
-        width: 97%;
-        padding: 0px 20px;
-      }
-      .col-sm-8 {
-        padding-left: 40px;
-        width: 60%;
-        display: inline-block;
-        top: 0;
-      }
-      .col-sm-4 {
-        padding-right: 4%;
-        width: 30%;
-        display: inline-block;
-        float: right;
-        margin-top: 115px;
-      }
-
-      @media only screen and (max-width : 320px) {
-        .container {
-          width: 97%;
-          padding: 0px 5px;
-        }
-        .col-sm-8 {
-          padding: 0px;
-          width: 100%;
-          margin-top: -5px;
-        }
-        .col-sm-4 {
-          padding: 0px;
-          width: 100%;
-          margin-top: 0px;
-          margin-bottom: 20px;
-        }
-        .inputVideo {
-          height: 40px;
-          width: 60%;
-        }
-        .buttons {
-          height: 44px;
-          width: 30%;
-          font-size: 16px;
-        }
-        .inputStyles {
-          height: 40px;
-        }
-        #emailAddress {
-          height: 40px;
-          width: 60%;
-        }
-        #generateCode {
-          height: 44px;
-          width: 30%;
-          font-size: 14px;
-        }
-        .labelsColor {
-          display: block;
-          width: 60%;
-        }
-        .labelButton {
-          margin-left: 0px;
-        }
-        .labelSkip {
-          margin-top: 15px;
-        }
-        #introText {
-          font-size: 12px;
-          padding-top: 11%;
-          margin-bottom: 5px;
-        }
-        #email {
-          width: 200px;
-          height: 25px;
-          display: block;
-          margin-left: auto;
-          margin-right: auto;
-          font-size: 14px;
-        }
-        #submit {
-          width: 100px;
-          height: 25px;
-          font-size: 14px;
-        }
-        #form input {
-          margin-top: 5px;
-        }
-        #skipEmail {
-          font-size: 12px;
-          margin-top: 0px;
-        }
-      }
-      @media only screen and (min-width : 321px) and (max-width : 480px) {
-        .container {
-          width: 97%;
-          padding: 0px 10px;
-        }
-        .col-sm-8 {
-          padding: 0px;
-          width: 100%;
-          margin-top: -5px;
-        }
-        .col-sm-4 {
-          padding: 0px;
-          width: 100%;
-          margin-top: 0px;
-          margin-bottom: 20px;
-        }
-        .inputVideo {
-          height: 40px;
-          width: 65%;
-        }
-        .buttons {
-          height: 44px;
-          width: 25%;
-          font-size: 16px;
-        }
-        .inputStyles {
-          height: 40px;
-        }
-        #emailAddress {
-          height: 40px;
-          width: 65%;
-        }
-        #generateCode {
-          height: 44px;
-          width: 25%;
-          font-size: 16px;
-        }
-        .labelsColor {
-          display: block;
-        }
-        .labelButton {
-          margin-left: 0px;
-        }
-        .labelSkip {
-          margin-top: 15px;
-        }
-        #introText {
-          font-size: 14px;
-          padding-top: 12.5%;
-          margin-bottom: 5px;
-        }
-        #email {
-          width: 200px;
-          height: 30px;
-          display: block;
-          margin-left: auto;
-          margin-right: auto;
-        }
-        #submit {
-          width: 100px;
-          height: 30px;
-        }
-        #form input {
-          margin-top: 5px;
-        }
-        #skipEmail {
-          font-size: 14px;
-          margin-top: 0px;
-        }
-      }
-      @media only screen and (min-width : 481px) and (max-width : 768px) {
-        .container {
-          width: 97%;
-          padding: 0px 10px;
-        }
-        .col-sm-8 {
-          padding: 0px;
-          width: 100%;
-          margin-top: -5px;
-        }
-        .col-sm-4 {
-          padding: 0px;
-          width: 100%;
-          margin-top: 0px;
-          margin-bottom: 20px;
-        }
-        .inputVideo {
-          height: 45px;
-          width: 70%;
-        }
-        .buttons {
-          height: 49px;
-          font-size: 18px;
-        }
-        #emailAddress {
-          width: 65%;
-        }
-        #generateCode {
-          font-size: 18px;
-        }
-      }
-      @media only screen and (min-width : 769px) and (max-width : 992px) {
-        .container {
-          width: 97%;
-          padding: 0px 10px;
-        }
-        .col-sm-8 {
-          padding-left: 0px;
-        }
-        .col-sm-4 {
-          width: 38%;
-          padding-right: 0px;
-        }
-        .inputStyles {
-          width: 100%;
-        }
-        paper-swatch-picker {
-          margin-right: 35.5%;
-        }
-        .labelButton {
-          margin-left: 0px;
-        }
-        #generateCode {
-          font-size: 18px;
-          width: 30%;
-        }
-        .inputVideo {
-          width: 70%;
-        }
-        #emailAddress {
-          width: 65%;
-        }
-      }
-      @media only screen and (min-width : 993px) and (max-width : 1200px) {
-        .container {
-          width: 97%;
-          padding: 0px 10px;
-        }
-        .col-sm-8 {
-          padding-left: 10px;
-        }
-        .col-sm-4 {
-          width: 36%;
-          padding-right: 10px;
-        }
-        #generateCode {
-          font-size: 18px;
-        }
-      }
+    [hidden] {
+        display: none !important;
+      }   
     </style>
+
+    <div id="fullInfo" hidden$="[[!hidden]]">
+    <div id="topInfo">
+    <paper-icon-button on-tap="hideInfo" id="upArrow" icon="icons:clear"></paper-icon-button>
+      <div id="infoLeft">
+        <div class="infoPadding">
+          <h2>Welcome to our video survey builder!</h2>
+          <p><strong>Step #1</strong><br />
+          Paste the link to your Vimeo / YouTube video and submit.</p>
+          <p><strong>Step #2</strong><br />
+          Customize the title, question, and answers of your video-survey tool using the inputs below.</p>
+          <p><strong>Step #3</strong><br />
+          Embed the generated code on your website and start generating email leads.</p>
+        </div>
+      </div>
+      <div id="infoRight">
+        <div class="infoPadding">
+          <h2>Here is what it will look like.</h2>
+          <img id="videoSurvey" src="../images/video-survey.PNG" />
+        </div>
+      </div>
+    </div>
+    </div>
+
     <div class="container">
     <div class="col-xs-12 col-sm-8">
       <div class="options">
@@ -474,10 +69,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <form id="form" name="installer" style$="background: {{backgroundStyle}}; display: {{hideForm}};">
               <p id="introText">{{intro}}</p>
               <p id="question">{{questionText}}</p>
-              <input id="answer1" name="answer1" class="answers" type="button" value="{{answer1::input}}" style="background-color: {{answerColor}}">
-              <input id="answer2" name="answer2" class="answers" type="button" value="{{answer2::input}}" style="background-color: {{answerColor}}">
-              <input id="answer3" name="answer3" class="answers" type="button" value="{{answer3::input}}" style="display: {{answerThreeDisplay}}; background-color: {{answerColor}};">
-              <input id="answer4" name="answer4" class="answers" type="button" value="{{answer4::input}}" style="display: {{answerFourDisplay}}; background-color: {{answerColor}};">
+              <input id="answer1" name="answer1" class="answers" type="button" value="{{answer1::input}}" style$="background-color: {{answerColor}};">
+              <input id="answer2" name="answer2" class="answers" type="button" value="{{answer2::input}}" style$="background-color: {{answerColor}}">
+              <input id="answer3" name="answer3" class="answers" type="button" value="{{answer3::input}}" style$="background-color: {{answerColor}}; display: {{answerThreeDisplay}};">
+              <input id="answer4" name="answer4" class="answers" type="button" value="{{answer4::input}}" style$="background-color: {{answerColor}}; display: {{answerFourDisplay}};">
             </form>
             <a href="http://www.getvidvision.com/" target="__blank"><img id="iframeLogo" src="http://res.cloudinary.com/hrscywv4p/image/upload/c_limit,h_1440,w_720,f_auto/v1/204930/vidvisionv3_sggpov.png" /></a>
           </div>
@@ -485,6 +80,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </div>
     </div>
     <div class="col-xs-12 col-sm-4">
+
+      <div hidden$="{{compute(hiddenTime)}}">
+      <label class="mainLabels" style$="margin-top: {{rightColMarginTop}}" for="videoEditor">Iframe timing</label>
+      <paper-toggle-button on-change="changeTime">{{toggleTimeLabel}}</paper-toggle-button>
+      <paper-radio-button id="customTimeValue" on-tap="customTime">Custom Time</paper-radio-button>
+      <label class="labels" for="width" style="display: {{showTime}}">Seconds</label>
+      <input id="time" name="time" class="inputStyles" style="display: {{showTime}}" type="text" value="{{time::input}}" on-focus="resetTime" on-blur="replaceTime">
+      </div>
+
       <label class="mainLabels" style$="margin-top: {{rightColMarginTop}}" for="videoEditor">Iframe sizing</label>
       <paper-toggle-button on-change="changeLabel">{{toggleLabel}}</paper-toggle-button>
       <label class="labels" for="width" style="display: {{showMeasurements}}">Width</label>
@@ -506,24 +110,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <label class="labels" for="answer4">Answer 4</label>
       <input id="answer4Text" name="answer4Text" class="inputStyles" type="text" on-focus="resetAnswerFour" on-blur="replaceAnswerFour" value="{{answer4::input}}">
       </div>
-      <input type="button" id="addAnswer" on-tap="addAnswerFun" style="display: {{addAnswer}}" value="Add answer +" />
-      <input type="button" id="deleteAnswer" on-tap="deleteAnswerFun" style="display: {{deleteAnswer}}" value="Delete answer -" />
+      <input type="button" class="addDelete" id="addAnswer" on-tap="addAnswerFun" style="display: {{addAnswer}}" value="+ Add Answer" />
+      <input type="button" class="addDelete" id="deleteAnswer" on-tap="deleteAnswerFun" style="display: {{deleteAnswer}}" value="- Delete Answer" />
       <br />
       <label class="labelsColor" for="color">Background Color</label>
       <paper-swatch-picker color="{{backgroundStyle}}"></paper-swatch-picker>
       <label class="labelsColor labelButton" for="answerColor">Answer Color</label>
       <paper-swatch-picker color="{{answerColor}}"></paper-swatch-picker>
-      <br />
-      <paper-checkbox on-change="hideSkip"></paper-checkbox>
     </div>
     <div class="col-sm-8">
       <label class="mainLabels" >Finished customizing?</label>
       <label class="labels" for="hostEmail">Your email address</label>
-      <input id="emailAddress" name="emailAddress" type="text" value="{{emailAddress::input}}">
+      <input id="emailAddress" name="emailAddress" type="email" value="{{emailAddress::input}}">
       <button id="generateCode" on-tap="clipBoard">Generate code</button>
-      <p class="info">*Your email is needed in order to send you the data that your survey generates</p>
+      <p class="info" id="noEmail" style="display: {{noEmail}}">*Your email is needed in order to send you any leads your video generates.</p>
       <textarea id="codeString">{{code}}</textarea>
-      <p class="info">*Embed this HTML code anywhere on your website the same way you would a YouTube video. Feel free to wrap it in a container of your desired size.</p>
+      <p class="comments">*Embed this HTML code anywhere on your website the same way you would a YouTube video. Feel free to wrap it in a container of your desired size.</p>
     </div>
   </div>
   </template>
@@ -535,19 +137,41 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         addFirstAnswer: {
           type: Object,
           value: null
-        }
+        },
+        statusKnown: {
+          type: Boolean
+        },
+        hidden: {
+          type: Boolean,
+          value: true
+        },
+        hiddenTime: {
+          type: Boolean,
+          value: true
+        },
+        hiddenCustomTime: {
+          type: Boolean,
+          value: true
+        },
+      },
+      hideInfo: function () {
+        this.hidden = !this.hidden;
+        this.dropdownMargin = "";
       },
       changeLink: function () {
         var url = this.link;
-        if (url.charAt(12) == 'y') {
+        var api = "?enablejsapi=1";
+        if (url.substring(0,32) == 'https://www.youtube.com/watch?v=' ) {
           var number = url.substring(32);
-          var embed = "https://www.youtube.com/embed/" + number;
+          var embed = "https://www.youtube.com/embed/" + number + api;
           this.link = embed;
         }
-        else if (url.charAt(12) == 'o') {
+        else if (url.substring(0,18) == 'https://vimeo.com/') {
           var number = url.substring(18);
           var embed = "https://player.vimeo.com/video/" + number;
           this.link = embed;
+          this.toggleTimeLabel = "Beginning";
+          this.hiddenTime = !this.hiddenTime;
         }
         else {}
       },
@@ -692,6 +316,41 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }
         }
       },
+      changeTime: function () {
+        if (this.toggleTimeLabel == "End") {
+          this.toggleTimeLabel = "Beginning";
+        }
+        else {
+          this.toggleTimeLabel = "End";
+        }
+      },
+      customTime: function () {
+        if (event.target.checked) {
+          this.showTime = "";
+          this.customTimeOutput = "true";
+        }
+        else {
+          this.showTime = "none";
+        }
+      },
+      resetTime: function () {
+        this.time = "";
+        this.iframeTime = this.time;
+      },
+      replaceTime: function () {
+        var noPx = parseInt(this.time, 10);
+        if (noPx < 0) {
+          this.time = "10";
+          this.iframeTime = this.time * 1000;
+        }
+        else if (this.time == "") {
+          this.time = "10";
+          this.iframeTime = this.time * 1000;
+        }
+        else {
+          this.iframeTime = this.time * 1000;
+        }
+      },
       addAnswerFun: function () {
         if (this.answerThreeDisplay == "none") {
           this.answerThreeDisplay = "";
@@ -714,66 +373,130 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
       clipBoard: function () {
-        var a = "<div style='text-align:center; border: none; display:block; margin-left:auto; ";
-        var b = "margin-right:auto; margin-top:10px; height: " + this.divHeight + ";'>";
-        var c = "<div style='width: " + this.iframeWidth + "; position:relative; ";
-        var d = "padding-bottom:50.25%; padding-top:30px; border: none; height:0; ";
-        var e = "overflow:auto; -webkit-overflow-scrolling:touch;'>";
-        var f = "<iframe id='iframe' src='" + this.link + "' frameborder='0' webkitallowfullscreen ";
-        var g = "mozallowfullscreen allowfullscreen style='position:absolute; top:0; left:0; ";
-        var h = "width:100%; height: " + this.iframeHeight + "; border: none;'></iframe>";
-        var i = "<div id='dissapear' style='position:absolute; width:100%; ";
-        var j = "height: " + this.iframeHeight + "; margin-top:-30px'>";
-        var k = "<form id='foo' style='width:100%; height:100%; border: none; ";
-        var l = "background-color: " + this.backgroundStyle + "; z-index:2; top:0; left:0' ";
-        var m = "onsubmit='showHide(); return false;'>";
-        var n = "<div class='drag' style='text-align:center; font-size:16px; color:#fff; ";
-        var o = "padding-top:20%'>" + this.intro + "</div>";
-        var p = "<input id='hostEmail' name='hostEmail' ";
-        var q = "value='" + this.emailAddress + "' style='display: none;'>";
-        var r = "<input id='email' class='inputIframe' type='email' name='email' required ";
-        var s = "placeholder='" + this.inputText + "' style='margin-top:20px; padding-left:5px; ";
-        var t = "width:250px; height:35px; border-radius:5px; background-color:#fff; border:none; ";
-        var u = "margin-right:10px; font-size:15px'/>";
-        var v = "<input id='submit' type='submit' value='" + this.buttonText + "' name='submit' ";
-        var w = "style='margin-top:20px; padding-left:0px; width:120px; height:35px; ";
-        var x = "border-radius:5px; border:none; color:#fff; ";
-        var y = "background-color: " + this.buttonColor + "; font-size:15px'/>";
-        var z = "<div id='skipEmail' type='button' style='background-color:transparent; ";
-        var aa = "border:none; padding-top:10px; color:#fff; display: " + this.onOff + "; cursor: ";
-        var ab = "pointer;' onClick='javascript:showHide()'>Skip Entering Email</div>";
-        var ac = "</form>";
-        var ad = "<a href='http://www.getvidvision.com/' target='__blank'><img style='width: 80px; ";
-        var ae = "position: absolute; bottom: 10px; right: 10px; margin-bottom: 0px;' ";
-        var af = "src='http://res.cloudinary.com/hrscywv4p/image/upload/c_limit,h_1440,w_720,";
-        var ag = "f_auto/v1/204930/vidvisionv3_sggpov.png' /></a>";
-        var ah = "</div></div></div>";
-        var ai = a + b + c + d + e + f + g + h + i + j + k + l + m + n + o + p + q + r + s + t + u;
-        var aj = v + w + x + y + z + aa + ab + ac + ad + ae + af + ag + ah;
-        var html = ai + aj;
-        var sa = "<script type = 'text/javascript' >function showHide() {";
-        var sb = "var div = document.getElementById('dissapear');";
-        var sc = "if (div.style.display == 'none') {div.style.display = ';}";
-        var sd = " else {div.style.display = 'none';}}" + " < /scr" + "ipt>";
-        var se = "<script src = 'https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js' >";
-        var sf = "< /scr" + "ipt>";
-        var sg = "<script>var request; $('#foo').submit(function(event) {";
-        var sh = "if (request) {request.abort();}";
-        var si = "var $form = $(this); var $inputs = $form.find('input, select, button, textarea'); ";
-        var sj = "var serializedData = $form.serialize(); $inputs.prop('disabled', true); ";
-        var sk = "request = $.ajax({ url: 'https://script.google.com/macros/s/";
-        var sl = "AKfycbzHpV0bYr0oKbFmLR6Xg1dKAAKWfJIafy7qsy7oRiQJXPxZ7v8/exec', ";
-        var sm = "type: 'post', data: serializedData});";
-        var sn = "request.done(function(response, textStatus, jqXHR) {";
-        var so = "console.log('Hooray, it worked!'); console.log(response); console.log(textStatus); ";
-        var sp = "console.log(jqXHR);}); request.fail(function(jqXHR, textStatus, errorThrown) {";
-        var sq = "console.error('The following error occurred: ' + textStatus, errorThrown);}); ";
-        var sr = "request.always(function() {$inputs.prop('disabled', false);}); ";
-        var ss = "event.preventDefault();}); < /scr" + "ipt>";
-        var st = sa + sb + sc + sd + se + sf + sg + sh + si + sj + sk + sl + sm;
-        var su = sn + so + sp + sq + sr + ss;
-        var script = st + su;
-        this.code = html + script;
+        if (this.emailAddress == undefined) {
+          this.noEmail = "";
+        }
+        else {
+          if (this.showTime == "none") {
+            if (this.toggleTimeLabel == "Beginning") {
+        var a = "<div id='vv-outer-container' style='height: " + this.divHeight + ";'>";
+        var b = "<div id='vv-iframe-container' style='width: " + this.iframeWidth + ";'>";
+        var c = "<iframe id='vv-iframe' src='" + this.link + "' frameborder='0' webkitallowfullscreen ";
+        var d = "mozallowfullscreen allowfullscreen style='min-height: " + this.iframeHeight + ";'></ifr";
+        var e = "ame><div id='vv-dissapear-container' style='height: " + this.iframeHeight + ";'>";
+        var f = "<form id='vv-gate-form' style='background-color: " + this.backgroundStyle + ";' on";
+        var g = "submit=\"document.getElementById('vv-dissapear-container').style.display = 'none';\">";
+        var h = "<p id='vv-intro-text'>" + this.intro + "</p>";
+        var i = "<p id='vv-question'>" + this.questionText + "</p>";
+        var ii = "<input id='vv-hostEmail' name='vv-hostEmail' value='" + this.emailAddress + "'>";
+        var j = "<input id='vv-answer1' name='vv-answer1' class='vv-answers' type='submit' ";
+        var k = "value='" + this.answer1 + "' onclick='submitAnswer1()' style='background-color: " + this.answerColor + "'>";
+        var l = "<input id='vv-answer2' name='vv-answer2' class='vv-answers' type='submit' ";
+        var m = "value='" + this.answer2 + "' onclick='submitAnswer2()' style='background-color: " + this.answerColor + "'>";
+        var n = "<input id='vv-answer3' name='vv-answer3' class='vv-answers' type='submit' ";
+        var o = "value='" + this.answer3 + "' onclick='submitAnswer3()' style='display: " + this.answerThreeDisplay + " ;";
+        var oo = "background-color: " + this.answerColor + "'>";
+        var p = "<input id='vv-answer4' name='vv-answer4' class='vv-answers' type='submit' ";
+        var q = "value='" + this.answer4 + "' onclick='submitAnswer4()' style='display: " + this.answerFourDisplay + " ;";
+        var qq = "background-color: " + this.answerColor + "'>";
+        var qqq = "<input id='vv-hostEmail' name='vv-hostEmail' value='" + this.emailAddress + "'>";
+        var r = "<input id='vv-selected-answer' style='display: none;' name='vv-selected-answer' value=''>";
+        var rr = "<input id='vv-possible-answers' style='display: none;' name='vv-possible-answers' value='";
+        var rrr = this.answer1 + "-" + this.answer2 + "-" + this.answer3 + "-" + this.answer4 + "'>";
+        var s = "</form><a href='http://www.getvidvision.com/' target='__blank'>";
+        var ss = "<img id='vv-form-logo' src='http://res.cloudinary.com/hrscywv4p/image/upload/";
+        var t = "c_limit,h_1440,w_720,f_auto/v1/204930/vidvisionv3_sggpov.png' /></a></div></div></div>";
+        var html = a+b+c+d+e+f+g+h+i+ii+j+k+l+m+n+o+oo+p+q+qq+qqq+r+rr+rrr+s+ss+t;
+        var t = "<link rel='stylesheet' property='stylesheet' ";
+        var u = "href='https://app.getvidvision.com/hosted-files/video-survey/video-survey.css'>";
+        var css = t+u;
+        var v = "<script src='https://app.getvidvision.com/hosted-files/video-survey/video-survey.js'>";
+        var w = "< \/scr" + "ipt>";
+        var x = "<script src = 'https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js' >";
+        var y = "< \/scr" + "ipt>";
+        var script = x+y+v+w;
+        this.code = css + html + script;
+        }
+            else if (this.toggleTimeLabel == "End") {
+        var a = "<div id='vv-outer-container' style='height: " + this.divHeight + ";'>";
+        var b = "<div id='vv-iframe-container' style='width: " + this.iframeWidth + ";'>";
+        var c = "<iframe id='vv-iframe' src='" + this.link + "' frameborder='0' webkitallowfullscreen ";
+        var d = "mozallowfullscreen allowfullscreen style='min-height: " + this.iframeHeight + ";'></ifr";
+        var e = "ame><div id='vv-dissapear-container' style='height: " + this.iframeHeight + "; display: none;'>";
+        var f = "<form id='vv-gate-form' style='background-color: " + this.backgroundStyle + ";' on";
+        var g = "submit=\"document.getElementById('vv-dissapear-container').style.display = 'none';\">";
+        var h = "<p id='vv-intro-text'>" + this.intro + "</p>";
+        var i = "<p id='vv-question'>" + this.questionText + "</p>";
+        var ii = "<input id='vv-hostEmail' name='vv-hostEmail' value='" + this.emailAddress + "'>";
+        var j = "<input id='vv-answer1' name='vv-answer1' class='vv-answers' type='submit' ";
+        var k = "value='" + this.answer1 + "' onclick='submitAnswer1()' style='background-color: " + this.answerColor + "'>";
+        var l = "<input id='vv-answer2' name='vv-answer2' class='vv-answers' type='submit' ";
+        var m = "value='" + this.answer2 + "' onclick='submitAnswer2()' style='background-color: " + this.answerColor + "'>";
+        var n = "<input id='vv-answer3' name='vv-answer3' class='vv-answers' type='submit' ";
+        var o = "value='" + this.answer3 + "' onclick='submitAnswer3()' style='display: " + this.answerThreeDisplay + " ;";
+        var oo = "background-color: " + this.answerColor + "'>";
+        var p = "<input id='vv-answer4' name='vv-answer4' class='vv-answers' type='submit' ";
+        var q = "value='" + this.answer4 + "' onclick='submitAnswer4()' style='display: " + this.answerFourDisplay + " ;";
+        var qq = "background-color: " + this.answerColor + "'>";
+        var qqq = "<input id='vv-hostEmail' name='vv-hostEmail' value='" + this.emailAddress + "'>";
+        var r = "<input id='vv-selected-answer' style='display: none;' name='vv-selected-answer' value=''>";
+        var rr = "<input id='vv-possible-answers' style='display: none;' name='vv-possible-answers' value='";
+        var rrr = this.answer1 + "-" + this.answer2 + "-" + this.answer3 + "-" + this.answer4 + "'>";
+        var s = "</form><a href='http://www.getvidvision.com/' target='__blank'>";
+        var ss = "<img id='vv-form-logo' src='http://res.cloudinary.com/hrscywv4p/image/upload/";
+        var t = "c_limit,h_1440,w_720,f_auto/v1/204930/vidvisionv3_sggpov.png' /></a></div></div></div>";
+        var html = a+b+c+d+e+f+g+h+i+ii+j+k+l+m+n+o+oo+p+q+qq+qqq+r+rr+rrr+s+ss+t;
+        var t = "<link rel='stylesheet' property='stylesheet' ";
+        var u = "href='https://app.getvidvision.com/hosted-files/video-survey/video-survey.css'>";
+        var css = t+u;
+        var v = "<script src='https://app.getvidvision.com/hosted-files/video-survey/video-survey-end.js'>";
+        var w = "< \/scr" + "ipt>";
+        var x = "<script src = 'https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js' >";
+        var y = "< \/scr" + "ipt>";
+        var script = x+y+v+w;
+        this.code = css + html + script;
+            }
+          }
+          else if (this.customTimeOutput == "true") {
+        var a = "<div id='vv-outer-container' style='height: " + this.divHeight + ";'>";
+        var b = "<div id='vv-iframe-container' style='width: " + this.iframeWidth + ";'>";
+        var c = "<iframe id='vv-iframe' src='" + this.link + "' frameborder='0' webkitallowfullscreen ";
+        var d = "mozallowfullscreen allowfullscreen style='min-height: " + this.iframeHeight + ";'></ifr";
+        var e = "ame><div id='vv-dissapear-container' style='height: " + this.iframeHeight + "; display: none;'>";
+        var f = "<form id='vv-gate-form' style='background-color: " + this.backgroundStyle + ";' on";
+        var g = "submit=\"document.getElementById('vv-dissapear-container').style.display = 'none';\">";
+        var h = "<p id='vv-intro-text'>" + this.intro + "</p>";
+        var i = "<p id='vv-question'>" + this.questionText + "</p>";
+        var ii = "<input id='vv-hostEmail' name='vv-hostEmail' value='" + this.emailAddress + "'>";
+        var j = "<input id='vv-answer1' name='vv-answer1' class='vv-answers' type='submit' ";
+        var k = "value='" + this.answer1 + "' onclick='submitAnswer1()' style='background-color: " + this.answerColor + "'>";
+        var l = "<input id='vv-answer2' name='vv-answer2' class='vv-answers' type='submit' ";
+        var m = "value='" + this.answer2 + "' onclick='submitAnswer2()' style='background-color: " + this.answerColor + "'>";
+        var n = "<input id='vv-answer3' name='vv-answer3' class='vv-answers' type='submit' ";
+        var o = "value='" + this.answer3 + "' onclick='submitAnswer3()' style='display: " + this.answerThreeDisplay + " ;";
+        var oo = "background-color: " + this.answerColor + "'>";
+        var p = "<input id='vv-answer4' name='vv-answer4' class='vv-answers' type='submit' ";
+        var q = "value='" + this.answer4 + "' onclick='submitAnswer4()' style='display: " + this.answerFourDisplay + " ;";
+        var qq = "background-color: " + this.answerColor + "'>";
+        var qqq = "<input id='vv-hostEmail' name='vv-hostEmail' value='" + this.emailAddress + "'>";
+        var r = "<input id='vv-selected-answer' style='display: none;' name='vv-selected-answer' value=''>";
+        var rr = "<input id='vv-possible-answers' style='display: none;' name='vv-possible-answers' value='";
+        var rrr = this.answer1 + "-" + this.answer2 + "-" + this.answer3 + "-" + this.answer4 + "'>";
+        var s = "</form><a href='http://www.getvidvision.com/' target='__blank'>";
+        var ss = "<img id='vv-form-logo' src='http://res.cloudinary.com/hrscywv4p/image/upload/";
+        var t = "c_limit,h_1440,w_720,f_auto/v1/204930/vidvisionv3_sggpov.png' /></a></div></div></div>";
+        var html = a+b+c+d+e+f+g+h+i+ii+j+k+l+m+n+o+oo+p+q+qq+qqq+r+rr+rrr+s+ss+t;
+        var t = "<link rel='stylesheet' property='stylesheet' ";
+        var u = "href='https://app.getvidvision.com/hosted-files/video-survey/video-survey.css'>";
+        var css = t+u;
+        var v = "<script src='https://app.getvidvision.com/hosted-files/video-survey/video-survey-custom.js'>";
+        var w = "< \/scr" + "ipt>< \/scr" + "ipt><script>var popUpTime = " + this.iframeTime + ";< \/script>";
+        var x = "<script src = 'https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js' >";
+        var y = "< \/scr" + "ipt>";
+        var script = x+y+v+w;
+        this.code = css + html + script;
+          }
+        }
       },
       ready: function () {
         this.intro = "Survey";
@@ -797,6 +520,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.answer2 = "Answer 2";
         this.answer3 = "Answer 3";
         this.answer4 = "Answer 4";
+        this.noEmail = "none";
+        this.selection = "beginning";
+        this.toggleTimeLabel = "Beginning";
+        this.showTime = "none";
+        this.time = 10;
+        this.iframeTime = 10000;
+        this.customTimeOutput = "false";
       },
     });
   </script>

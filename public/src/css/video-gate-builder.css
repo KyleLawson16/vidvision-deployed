@@ -59,74 +59,119 @@ paper-radio-button {
 }
 .inputVideo {
   width: 75%;
-  height: 55px;
+  height: 40px;
+  border: none;
   border: 1px solid grey !important;
-  border-radius: 3px;
-  font-size: 18px;
+  border-radius: 2px;
+  font-size: 15px;
+  color: grey;
   padding-left: 10px;
+  transition: all 0.25s ease;
+}
+.inputVideo:focus {
+  box-shadow: 0px 0px 10px #78caff;
+  transition: all 0.25s ease;
+  border: 1px solid #78caff !important;
 }
 .inputStyles {
   width: 95%;
-  height: 45px;
+  height: 40px;
+  border: none;
   border: 1px solid grey !important;
-  border-radius: 3px;
+  border-radius: 2px;
   font-size: 15px;
+  color: grey;
   padding-left: 10px;
   margin-bottom: 10px;
+  transition: all 0.25s ease;
+}
+.inputStyles:focus {
+  box-shadow: 0px 0px 10px #78caff;
+  transition: all 0.25s ease;
+  border: 1px solid #78caff !important;
 }
 #emailAddress {
-  width: 70%;
-  height: 45px;
+  width: 75%;
+  height: 40px;
+  border: none;
   border: 1px solid grey !important;
-  border-radius: 3px;
+  border-radius: 2px;
   font-size: 15px;
+  color: grey;
   padding-left: 10px;
   margin-bottom: 10px;
+  transition: all 0.25s ease;
+}
+#emailAddress:focus {
+  box-shadow: 0px 0px 10px #78caff;
+  transition: all 0.25s ease;
+  border: 1px solid #78caff !important;
 }
 .buttons {
   width: 22%;
-  height: 59px;
+  height: 44px;
   border: none;
-  border-radius: 3px;
-  font-size: 20px;
+  border-bottom: 1px solid #58aadd;
+  border-radius: 2px;
+  font-size: 16px;
   background-color: #78caff;
   color: white;
   float: right;
+  transition: all 0.25s ease;
 }
 .buttons:hover {
-  background-color: #58aaee;
+  background-color: #98eaff;
+  transition: all 0.25s ease;
+  box-shadow: 0px 0px 10px white;
+  border-bottom: 1px solid #78caff;
   color: white;
   cursor: pointer;
 }
 #generateCode {
-  width: 27%;
-  height: 49px;
+  width: 22%;
+  height: 44px;
   border: none;
-  border-radius: 3px;
-  font-size: 20px;
+  border-bottom: 1px solid #58aadd;
+  border-radius: 2px;
+  font-size: 16px;
   background-color: #78caff;
   color: white;
   float: right;
+  transition: all 0.25s ease;
 }
 #generateCode:hover {
-  background-color: #58aaee;
+  background-color: #98eaff;
+  transition: all 0.25s ease;
+  border-bottom: 1px solid #78caff;
+  box-shadow: 0px 0px 10px white;
   color: white;
   cursor: pointer;
 }
 textarea {
   width: 100%;
   height: 150px;
+  border: none;
   border: 1px solid grey !important;
-  border-radius: 3px;
+  border-radius: 2px;
   font-size: 12px;
+  color: grey;
   padding-left: 0px;
   padding-right: 0px;
   margin-bottom: 10px;
+  transition: all 0.25s ease;
+}
+textarea:focus {
+  box-shadow: 0px 0px 10px #78caff;
+  transition: all 0.25s ease;
+  border: 1px solid #78caff !important;
 }
 .info {
   font-size: 14px;
   color: red;
   margin-top: -10px;
+}
+#customTimeValue {
+  margin-top: 20px;
 }
 .comments {
   font-size: 14px;
@@ -245,7 +290,7 @@ height: 100%;
   width: 30%;
   display: inline-block;
   float: right;
-  margin-top: 115px;
+  margin-top: 100px;
 }
 #infoLeft {
   width: 50%;
@@ -283,6 +328,28 @@ height: 100%;
 }
 #videoGate {
   width: 380px;
+}
+#surveyText {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
+  margin-bottom: 10px;
+}
+#surveyButton {
+  padding: 20px;
+  background-color: #78caff;
+  border-radius: 2px;
+  border: none;
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+}
+#surveyButton:hover {
+  background-color: #98eaff;
+  transition: all 0.25s ease;
+  cursor: pointer;
+
 }
 
 

@@ -1,0 +1,125 @@
+<html><head><link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../bower_components/paper-toggle-button/paper-toggle-button.html">
+<link rel="import" href="../bower_components/paper-swatch-picker/paper-swatch-picker.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-auth.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-radio-button/paper-radio-button.html">
+<link rel="import" href="../bower_components/paper-radio-group/paper-radio-group.html">
+<link rel="import" href="shared-styles.html">
+
+</head><body><dom-module id="my-video-survey-builder">
+  <link rel="import" type="css" href="css/video-survey-builder.css">
+  <template>
+    <style include="shared-styles">
+    [hidden] {
+        display: none !important;
+      }   
+    </style>
+
+    <div id="fullInfo" hidden$="[[!hidden]]">
+    <div id="topInfo">
+    <paper-icon-button on-tap="hideInfo" id="upArrow" icon="icons:clear"></paper-icon-button>
+      <div id="infoLeft">
+        <div class="infoPadding">
+          <h2>Welcome to our video survey builder!</h2>
+          <p><strong>Step #1</strong><br>
+          Paste the link to your Vimeo / YouTube video and submit.</p>
+          <p><strong>Step #2</strong><br>
+          Customize the title, question, and answers of your video-survey tool using the inputs below.</p>
+          <p><strong>Step #3</strong><br>
+          Embed the generated code on your website and start generating email leads.</p>
+        </div>
+      </div>
+      <div id="infoRight">
+        <div class="infoPadding">
+          <h2>Here is what it will look like.</h2>
+          <img id="videoSurvey" src="../images/video-survey.PNG">
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <div class="container">
+    <div class="col-xs-12 col-sm-8">
+      <div class="options">
+        <label class="mainLabels" id="iframeLabel" for="link">Insert link to your video</label>
+        <input class="inputVideo" type="text" name="link" id="link" value="{{link::input}}">
+        <button class="buttons" type="button" on-tap="changeLink">Submit</button>
+      </div>
+      <label class="mainLabels" for="iframe">Preview below:</label>
+      <div class="outer" style$="width: {{iframeWidth}};">
+        <div class="myIframe">
+          <iframe id="myIframe" src="{{link}}" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>
+          <div id="dissapear" class="inner">
+            <form id="form" name="installer" style$="background: {{backgroundStyle}}; display: {{hideForm}};">
+              <p id="introText">{{intro}}</p>
+              <p id="question">{{questionText}}</p>
+              <input id="answer1" name="answer1" class="answers" type="button" value="{{answer1::input}}" style$="background-color: {{answerColor}};">
+              <input id="answer2" name="answer2" class="answers" type="button" value="{{answer2::input}}" style$="background-color: {{answerColor}}">
+              <input id="answer3" name="answer3" class="answers" type="button" value="{{answer3::input}}" style$="background-color: {{answerColor}}; display: {{answerThreeDisplay}};">
+              <input id="answer4" name="answer4" class="answers" type="button" value="{{answer4::input}}" style$="background-color: {{answerColor}}; display: {{answerFourDisplay}};">
+            </form>
+            <a href="http://www.getvidvision.com/" target="__blank"><img id="iframeLogo" src="http://res.cloudinary.com/hrscywv4p/image/upload/c_limit,h_1440,w_720,f_auto/v1/204930/vidvisionv3_sggpov.png"></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-4">
+
+      <div hidden$="{{compute(hiddenTime)}}">
+      <label class="mainLabels" style$="margin-top: {{rightColMarginTop}}" for="videoEditor">Iframe timing</label>
+      <paper-toggle-button on-change="changeTime">{{toggleTimeLabel}}</paper-toggle-button>
+      <paper-radio-button id="customTimeValue" on-tap="customTime">Custom Time</paper-radio-button>
+      <label class="labels" for="width" style="display: {{showTime}}">Seconds</label>
+      <input id="time" name="time" class="inputStyles" style="display: {{showTime}}" type="text" value="{{time::input}}" on-focus="resetTime" on-blur="replaceTime">
+      </div>
+
+      <label class="mainLabels" style$="margin-top: {{rightColMarginTop}}" for="videoEditor">Iframe sizing</label>
+      <paper-toggle-button on-change="changeLabel">{{toggleLabel}}</paper-toggle-button>
+      <label class="labels" for="width" style="display: {{showMeasurements}}">Width</label>
+      <input id="width" name="width" class="inputStyles" style="display: {{showMeasurements}}" type="text" value="{{width::input}}" on-focus="resetWidth" on-blur="replaceWidth">
+      <label class="mainLabels" for="videoEditor">Text and colors</label>
+      <label class="labels" for="introText">Intro</label>
+      <input id="intro" name="intro" class="inputStyles" type="text" on-focus="resetIntro" on-blur="replaceIntro" value="{{intro::input}}">
+      <label class="labels" for="questionText">Question</label>
+      <input id="questionText" name="questionText" class="inputStyles" type="text" on-focus="resetQuestion" on-blur="replaceQuestion" value="{{questionText::input}}">
+      <label class="labels" for="answer1">Answer 1</label>
+      <input id="answer1Text" name="answer1Text" class="inputStyles" type="text" on-focus="resetAnswerOne" on-blur="replaceAnswerOne" value="{{answer1::input}}">
+      <label class="labels" for="answer2">Answer 2</label>
+      <input id="answer2Text" name="answer2Text" class="inputStyles" type="text" on-focus="resetAnswerTwo" on-blur="replaceAnswerTwo" value="{{answer2::input}}">
+      <div id="answerThree" style="display: {{answerThreeDisplay}}">
+      <label class="labels" for="answer3">Answer 3</label>
+      <input id="answer3Text" name="answer3Text" class="inputStyles" type="text" on-focus="resetAnswerThree" on-blur="replaceAnswerThree" value="{{answer3::input}}">
+      </div>
+      <div id="answerFour" style="display: {{answerFourDisplay}}">
+      <label class="labels" for="answer4">Answer 4</label>
+      <input id="answer4Text" name="answer4Text" class="inputStyles" type="text" on-focus="resetAnswerFour" on-blur="replaceAnswerFour" value="{{answer4::input}}">
+      </div>
+      <input type="button" class="addDelete" id="addAnswer" on-tap="addAnswerFun" style="display: {{addAnswer}}" value="+ Add Answer">
+      <input type="button" class="addDelete" id="deleteAnswer" on-tap="deleteAnswerFun" style="display: {{deleteAnswer}}" value="- Delete Answer">
+      <br>
+      <label class="labelsColor" for="color">Background Color</label>
+      <paper-swatch-picker color="{{backgroundStyle}}"></paper-swatch-picker>
+      <label class="labelsColor labelButton" for="answerColor">Answer Color</label>
+      <paper-swatch-picker color="{{answerColor}}"></paper-swatch-picker>
+    </div>
+    <div class="col-sm-8">
+      <label class="mainLabels">Finished customizing?</label>
+      <label class="labels" for="hostEmail">Your email address</label>
+      <input id="emailAddress" name="emailAddress" type="email" value="{{emailAddress::input}}">
+      <button id="generateCode" on-tap="clipBoard">Generate code</button>
+      <p class="info" id="noEmail" style="display: {{noEmail}}">*Your email is needed in order to send you any leads your video generates.</p>
+      <textarea id="codeString">{{code}}</textarea>
+      <p class="comments">*Embed this HTML code anywhere on your website the same way you would a YouTube video. Feel free to wrap it in a container of your desired size.</p>
+    </div>
+  </div>
+  </template>
+
+  <script>Polymer({is:"my-video-survey-builder",properties:{addFirstAnswer:{type:Object,value:null},statusKnown:{type:Boolean},hidden:{type:Boolean,value:!0},hiddenTime:{type:Boolean,value:!0},hiddenCustomTime:{type:Boolean,value:!0}},hideInfo:function(){this.hidden=!this.hidden,this.dropdownMargin=""},changeLink:function(){var e=this.link,i="?enablejsapi=1";if("https://www.youtube.com/watch?v="==e.substring(0,32)){var s=e.substring(32),t="https://www.youtube.com/embed/"+s+i;this.link=t}else if("https://vimeo.com/"==e.substring(0,18)){var s=e.substring(18),t="https://player.vimeo.com/video/"+s;this.link=t,this.toggleTimeLabel="Beginning",this.hiddenTime=!this.hiddenTime}},hideSkip:function(){event.target.checked?this.onOff="none":this.onOff=""},showHide:function(){this.hideForm="none"},resetIntro:function(){"Survey"==this.intro&&(this.intro="")},replaceIntro:function(){""==this.intro&&(this.intro="Survey")},resetQuestion:function(){"Question"==this.questionText&&(this.questionText="")},replaceQuestion:function(){""==this.questionText&&(this.questionText="Question")},resetAnswerOne:function(){"Answer 1"==this.answer1&&(this.answer1="")},replaceAnswerOne:function(){""==this.answer1&&(this.answer1="Answer 1")},resetAnswerTwo:function(){"Answer 2"==this.answer2&&(this.answer2="")},replaceAnswerTwo:function(){""==this.answer2&&(this.answer2="Answer 2")},resetAnswerThree:function(){"Answer 3"==this.answer3&&(this.answer3="")},replaceAnswerThree:function(){""==this.answer3&&(this.answer3="Answer 3")},resetAnswerFour:function(){"Answer 4"==this.answer4&&(this.answer4="")},replaceAnswerFour:function(){""==this.answer4&&(this.answer4="Answer 4")},resetInput:function(){"Email Address"==this.inputText&&(this.inputText="")},replaceInput:function(){""==this.inputText&&(this.inputText="Email Address")},changeLabel:function(){"Custom"==this.toggleLabel?(this.toggleLabel="Responsive",this.showMeasurements="none",this.iframeWidth="100%",this.iframeHeight="100%",this.divHeight="",this.rightColMarginTop="20px"):(this.toggleLabel="Custom",this.showMeasurements="",this.iframeWidth=this.width,this.iframeHeight="315px",this.divHeight="315px")},resetWidth:function(){this.width="",this.iframeWidth=this.width},replaceWidth:function(){var e=parseInt(this.width,10),i=window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth,s=.61*(i-100);if(e<0)this.width="560px",this.iframeWidth=this.width,this.rightColMarginTop="20px",this.iframeHeight="315px",this.divHeight="315px";else if(e>i)this.width="560px",this.iframeWidth=this.width,this.rightColMarginTop="20px",this.iframeHeight="315px",this.divHeight="315px";else if(""==this.width)this.width="560px",this.iframeWidth=this.width,this.rightColMarginTop="20px",this.iframeHeight="315px",this.divHeight="315px";else if(this.width=e+"px",this.iframeWidth=this.width,this.iframeHeight=.5625*e+"px",this.divHeight=.5625*e+"px",e>s){var t=.55*(e-s),n=t+460;this.rightColMarginTop=n+"px"}},changeTime:function(){"End"==this.toggleTimeLabel?this.toggleTimeLabel="Beginning":this.toggleTimeLabel="End"},customTime:function(){event.target.checked?(this.showTime="",this.customTimeOutput="true"):this.showTime="none"},resetTime:function(){this.time="",this.iframeTime=this.time},replaceTime:function(){var e=parseInt(this.time,10);e<0?(this.time="10",this.iframeTime=1e3*this.time):""==this.time?(this.time="10",this.iframeTime=1e3*this.time):this.iframeTime=1e3*this.time},addAnswerFun:function(){"none"==this.answerThreeDisplay?(this.answerThreeDisplay="",this.deleteAnswer=""):""==this.answerThreeDisplay&&(this.answerFourDisplay="",this.addAnswer="none")},deleteAnswerFun:function(){""==this.answerFourDisplay?(this.answerFourDisplay="none",this.addAnswer=""):"none"==this.answerFourDisplay&&(this.answerThreeDisplay="none",this.deleteAnswer="none")},clipBoard:function(){if(void 0==this.emailAddress)this.noEmail="";else if("none"==this.showTime){if("Beginning"==this.toggleTimeLabel){var e="<div id='vv-outer-container' style='height: "+this.divHeight+";'>",i="<div id='vv-iframe-container' style='width: "+this.iframeWidth+";'>",s="<iframe id='vv-iframe' src='"+this.link+"' frameborder='0' webkitallowfullscreen ",t="mozallowfullscreen allowfullscreen style='min-height: "+this.iframeHeight+";'></ifr",n="ame><div id='vv-dissapear-container' style='height: "+this.iframeHeight+";'>",r="<form id='vv-gate-form' style='background-color: "+this.backgroundStyle+";' on",a="submit=\"document.getElementById('vv-dissapear-container').style.display = 'none';\">",o="<p id='vv-intro-text'>"+this.intro+"</p>",h="<p id='vv-question'>"+this.questionText+"</p>",l="<input id='vv-hostEmail' name='vv-hostEmail' value='"+this.emailAddress+"'>",v="<input id='vv-answer1' name='vv-answer1' class='vv-answers' type='submit' ",d="value='"+this.answer1+"' onclick='submitAnswer1()' style='background-color: "+this.answerColor+"'>",u="<input id='vv-answer2' name='vv-answer2' class='vv-answers' type='submit' ",m="value='"+this.answer2+"' onclick='submitAnswer2()' style='background-color: "+this.answerColor+"'>",w="<input id='vv-answer3' name='vv-answer3' class='vv-answers' type='submit' ",p="value='"+this.answer3+"' onclick='submitAnswer3()' style='display: "+this.answerThreeDisplay+" ;",c="background-color: "+this.answerColor+"'>",g="<input id='vv-answer4' name='vv-answer4' class='vv-answers' type='submit' ",y="value='"+this.answer4+"' onclick='submitAnswer4()' style='display: "+this.answerFourDisplay+" ;",f="background-color: "+this.answerColor+"'>",b="<input id='vv-hostEmail' name='vv-hostEmail' value='"+this.emailAddress+"'>",T="<input id='vv-selected-answer' style='display: none;' name='vv-selected-answer' value=''>",A="<input id='vv-possible-answers' style='display: none;' name='vv-possible-answers' value='",k=this.answer1+"-"+this.answer2+"-"+this.answer3+"-"+this.answer4+"'>",x="</form><a href='http://www.getvidvision.com/' target='__blank'>",E="<img id='vv-form-logo' src='http://res.cloudinary.com/hrscywv4p/image/upload/",H="c_limit,h_1440,w_720,f_auto/v1/204930/vidvisionv3_sggpov.png' /></a></div></div></div>",C=e+i+s+t+n+r+a+o+h+l+v+d+u+m+w+p+c+g+y+f+b+T+A+k+x+E+H,H="<link rel='stylesheet' property='stylesheet' ",_="href='https://app.getvidvision.com/hosted-files/video-survey/video-survey.css'>",j=H+_,q="<script src='https://app.getvidvision.com/hosted-files/video-survey/video-survey.js'>",D="< /script>",W="<script src = 'https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js' >",F="< /script>",L=W+F+q+D;this.code=j+C+L}else if("End"==this.toggleTimeLabel){var e="<div id='vv-outer-container' style='height: "+this.divHeight+";'>",i="<div id='vv-iframe-container' style='width: "+this.iframeWidth+";'>",s="<iframe id='vv-iframe' src='"+this.link+"' frameborder='0' webkitallowfullscreen ",t="mozallowfullscreen allowfullscreen style='min-height: "+this.iframeHeight+";'></ifr",n="ame><div id='vv-dissapear-container' style='height: "+this.iframeHeight+"; display: none;'>",r="<form id='vv-gate-form' style='background-color: "+this.backgroundStyle+";' on",a="submit=\"document.getElementById('vv-dissapear-container').style.display = 'none';\">",o="<p id='vv-intro-text'>"+this.intro+"</p>",h="<p id='vv-question'>"+this.questionText+"</p>",l="<input id='vv-hostEmail' name='vv-hostEmail' value='"+this.emailAddress+"'>",v="<input id='vv-answer1' name='vv-answer1' class='vv-answers' type='submit' ",d="value='"+this.answer1+"' onclick='submitAnswer1()' style='background-color: "+this.answerColor+"'>",u="<input id='vv-answer2' name='vv-answer2' class='vv-answers' type='submit' ",m="value='"+this.answer2+"' onclick='submitAnswer2()' style='background-color: "+this.answerColor+"'>",w="<input id='vv-answer3' name='vv-answer3' class='vv-answers' type='submit' ",p="value='"+this.answer3+"' onclick='submitAnswer3()' style='display: "+this.answerThreeDisplay+" ;",c="background-color: "+this.answerColor+"'>",g="<input id='vv-answer4' name='vv-answer4' class='vv-answers' type='submit' ",y="value='"+this.answer4+"' onclick='submitAnswer4()' style='display: "+this.answerFourDisplay+" ;",f="background-color: "+this.answerColor+"'>",b="<input id='vv-hostEmail' name='vv-hostEmail' value='"+this.emailAddress+"'>",T="<input id='vv-selected-answer' style='display: none;' name='vv-selected-answer' value=''>",A="<input id='vv-possible-answers' style='display: none;' name='vv-possible-answers' value='",k=this.answer1+"-"+this.answer2+"-"+this.answer3+"-"+this.answer4+"'>",x="</form><a href='http://www.getvidvision.com/' target='__blank'>",E="<img id='vv-form-logo' src='http://res.cloudinary.com/hrscywv4p/image/upload/",H="c_limit,h_1440,w_720,f_auto/v1/204930/vidvisionv3_sggpov.png' /></a></div></div></div>",C=e+i+s+t+n+r+a+o+h+l+v+d+u+m+w+p+c+g+y+f+b+T+A+k+x+E+H,H="<link rel='stylesheet' property='stylesheet' ",_="href='https://app.getvidvision.com/hosted-files/video-survey/video-survey.css'>",j=H+_,q="<script src='https://app.getvidvision.com/hosted-files/video-survey/video-survey-end.js'>",D="< /script>",W="<script src = 'https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js' >",F="< /script>",L=W+F+q+D;this.code=j+C+L}}else if("true"==this.customTimeOutput){var e="<div id='vv-outer-container' style='height: "+this.divHeight+";'>",i="<div id='vv-iframe-container' style='width: "+this.iframeWidth+";'>",s="<iframe id='vv-iframe' src='"+this.link+"' frameborder='0' webkitallowfullscreen ",t="mozallowfullscreen allowfullscreen style='min-height: "+this.iframeHeight+";'></ifr",n="ame><div id='vv-dissapear-container' style='height: "+this.iframeHeight+"; display: none;'>",r="<form id='vv-gate-form' style='background-color: "+this.backgroundStyle+";' on",a="submit=\"document.getElementById('vv-dissapear-container').style.display = 'none';\">",o="<p id='vv-intro-text'>"+this.intro+"</p>",h="<p id='vv-question'>"+this.questionText+"</p>",l="<input id='vv-hostEmail' name='vv-hostEmail' value='"+this.emailAddress+"'>",v="<input id='vv-answer1' name='vv-answer1' class='vv-answers' type='submit' ",d="value='"+this.answer1+"' onclick='submitAnswer1()' style='background-color: "+this.answerColor+"'>",u="<input id='vv-answer2' name='vv-answer2' class='vv-answers' type='submit' ",m="value='"+this.answer2+"' onclick='submitAnswer2()' style='background-color: "+this.answerColor+"'>",w="<input id='vv-answer3' name='vv-answer3' class='vv-answers' type='submit' ",p="value='"+this.answer3+"' onclick='submitAnswer3()' style='display: "+this.answerThreeDisplay+" ;",c="background-color: "+this.answerColor+"'>",g="<input id='vv-answer4' name='vv-answer4' class='vv-answers' type='submit' ",y="value='"+this.answer4+"' onclick='submitAnswer4()' style='display: "+this.answerFourDisplay+" ;",f="background-color: "+this.answerColor+"'>",b="<input id='vv-hostEmail' name='vv-hostEmail' value='"+this.emailAddress+"'>",T="<input id='vv-selected-answer' style='display: none;' name='vv-selected-answer' value=''>",A="<input id='vv-possible-answers' style='display: none;' name='vv-possible-answers' value='",k=this.answer1+"-"+this.answer2+"-"+this.answer3+"-"+this.answer4+"'>",x="</form><a href='http://www.getvidvision.com/' target='__blank'>",E="<img id='vv-form-logo' src='http://res.cloudinary.com/hrscywv4p/image/upload/",H="c_limit,h_1440,w_720,f_auto/v1/204930/vidvisionv3_sggpov.png' /></a></div></div></div>",C=e+i+s+t+n+r+a+o+h+l+v+d+u+m+w+p+c+g+y+f+b+T+A+k+x+E+H,H="<link rel='stylesheet' property='stylesheet' ",_="href='https://app.getvidvision.com/hosted-files/video-survey/video-survey.css'>",j=H+_,q="<script src='https://app.getvidvision.com/hosted-files/video-survey/video-survey-custom.js'>",D="< /script>< /script><script>var popUpTime = "+this.iframeTime+";< /script>",W="<script src = 'https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js' >",F="< /script>",L=W+F+q+D;this.code=j+C+L}},ready:function(){this.intro="Survey",this.questionText="Question",this.buttonText="Submit",this.inputText="Email Address",this.backgroundStyle="rgba(0,0,0,0.7)",this.buttonColor="#78caff",this.toggleLabel="Responsive",this.showMeasurements="none",this.width="560px",this.rightColMarginTop="20px",this.iframeHeight="100%",this.divHeight="",this.answerColor="#78caff",this.answerThreeDisplay="none",this.answerFourDisplay="none",this.addAnswer="",this.deleteAnswer="none",this.answer1="Answer 1",this.answer2="Answer 2",this.answer3="Answer 3",this.answer4="Answer 4",this.noEmail="none",this.selection="beginning",this.toggleTimeLabel="Beginning",this.showTime="none",this.time=10,this.iframeTime=1e4,this.customTimeOutput="false"}});</script>
+</dom-module>
+</body></html>

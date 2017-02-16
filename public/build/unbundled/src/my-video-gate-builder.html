@@ -1,0 +1,136 @@
+<html><head><link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../bower_components/paper-toggle-button/paper-toggle-button.html">
+<link rel="import" href="../bower_components/paper-swatch-picker/paper-swatch-picker.html">
+<link rel="import" href="../bower_components/paper-radio-button/paper-radio-button.html">
+<link rel="import" href="../bower_components/paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-auth.html">
+<link rel="import" href="shared-styles.html">
+
+</head><body><dom-module id="my-video-gate-builder">
+  <link rel="import" type="css" href="css/video-gate-builder.css">
+  <template>
+  <style>
+  [hidden] {
+        display: none !important;
+      } 
+  </style>
+    <firebase-auth id="auth" user="{{user}}" status-known="{{statusKnown}}" location="https://vidvission.firebaseio.com" provider="{{provider}}" on-error="errorHandler" on-user-created="userSuccessHandler" on-password-changed="userSuccessHandler" on-password-reset="userSuccessHandler" on-user-removed="userSuccessHandler"></firebase-auth>
+
+    <div id="fullInfo" hidden$="[[hidden]]">
+    <div id="topInfo">
+    <paper-icon-button on-tap="hideInfo" id="upArrow" icon="icons:clear"></paper-icon-button>
+      <div id="infoLeft">
+        <div class="infoPadding">
+          <h2>Welcome to our video gate builder!</h2>
+          <p><strong>Step #1</strong><br>
+          Paste the link to your Vimeo / YouTube video and submit.</p>
+          <p><strong>Step #2</strong><br>
+          Customize the text and colors of your video-gate tool using the inputs below.</p>
+          <p><strong>Step #3</strong><br>
+          Embed the generated code on your website and start generating email leads.</p>
+        </div>
+      </div>
+      <div id="infoRight">
+        <div class="infoPadding">
+          <h2>Here is what it will look like.</h2>
+          <img id="videoGate" src="../images/video-gate.PNG">
+        </div>
+      </div>
+    </div>
+    </div>
+
+    
+    <div class="container">
+
+    <div class="col-xs-12 col-sm-8">
+
+      <div class="options">
+        <label class="mainLabels" id="iframeLabel" for="link">Insert link to your video</label>
+        <input class="inputVideo" type="text" name="link" id="link" value="{{link::input}}">
+        <button class="buttons" type="button" on-tap="changeLink">Submit</button>
+      </div>
+
+      <label class="mainLabels" for="iframe">Preview below:</label>
+      <div class="outer" style$="width: {{iframeWidth}};">
+
+        <div class="myIframe">
+          <iframe id="myIframe" src="{{link}}" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>
+
+          <div id="dissapear" class="inner">
+            <form id="form" name="installer" style$="background: {{backgroundStyle}}; display: {{hideForm}};">
+              <p id="introText">{{intro}}</p>
+              <input id="email" class="inputIframe" type="email" name="email" placeholder="{{inputText}}">
+              <input id="submit" on-tap="showHide" value="{{buttonText}}" style$="background: {{buttonColor}};">
+              <div id="skipEmail" style$="display: {{onOff}};" type="button" on-tap="showHide">Skip Form</div>
+            </form>
+            <a href="http://www.getvidvision.com/" target="__blank"><img id="iframeLogo" src="../images/logo_blue.png"></a>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="col-xs-12 col-sm-4">
+
+      <div hidden$="{{compute(hiddenTime)}}">
+      <label class="mainLabels" style$="margin-top: {{rightColMarginTop}}" for="videoEditor">Iframe timing</label>
+      <paper-toggle-button on-change="changeTime">{{toggleTimeLabel}}</paper-toggle-button>
+      <paper-radio-button id="customTimeValue" on-tap="customTime">Custom Time</paper-radio-button>
+      <label class="labels" for="width" style="display: {{showTime}}">Seconds</label>
+      <input id="time" name="time" class="inputStyles" style="display: {{showTime}}" type="text" value="{{time::input}}" on-focus="resetTime" on-blur="replaceTime">
+      </div>
+
+      <label class="mainLabels" for="videoEditor">Iframe sizing</label>
+      <paper-toggle-button on-change="changeLabel">{{toggleLabel}}</paper-toggle-button>
+      <label class="labels" for="width" style="display: {{showMeasurements}}">Width</label>
+      <input id="width" name="width" class="inputStyles" style="display: {{showMeasurements}}" type="text" value="{{width::input}}" on-focus="resetWidth" on-blur="replaceWidth">
+
+      <label class="mainLabels" for="videoEditor">Text and colors</label>
+      <label class="labels" for="introText">Intro Text</label>
+      <input id="intro" name="intro" class="inputStyles" type="text" on-focus="resetIntro" on-blur="replaceIntro" value="{{intro::input}}">
+      <label class="labels" for="buttonText">Button Text</label>
+      <input id="buttonText" name="buttonText" class="inputStyles" type="text" on-focus="resetButton" on-blur="replaceButton" value="{{buttonText::input}}">
+      <label class="labels" for="inputText">Input Text</label>
+      <input id="inputText" name="inputText" class="inputStyles" type="text" on-focus="resetInput" on-blur="replaceInput" value="{{inputText::input}}">
+      <br>
+
+      <label class="labelsColor" for="color">Background Color</label>
+      <paper-swatch-picker color="{{backgroundStyle}}"></paper-swatch-picker>
+      <label class="labelsColor labelButton" for="buttonColor">Button Color</label>
+      <paper-swatch-picker color="{{buttonColor}}"></paper-swatch-picker>
+      <br>
+
+      <paper-checkbox on-change="hideSkip"></paper-checkbox>
+      <label class="labelSkip" for="skipBox">Hide Skip Option</label>
+
+      <div id="surveyText">
+      <a id="surveyButton" href="/video-survey-builder">Try out our new survey builder!</a>
+    </div>
+
+    </div>
+
+    <div class="col-sm-8">
+      <label class="mainLabels">Finished customizing?</label>
+      <label class="labels" for="hostEmail">Enter your email address so that we can send you your leads.</label>
+      <input id="emailAddress" name="emailAddress" type="email" value="{{emailAddress::input}}">
+      <button id="generateCode" on-tap="clipBoard">Generate code</button>
+      <p class="info" id="noEmail" style="display: {{noEmail}}">*Your email is needed in order to send you any leads your video generates.</p>
+      <textarea id="codeString">{{code}}</textarea>
+      <p class="comments">Embed this HTML code anywhere on your website the same way you would a YouTube video. Feel free to wrap it in a container of your desired size.</p>
+    </div>
+
+  </div>
+  
+  </template>
+
+  <script>Polymer({is:"my-video-gate-builder",Properties:{message:{type:String,value:""},email:{type:String,value:""},password:{type:String,value:""},user:{type:Object,value:null},statusKnown:{type:Boolean},hidden:{type:Boolean,value:!0},hiddenTime:{type:Boolean,value:!0},hiddenCustomTime:{type:Boolean,value:!0}},hideInfo:function(){this.hidden=!this.hidden,this.dropdownMargin=""},computeLoginHidden:function(i,t){return!i||!!t},computeLogoutHidden:function(i,t){return!i||!t},computeLoginStatus:function(i,t){return i&&t?"Logged in":i?"Logged out":"Unknown (checking status...)"},compute:function(){return console.log("computing..."),this.hiddenTime},changeLink:function(){var i=this.link,t="?enablejsapi=1";if("https://www.youtube.com/watch?v="==i.substring(0,32)){var e=i.substring(32),s="https://www.youtube.com/embed/"+e+t;this.link=s}else if("https://vimeo.com/"==i.substring(0,18)){var e=i.substring(18),s="https://player.vimeo.com/video/"+e;this.link=s,this.toggleTimeLabel="Beginning",this.hiddenTime=!this.hiddenTime}},hideSkip:function(){event.target.checked?this.onOff="none":this.onOff=""},showHide:function(){this.hideForm="none"},resetIntro:function(){"Please enter your email in order to watch video."==this.intro&&(this.intro="")},replaceIntro:function(){""==this.intro&&(this.intro="Please enter your email in order to watch video.")},resetButton:function(){"Submit"==this.buttonText&&(this.buttonText="")},replaceButton:function(){""==this.buttonText&&(this.buttonText="Submit")},resetInput:function(){"Email Address"==this.inputText&&(this.inputText="")},replaceInput:function(){""==this.inputText&&(this.inputText="Email Address")},changeLabel:function(){"Custom"==this.toggleLabel?(this.toggleLabel="Responsive",this.showMeasurements="none",this.iframeWidth="100%",this.iframeHeight="100%",this.divHeight="",this.rightColMarginTop="20px"):(this.toggleLabel="Custom",this.showMeasurements="",this.iframeWidth=this.width,this.iframeHeight="315px",this.divHeight="315px")},changeTime:function(){"End"==this.toggleTimeLabel?this.toggleTimeLabel="Beginning":this.toggleTimeLabel="End"},customTime:function(){event.target.checked?(this.showTime="",this.customTimeOutput="true"):this.showTime="none"},resetTime:function(){this.time="",this.iframeTime=this.time},replaceTime:function(){var i=parseInt(this.time,10);i<0?(this.time="10",this.iframeTime=1e3*this.time):""==this.time?(this.time="10",this.iframeTime=1e3*this.time):this.iframeTime=1e3*this.time},resetWidth:function(){this.width="",this.iframeWidth=this.width},replaceWidth:function(){var i=parseInt(this.width,10),t=window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth,e=.61*(t-100);if(i<0)this.width="560px",this.iframeWidth=this.width,this.rightColMarginTop="20px",this.iframeHeight="315px",this.divHeight="315px";else if(i>t)this.width="560px",this.iframeWidth=this.width,this.rightColMarginTop="20px",this.iframeHeight="315px",this.divHeight="315px";else if(""==this.width)this.width="560px",this.iframeWidth=this.width,this.rightColMarginTop="20px",this.iframeHeight="315px",this.divHeight="315px";else if(this.width=i+"px",this.iframeWidth=this.width,this.iframeHeight=.5625*i+"px",this.divHeight=.5625*i+"px",i>e){var s=.55*(i-e),o=s+460;this.rightColMarginTop=o+"px"}},clipBoard:function(){if(void 0==this.emailAddress)this.noEmail="";else if("none"==this.showTime){if("Beginning"==this.toggleTimeLabel){var i="<div id='vv-outer-container' style='height: "+this.divHeight+";'>",t="<div id='vv-iframe-container' style='width: "+this.iframeWidth+";'>",e="<iframe src='"+this.link+"' frameborder='0' webkitallowfullscreen ",s="mozallowfullscreen allowfullscreen style='min-height: "+this.iframeHeight+";'></ifr",o="ame><div id='vv-dissapear-container' style='height: "+this.iframeHeight+";'>",n="<form id='vv-gate-form' style='background-color: "+this.backgroundStyle+";' on",h="submit=\"document.getElementById('vv-dissapear-container').style.display = 'none';\">",a="<div id='vv-intro-text'>"+this.intro+"</div>",r="<input id='vv-hostEmail' name='vv-hostEmail' value='"+this.emailAddress+"'>",d="<input id='vv-email' type='email' name='vv-email' required ",l="placeholder='"+this.inputText+"'/>",m="<input id='vv-submit-btn' type='submit' value='"+this.buttonText+"' nam",v="e='vv-submit-btn' style='background-color: "+this.buttonColor+";'/>",p="<div id='vv-skip-btn' type='button' style='display: "+this.onOff+";' on",u="click=\"document.getElementById('vv-dissapear-container').style.display = 'none';\">",c="Skip Form</div>",g="</form><a href='http://www.getvidvision.com/' target='__blank'>",f="<img id='vv-form-logo' src='http://res.cloudinary.com/hrscywv4p/image/upload/",y="c_limit,h_1440,w_720,f_auto/v1/204930/vidvisionv3_sggpov.png' /></a></div></div></div>",b=i+t+e+s+o+n+h+a+r+d+l+m+v+p+u+c+g+f+y,w="<link rel='stylesheet' property='stylesheet' ",T="href='https://app.getvidvision.com/hosted-files/video-gate/video-gate.css'>",x=w+T,k="<script src='https://app.getvidvision.com/hosted-files/video-gate/video-gate.js'>",H="< /script>",E="<script src = 'https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js' >",_="< /script>",j=E+_+k+H;this.code=x+b+j}else if("End"==this.toggleTimeLabel){var i="<div id='vv-outer-container' style='height: "+this.divHeight+";'>",t="<div id='vv-iframe-container' style='width: "+this.iframeWidth+";'>",e="<iframe id='vv-iframe' src='"+this.link+"' frameborder='0' webkitallowfullscreen ",s="mozallowfullscreen allowfullscreen style='min-height: "+this.iframeHeight+";'></ifr",o="ame><div id='vv-dissapear-container' style='height: "+this.iframeHeight+"; disp",L="lay: none;'>",n="<form id='vv-gate-form' style='background-color: "+this.backgroundStyle+";' on",h="submit=\"document.getElementById('vv-dissapear-container').style.display = 'none'; ",B='player.playVideo();">',a="<div id='vv-intro-text'>"+this.intro+"</div>",r="<input id='vv-hostEmail' name='vv-hostEmail' value='"+this.emailAddress+"'>",d="<input id='vv-email' type='email' name='vv-email' required ",l="placeholder='"+this.inputText+"'/>",m="<input id='vv-submit-btn' type='submit' value='"+this.buttonText+"' nam",v="e='vv-submit-btn' style='background-color: "+this.buttonColor+";'/>",p="<div id='vv-skip-btn' type='button' style='display: "+this.onOff+";' on",u="click=\"document.getElementById('vv-dissapear-container').style.display = 'none'; ",c='player.playVideo();">Skip Form</div>',g="</form><a href='http://www.getvidvision.com/' target='__blank'>",f="<img id='vv-form-logo' src='http://res.cloudinary.com/hrscywv4p/image/upload/",y="c_limit,h_1440,w_720,f_auto/v1/204930/vidvisionv3_sggpov.png' /></a></div></div></div>",b=i+t+e+s+o+L+n+h+B+a+r+d+l+m+v+p+u+c+g+f+y,w="<link rel='stylesheet' property='stylesheet' ",T="href='https://app.getvidvision.com/hosted-files/video-gate/video-gate-end.css'>",x=w+T,k="<script src='https://app.getvidvision.com/hosted-files/video-gate/video-gate-end.js'>",H="< /script>",E="<script src = 'https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js' >",_="< /script>",j=E+_+k+H;this.code=x+b+j}}else if("true"==this.customTimeOutput){var i="<div id='vv-outer-container' style='height: "+this.divHeight+";'>",t="<div id='vv-iframe-container' style='width: "+this.iframeWidth+";'>",e="<iframe id='vv-iframe' src='"+this.link+"' frameborder='0' webkitallowfullscreen ",s="mozallowfullscreen allowfullscreen style='min-height: "+this.iframeHeight+";'></ifr",o="ame><div id='vv-dissapear-container' style='height: "+this.iframeHeight+"; disp",L="lay: none;'>",n="<form id='vv-gate-form' style='background-color: "+this.backgroundStyle+";' on",h="submit=\"document.getElementById('vv-dissapear-container').style.display = 'none'; ",B='player.playVideo();">',a="<div id='vv-intro-text'>"+this.intro+"</div>",r="<input id='vv-hostEmail' name='vv-hostEmail' value='"+this.emailAddress+"'>",d="<input id='vv-email' type='email' name='vv-email' required ",l="placeholder='"+this.inputText+"'/>",m="<input id='vv-submit-btn' type='submit' value='"+this.buttonText+"' nam",v="e='vv-submit-btn' style='background-color: "+this.buttonColor+";'/>",p="<div id='vv-skip-btn' type='button' style='display: "+this.onOff+";' on",u="click=\"document.getElementById('vv-dissapear-container').style.display = 'none'; ",c='player.playVideo();">Skip Form</div>',g="</form><a href='http://www.getvidvision.com/' target='__blank'>",f="<img id='vv-form-logo' src='http://res.cloudinary.com/hrscywv4p/image/upload/",y="c_limit,h_1440,w_720,f_auto/v1/204930/vidvisionv3_sggpov.png' /></a></div></div></div>",b=i+t+e+s+o+L+n+h+B+a+r+d+l+m+v+p+u+c+g+f+y,w="<link rel='stylesheet' property='stylesheet' ",T="href='https://app.getvidvision.com/hosted-files/video-gate/video-gate-end.css'>",x=w+T,k="<script src='https://app.getvidvision.com/hosted-files/video-gate/video-gate-cust",H="om.js'>< /script><script>var popUpTime = "+this.iframeTime+";< /script>",E="<script src = 'https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js' >",_="< /script>",j=E+_+k+H;this.code=x+b+j}},ready:function(){this.intro="Please enter your email in order to watch video.",this.buttonText="Submit",this.inputText="Email Address",this.backgroundStyle="rgba(0,0,0,0.7)",this.buttonColor="#78caff",this.toggleLabel="Responsive",this.showMeasurements="none",this.width="560px",this.rightColMarginTop="20px",this.iframeHeight="100%",this.divHeight="",this.noEmail="none",this.dropdownMargin="300px",this.infoToggle="",this.infoToggle2="none",this.selection="beginning",this.toggleTimeLabel="Beginning",this.showTime="none",this.time=10,this.iframeTime=1e4,this.customTimeOutput="false"}});</script>
+</dom-module>
+</body></html>

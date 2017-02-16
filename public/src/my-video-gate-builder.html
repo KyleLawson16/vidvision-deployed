@@ -25,7 +25,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <dom-module id="my-video-gate-builder">
   <link rel="import" type="css" href="css/video-gate-builder.css">
   <template>
-
+  <style>
+  [hidden] {
+        display: none !important;
+      } 
+  </style>
     <firebase-auth id="auth" user="{{user}}" status-known="{{statusKnown}}" location="https://vidvission.firebaseio.com" provider="{{provider}}" on-error="errorHandler" on-user-created="userSuccessHandler" on-password-changed="userSuccessHandler" on-password-reset="userSuccessHandler" on-user-removed="userSuccessHandler"></firebase-auth>
 
     <div id="fullInfo" hidden$="[[hidden]]">
@@ -89,6 +93,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <div hidden$="{{compute(hiddenTime)}}">
       <label class="mainLabels" style$="margin-top: {{rightColMarginTop}}" for="videoEditor">Iframe timing</label>
       <paper-toggle-button on-change="changeTime">{{toggleTimeLabel}}</paper-toggle-button>
+      <paper-radio-button id="customTimeValue" on-tap="customTime">Custom Time</paper-radio-button>
       <label class="labels" for="width" style="display: {{showTime}}">Seconds</label>
       <input id="time" name="time" class="inputStyles" style="display: {{showTime}}" type="text" value="{{time::input}}" on-focus="resetTime" on-blur="replaceTime">
       </div>
@@ -115,6 +120,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       <paper-checkbox on-change="hideSkip"></paper-checkbox>
       <label class="labelSkip" for="skipBox">Hide Skip Option</label>
+
+      <div id="surveyText">
+      <a id="surveyButton" href="/video-survey-builder">Try out our new survey builder!</a>
+    </div>
 
     </div>
 
@@ -163,6 +172,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: Boolean,
           value: true
         },
+        hiddenCustomTime: {
+          type: Boolean,
+          value: true
+        },
       },
       //logout: function() {
       //  this.$.auth.signOut();
@@ -191,9 +204,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return 'Unknown (checking status...)';
       },
       compute: function() {
-                console.log("computing...");
-                return this.hiddenTime;
-            },
+        console.log("computing...");
+        return this.hiddenTime;
+        return this.hiddenCustomTime;
+      },
       changeLink: function () {
         var url = this.link;
         var api = "?enablejsapi=1";
@@ -270,13 +284,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
       changeTime: function () {
-        if (this.toggleTimeLabel == "Custom") {
-          this.showTime = "none";
+        if (this.toggleTimeLabel == "End") {
           this.toggleTimeLabel = "Beginning";
         }
         else {
-          this.toggleTimeLabel = "Custom";
+          this.toggleTimeLabel = "End";
+        }
+      },
+      customTime: function () {
+        if (event.target.checked) {
           this.showTime = "";
+          this.customTimeOutput = "true";
+        }
+        else {
+          this.showTime = "none";
         }
       },
       resetTime: function () {
@@ -348,7 +369,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.noEmail = "";
         }
         else {
-          if (this.toggleTimeLabel == "Beginning") {
+          if (this.showTime == "none") {
+            if (this.toggleTimeLabel == "Beginning") {
         var a = "<div id='vv-outer-container' style='height: " + this.divHeight + ";'>";
         var b = "<div id='vv-iframe-container' style='width: " + this.iframeWidth + ";'>";
         var c = "<iframe src='" + this.link + "' frameborder='0' webkitallowfullscreen ";
@@ -377,9 +399,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var x = "<script src = 'https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js' >";
         var y = "< \/scr" + "ipt>";
         var script = x+y+v+w;
-        this.code = css + script + html;
-          }
-          else if (this.toggleTimeLabel == "Custom") {
+        this.code = css + html + script;
+            }
+            else if (this.toggleTimeLabel == "End") {
         var a = "<div id='vv-outer-container' style='height: " + this.divHeight + ";'>";
         var b = "<div id='vv-iframe-container' style='width: " + this.iframeWidth + ";'>";
         var c = "<iframe id='vv-iframe' src='" + this.link + "' frameborder='0' webkitallowfullscreen ";
@@ -387,7 +409,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var e = "ame><div id='vv-dissapear-container' style='height: " + this.iframeHeight + "; disp";
         var ee = "lay: none;'>";
         var f = "<form id='vv-gate-form' style='background-color: " + this.backgroundStyle + ";' on";
-        var g = "submit=\"document.getElementById('vv-dissapear-container').style.display = 'none';\">";
+        var g = "submit=\"document.getElementById('vv-dissapear-container').style.display = 'none'; ";
+        var gg = "player.playVideo();\">";
         var h = "<div id='vv-intro-text'>" + this.intro + "</div>";
         var i = "<input id='vv-hostEmail' name='vv-hostEmail' value='" + this.emailAddress + "'>";
         var j = "<input id='vv-email' type='email' name='vv-email' required ";
@@ -395,21 +418,55 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var l = "<input id='vv-submit-btn' type='submit' value='" + this.buttonText + "' nam";
         var m = "e='vv-submit-btn' style='background-color: " + this.buttonColor + ";'/>";
         var n = "<div id='vv-skip-btn' type='button' style='display: " + this.onOff + ";' on";
-        var o = "click=\"document.getElementById('vv-dissapear-container').style.display = 'none';\">";
-        var oo = "Skip Form</div>";
+        var o = "click=\"document.getElementById('vv-dissapear-container').style.display = 'none'; ";
+        var oo = "player.playVideo();\">Skip Form</div>";
         var p = "</form><a href='http://www.getvidvision.com/' target='__blank'>";
         var q = "<img id='vv-form-logo' src='http://res.cloudinary.com/hrscywv4p/image/upload/";
         var s = "c_limit,h_1440,w_720,f_auto/v1/204930/vidvisionv3_sggpov.png' /></a></div></div></div>";
-        var html = a+b+c+d+e+ee+f+g+h+i+j+k+l+m+n+o+oo+p+q+s;
+        var html = a+b+c+d+e+ee+f+g+gg+h+i+j+k+l+m+n+o+oo+p+q+s;
         var t = "<link rel='stylesheet' property='stylesheet' ";
         var u = "href='https://app.getvidvision.com/hosted-files/video-gate/video-gate-end.css'>";
         var css = t+u;
         var v = "<script src='https://app.getvidvision.com/hosted-files/video-gate/video-gate-end.js'>";
-        var w = "< \/scr" + "ipt><script>var popUpTime = " + this.iframeTime + ";< \/scr" + "ipt>";
+        var w = "< \/scr" + "ipt>";
         var x = "<script src = 'https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js' >";
         var y = "< \/scr" + "ipt>";
         var script = x+y+v+w;
-        this.code = css + script + html;
+        this.code = css + html + script;
+            }
+          }
+          else if (this.customTimeOutput == "true") {
+        var a = "<div id='vv-outer-container' style='height: " + this.divHeight + ";'>";
+        var b = "<div id='vv-iframe-container' style='width: " + this.iframeWidth + ";'>";
+        var c = "<iframe id='vv-iframe' src='" + this.link + "' frameborder='0' webkitallowfullscreen ";
+        var d = "mozallowfullscreen allowfullscreen style='min-height: " + this.iframeHeight + ";'></ifr";
+        var e = "ame><div id='vv-dissapear-container' style='height: " + this.iframeHeight + "; disp";
+        var ee = "lay: none;'>";
+        var f = "<form id='vv-gate-form' style='background-color: " + this.backgroundStyle + ";' on";
+        var g = "submit=\"document.getElementById('vv-dissapear-container').style.display = 'none'; ";
+        var gg = "player.playVideo();\">";
+        var h = "<div id='vv-intro-text'>" + this.intro + "</div>";
+        var i = "<input id='vv-hostEmail' name='vv-hostEmail' value='" + this.emailAddress + "'>";
+        var j = "<input id='vv-email' type='email' name='vv-email' required ";
+        var k = "placeholder='" + this.inputText + "'/>";
+        var l = "<input id='vv-submit-btn' type='submit' value='" + this.buttonText + "' nam";
+        var m = "e='vv-submit-btn' style='background-color: " + this.buttonColor + ";'/>";
+        var n = "<div id='vv-skip-btn' type='button' style='display: " + this.onOff + ";' on";
+        var o = "click=\"document.getElementById('vv-dissapear-container').style.display = 'none'; ";
+        var oo = "player.playVideo();\">Skip Form</div>";
+        var p = "</form><a href='http://www.getvidvision.com/' target='__blank'>";
+        var q = "<img id='vv-form-logo' src='http://res.cloudinary.com/hrscywv4p/image/upload/";
+        var s = "c_limit,h_1440,w_720,f_auto/v1/204930/vidvisionv3_sggpov.png' /></a></div></div></div>";
+        var html = a+b+c+d+e+ee+f+g+gg+h+i+j+k+l+m+n+o+oo+p+q+s;
+        var t = "<link rel='stylesheet' property='stylesheet' ";
+        var u = "href='https://app.getvidvision.com/hosted-files/video-gate/video-gate-end.css'>";
+        var css = t+u;
+        var v = "<script src='https://app.getvidvision.com/hosted-files/video-gate/video-gate-cust";
+        var w = "om.js'>< \/scr" + "ipt><script>var popUpTime = " + this.iframeTime + ";< \/script>";
+        var x = "<script src = 'https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js' >";
+        var y = "< \/scr" + "ipt>";
+        var script = x+y+v+w;
+        this.code = css + html + script;
           }
         }
       },
@@ -434,6 +491,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.showTime = "none";
         this.time = 10;
         this.iframeTime = 10000;
+        this.customTimeOutput = "false";
       },
     });
   </script>

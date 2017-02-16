@@ -43,12 +43,7 @@ var tag = document.createElement('script');
   
   var done = false;
 function onPlayerStateChange(event) {
-  if (event.data == YT.PlayerState.PLAYING && !done) {
-    setTimeout(pauseVideo, popUpTime);
-    done = true;
+  if (event.data == YT.PlayerState.ENDED) {
+    document.getElementById('vv-dissapear-container').style.display = '';
   }
-}
-function pauseVideo() {
-  player.pauseVideo();
-  document.getElementById('vv-dissapear-container').style.display = '';
 }
