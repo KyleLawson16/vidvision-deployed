@@ -61,7 +61,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <div class="col-xs-12 col-sm-8">
 
       <div class="options">
-        <label class="mainLabels" id="iframeLabel" for="link">Insert link to your video</label>
+        <label class="mainLabels" id="iframeLabel" for="link">Insert and submit the url of your video</label>
         <input class="inputVideo" type="text" name="link" id="link" value="{{link::input}}">
         <button class="buttons" type="button" on-tap="changeLink">Submit</button>
       </div>
@@ -75,7 +75,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <div id="dissapear" class="inner">
             <form id="form" name="installer" style$="background: {{backgroundStyle}}; display: {{hideForm}};">
               <p id="introText">{{intro}}</p>
-              <input id="email" class="inputIframe" type="email" name="email" placeholder="{{inputText}}"/>
+              <input id="email" class="inputIframe" type="email" name="email" placeholder="Email Address"/>
               <input id="submit" on-tap="showHide" value="{{buttonText}}" style$="background: {{buttonColor}};"/>
               <div id="skipEmail" style$="display: {{onOff}};" type="button" on-tap="showHide">Skip Form</div>
             </form>
@@ -91,25 +91,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <div class="col-xs-12 col-sm-4">
 
       <div hidden$="{{compute(hiddenTime)}}">
-      <label class="mainLabels" style$="margin-top: {{rightColMarginTop}}" for="videoEditor">Iframe timing</label>
+      <label class="mainLabels" style$="margin-top: {{rightColMarginTop}}" for="videoEditor">When would you like the gate to appear?</label>
       <paper-toggle-button on-change="changeTime">{{toggleTimeLabel}}</paper-toggle-button>
       <paper-radio-button id="customTimeValue" on-tap="customTime">Custom Time</paper-radio-button>
       <label class="labels" for="width" style="display: {{showTime}}">Seconds</label>
       <input id="time" name="time" class="inputStyles" style="display: {{showTime}}" type="text" value="{{time::input}}" on-focus="resetTime" on-blur="replaceTime">
       </div>
 
-      <label class="mainLabels" for="videoEditor">Iframe sizing</label>
+      <label class="mainLabels" for="videoEditor">Would you like the size to be responsive?</label>
       <paper-toggle-button on-change="changeLabel">{{toggleLabel}}</paper-toggle-button>
-      <label class="labels" for="width" style="display: {{showMeasurements}}">Width</label>
+      <label class="labels" for="width" style="display: {{showMeasurements}}">Choose a custom width</label>
       <input id="width" name="width" class="inputStyles" style="display: {{showMeasurements}}" type="text" value="{{width::input}}" on-focus="resetWidth" on-blur="replaceWidth">
 
-      <label class="mainLabels" for="videoEditor">Text and colors</label>
+      <label class="mainLabels" for="videoEditor">Customize the form's text and colors</label>
       <label class="labels" for="introText">Intro Text</label>
       <input id="intro" name="intro" class="inputStyles" type="text" on-focus="resetIntro" on-blur="replaceIntro" value="{{intro::input}}">
-      <label class="labels" for="buttonText">Button Text</label>
+      <label class="labels" for="buttonText">Button Label</label>
       <input id="buttonText" name="buttonText" class="inputStyles" type="text" on-focus="resetButton" on-blur="replaceButton" value="{{buttonText::input}}">
-      <label class="labels" for="inputText">Input Text</label>
-      <input id="inputText" name="inputText" class="inputStyles" type="text" on-focus="resetInput" on-blur="replaceInput" value="{{inputText::input}}">
       <br />
 
       <label class="labelsColor" for="color">Background Color</label>
@@ -119,7 +117,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <br />
 
       <paper-checkbox on-change="hideSkip"></paper-checkbox>
-      <label class="labelSkip" for="skipBox">Hide Skip Option</label>
+      <label class="labelSkip" for="skipBox">Allow viewers to skip entering their email?</label>
 
       <div id="surveyText">
       <a id="surveyButton" href="/video-survey-builder">Try out our new survey builder!</a>
@@ -129,7 +127,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <div class="col-sm-8">
       <label class="mainLabels">Finished customizing?</label>
-      <label class="labels" for="hostEmail">Enter your email address so that we can send you your leads.</label>
+      <label class="labels" for="hostEmail">Enter your email address so that we can send you your leads</label>
       <input id="emailAddress" name="emailAddress" type="email" value="{{emailAddress::input}}">
       <button id="generateCode" on-tap="clipBoard">Generate code</button>
       <p class="info" id="noEmail" style="display: {{noEmail}}">*Your email is needed in order to send you any leads your video generates.</p>
@@ -227,10 +225,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       hideSkip: function () {
         if (event.target.checked) {
-          this.onOff = "none";
+          this.onOff = "";
         }
         else {
-          this.onOff = "";
+          this.onOff = "none";
         }
       },
       showHide: function () {
@@ -256,19 +254,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.buttonText = "Submit";
         }
       },
-      resetInput: function () {
-        if (this.inputText == "Email Address") {
-          this.inputText = "";
-        }
-      },
-      replaceInput: function () {
-        if (this.inputText == "") {
-          this.inputText = "Email Address";
-        }
-      },
       changeLabel: function () {
-        if (this.toggleLabel == "Custom") {
-          this.toggleLabel = "Responsive";
+        if (this.toggleLabel == "No") {
+          this.toggleLabel = "Yes";
           this.showMeasurements = "none";
           this.iframeWidth = "100%";
           this.iframeHeight = "100%";
@@ -276,7 +264,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.rightColMarginTop = "20px";
         }
         else {
-          this.toggleLabel = "Custom";
+          this.toggleLabel = "No";
           this.showMeasurements = "";
           this.iframeWidth = this.width;
           this.iframeHeight = "315px";
@@ -381,7 +369,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var h = "<div id='vv-intro-text'>" + this.intro + "</div>";
         var i = "<input id='vv-hostEmail' name='vv-hostEmail' value='" + this.emailAddress + "'>";
         var j = "<input id='vv-email' type='email' name='vv-email' required ";
-        var k = "placeholder='" + this.inputText + "'/>";
+        var k = "placeholder='Email Address'/>";
         var l = "<input id='vv-submit-btn' type='submit' value='" + this.buttonText + "' nam";
         var m = "e='vv-submit-btn' style='background-color: " + this.buttonColor + ";'/>";
         var n = "<div id='vv-skip-btn' type='button' style='display: " + this.onOff + ";' on";
@@ -414,7 +402,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var h = "<div id='vv-intro-text'>" + this.intro + "</div>";
         var i = "<input id='vv-hostEmail' name='vv-hostEmail' value='" + this.emailAddress + "'>";
         var j = "<input id='vv-email' type='email' name='vv-email' required ";
-        var k = "placeholder='" + this.inputText + "'/>";
+        var k = "placeholder='Email Address'/>";
         var l = "<input id='vv-submit-btn' type='submit' value='" + this.buttonText + "' nam";
         var m = "e='vv-submit-btn' style='background-color: " + this.buttonColor + ";'/>";
         var n = "<div id='vv-skip-btn' type='button' style='display: " + this.onOff + ";' on";
@@ -448,7 +436,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var h = "<div id='vv-intro-text'>" + this.intro + "</div>";
         var i = "<input id='vv-hostEmail' name='vv-hostEmail' value='" + this.emailAddress + "'>";
         var j = "<input id='vv-email' type='email' name='vv-email' required ";
-        var k = "placeholder='" + this.inputText + "'/>";
+        var k = "placeholder='Email Address'/>";
         var l = "<input id='vv-submit-btn' type='submit' value='" + this.buttonText + "' nam";
         var m = "e='vv-submit-btn' style='background-color: " + this.buttonColor + ";'/>";
         var n = "<div id='vv-skip-btn' type='button' style='display: " + this.onOff + ";' on";
@@ -473,10 +461,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ready: function () {
         this.intro = "Please enter your email in order to watch video.";
         this.buttonText = "Submit";
-        this.inputText = "Email Address";
         this.backgroundStyle = "rgba(0,0,0,0.7)";
         this.buttonColor = "#78caff";
-        this.toggleLabel = "Responsive";
+        this.toggleLabel = "Yes";
         this.showMeasurements = "none";
         this.width = "560px";
         this.rightColMarginTop = "20px";
@@ -492,6 +479,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.time = 10;
         this.iframeTime = 10000;
         this.customTimeOutput = "false";
+        this.onOff = "none";
       },
     });
   </script>

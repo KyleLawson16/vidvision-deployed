@@ -1,4 +1,5 @@
-$(document).ready(function(){
+$.noConflict();
+jQuery( document ).ready( function ( $ ) {
 var request;
 $('#vv-gate-form').submit(function(event) {
   if (request) {

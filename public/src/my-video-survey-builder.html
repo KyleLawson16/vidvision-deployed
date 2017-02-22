@@ -42,7 +42,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <p><strong>Step #2</strong><br />
           Customize the title, question, and answers of your video-survey tool using the inputs below.</p>
           <p><strong>Step #3</strong><br />
-          Embed the generated code on your website and start generating email leads.</p>
+          Embed the generated code on your website and start generating survey data.</p>
         </div>
       </div>
       <div id="infoRight">
@@ -57,7 +57,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <div class="container">
     <div class="col-xs-12 col-sm-8">
       <div class="options">
-        <label class="mainLabels" id="iframeLabel" for="link">Insert link to your video</label>
+        <label class="mainLabels" id="iframeLabel" for="link">Insert and submit the url of your video</label>
         <input class="inputVideo" type="text" name="link" id="link" value="{{link::input}}">
         <button class="buttons" type="button" on-tap="changeLink">Submit</button>
       </div>
@@ -74,7 +74,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <input id="answer3" name="answer3" class="answers" type="button" value="{{answer3::input}}" style$="background-color: {{answerColor}}; display: {{answerThreeDisplay}};">
               <input id="answer4" name="answer4" class="answers" type="button" value="{{answer4::input}}" style$="background-color: {{answerColor}}; display: {{answerFourDisplay}};">
             </form>
-            <a href="http://www.getvidvision.com/" target="__blank"><img id="iframeLogo" src="http://res.cloudinary.com/hrscywv4p/image/upload/c_limit,h_1440,w_720,f_auto/v1/204930/vidvisionv3_sggpov.png" /></a>
+            <a href="http://www.getvidvision.com/" target="__blank"><img id="iframeLogo" src="../images/logo_blue.png" /></a>
           </div>
         </div>
       </div>
@@ -82,19 +82,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <div class="col-xs-12 col-sm-4">
 
       <div hidden$="{{compute(hiddenTime)}}">
-      <label class="mainLabels" style$="margin-top: {{rightColMarginTop}}" for="videoEditor">Iframe timing</label>
+      <label class="mainLabels" style$="margin-top: {{rightColMarginTop}}" for="videoEditor">When would you like the gate to appear?</label>
       <paper-toggle-button on-change="changeTime">{{toggleTimeLabel}}</paper-toggle-button>
       <paper-radio-button id="customTimeValue" on-tap="customTime">Custom Time</paper-radio-button>
       <label class="labels" for="width" style="display: {{showTime}}">Seconds</label>
       <input id="time" name="time" class="inputStyles" style="display: {{showTime}}" type="text" value="{{time::input}}" on-focus="resetTime" on-blur="replaceTime">
       </div>
 
-      <label class="mainLabels" style$="margin-top: {{rightColMarginTop}}" for="videoEditor">Iframe sizing</label>
+      <label class="mainLabels" style$="margin-top: {{rightColMarginTop}}" for="videoEditor">Would you like the size to be responsive?</label>
       <paper-toggle-button on-change="changeLabel">{{toggleLabel}}</paper-toggle-button>
-      <label class="labels" for="width" style="display: {{showMeasurements}}">Width</label>
+      <label class="labels" for="width" style="display: {{showMeasurements}}">Customize the survey's text and colors</label>
       <input id="width" name="width" class="inputStyles" style="display: {{showMeasurements}}" type="text" value="{{width::input}}" on-focus="resetWidth" on-blur="replaceWidth">
-      <label class="mainLabels" for="videoEditor">Text and colors</label>
-      <label class="labels" for="introText">Intro</label>
+      <label class="mainLabels" for="videoEditor">Customize the form's text and colors</label>
+      <label class="labels" for="introText">Title</label>
       <input id="intro" name="intro" class="inputStyles" type="text" on-focus="resetIntro" on-blur="replaceIntro" value="{{intro::input}}">
       <label class="labels" for="questionText">Question</label>
       <input id="questionText" name="questionText" class="inputStyles" type="text" on-focus="resetQuestion" on-blur="replaceQuestion" value="{{questionText::input}}">
@@ -120,10 +120,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </div>
     <div class="col-sm-8">
       <label class="mainLabels" >Finished customizing?</label>
-      <label class="labels" for="hostEmail">Your email address</label>
+      <label class="labels" for="hostEmail">Enter your email address so that we can send you your survey data</label>
       <input id="emailAddress" name="emailAddress" type="email" value="{{emailAddress::input}}">
       <button id="generateCode" on-tap="clipBoard">Generate code</button>
-      <p class="info" id="noEmail" style="display: {{noEmail}}">*Your email is needed in order to send you any leads your video generates.</p>
+      <p class="info" id="noEmail" style="display: {{noEmail}}">*Your email is needed in order to send you any data your survey collects.</p>
       <textarea id="codeString">{{code}}</textarea>
       <p class="comments">*Embed this HTML code anywhere on your website the same way you would a YouTube video. Feel free to wrap it in a container of your desired size.</p>
     </div>
@@ -187,23 +187,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.hideForm = "none";
       },
       resetIntro: function () {
-        if (this.intro == "Survey") {
+        if (this.intro == "Survey Title") {
           this.intro = "";
         }
       },
       replaceIntro: function () {
         if (this.intro == "") {
-          this.intro = "Survey";
+          this.intro = "Survey Title";
         }
       },
       resetQuestion: function () {
-        if (this.questionText == "Question") {
+        if (this.questionText == "Your survey question?") {
           this.questionText = "";
         }
       },
       replaceQuestion: function () {
         if (this.questionText == "") {
-          this.questionText = "Question";
+          this.questionText = "Your survey question?";
         }
       },
       resetAnswerOne: function () {
@@ -257,8 +257,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
       changeLabel: function () {
-        if (this.toggleLabel == "Custom") {
-          this.toggleLabel = "Responsive";
+        if (this.toggleLabel == "No") {
+          this.toggleLabel = "Yes";
           this.showMeasurements = "none";
           this.iframeWidth = "100%";
           this.iframeHeight = "100%";
@@ -266,7 +266,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.rightColMarginTop = "20px";
         }
         else {
-          this.toggleLabel = "Custom";
+          this.toggleLabel = "No";
           this.showMeasurements = "";
           this.iframeWidth = this.width;
           this.iframeHeight = "315px";
@@ -490,7 +490,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var u = "href='https://app.getvidvision.com/hosted-files/video-survey/video-survey.css'>";
         var css = t+u;
         var v = "<script src='https://app.getvidvision.com/hosted-files/video-survey/video-survey-custom.js'>";
-        var w = "< \/scr" + "ipt>< \/scr" + "ipt><script>var popUpTime = " + this.iframeTime + ";< \/script>";
+        var w = "< \/scr" + "ipt><script>var popUpTime = " + this.iframeTime + ";< \/script>";
         var x = "<script src = 'https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js' >";
         var y = "< \/scr" + "ipt>";
         var script = x+y+v+w;
@@ -499,13 +499,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
       ready: function () {
-        this.intro = "Survey";
-        this.questionText = "Question";
+        this.intro = "Survey Title";
+        this.questionText = "Your survey question?";
         this.buttonText = "Submit";
         this.inputText = "Email Address";
         this.backgroundStyle = "rgba(0,0,0,0.7)";
         this.buttonColor = "#78caff";
-        this.toggleLabel = "Responsive";
+        this.toggleLabel = "Yes";
         this.showMeasurements = "none";
         this.width = "560px";
         this.rightColMarginTop = "20px";

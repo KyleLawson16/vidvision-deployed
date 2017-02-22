@@ -13,15 +13,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="my-info">
-  <link rel="import" type="css" href="css/video-gate-builder.css">
+  <link rel="import" type="css" href="css/info.css">
   <template>
 
     <firebase-auth id="auth" user="{{user}}" status-known="{{statusKnown}}" location="https://vidvission.firebaseio.com" provider="{{provider}}" on-error="errorHandler" on-user-created="userSuccessHandler" on-password-changed="userSuccessHandler" on-password-reset="userSuccessHandler" on-user-removed="userSuccessHandler"></firebase-auth>
 
     <div class="paddingCont">
 
-    <div id="topInfo">
-      <div id="infoLeft">
+    <div class="topInfo">
+      <div class="infoLeft">
         <div class="infoPadding">
           <h2>Steps to use our video gate builder!</h2>
           <p><strong>Step #1</strong><br />
@@ -32,10 +32,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           Embed the generated code on your website and start generating email leads.</p>
         </div>
       </div>
-      <div id="infoRight" style="margin-top: 0px;">
+      <div class="infoRight" style="margin-top: 0px;">
         <div class="infoPadding">
           <h2>Here is what it will look like.</h2>
-          <img id="videoGate" src="../images/video-gate.PNG" />
+          <img class="videoImage" src="../images/video-gate.PNG" />
+        </div>
+      </div>
+    </div>
+
+    <div class="topInfo">
+      <div class="infoLeft">
+        <div class="infoPadding">
+          <h2>Steps to use our video survey builder!</h2>
+          <p><strong>Step #1</strong><br />
+          Paste the link to your Vimeo / YouTube video and submit.</p>
+          <p><strong>Step #2</strong><br />
+          Customize the title, question, and answers of your video-survey tool using the inputs below.</p>
+          <p><strong>Step #3</strong><br />
+          Embed the generated code on your website and start generating survey data.</p>
+        </div>
+      </div>
+      <div class="infoRight" style="margin-top: 0px;">
+        <div class="infoPadding">
+          <h2>Here is what it will look like.</h2>
+          <img class="videoImage" src="../images/video-survey.PNG" />
         </div>
       </div>
     </div>

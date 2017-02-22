@@ -1,4 +1,5 @@
-$(document).ready(function(){
+$.noConflict();
+jQuery( document ).ready( function ( $ ){
 var request;
 $('#vv-gate-form').submit(function(event) {
   if (request) {
@@ -25,17 +26,17 @@ $('#vv-gate-form').submit(function(event) {
 });
 
 function submitAnswer1() {
-  document.getElementById('vv-selected-answer').value = "Answer 1";
+  document.getElementById('vv-selected-answer').value = document.getElementById('vv-answer1').value;
 }
 
 function submitAnswer2() {
-  document.getElementById('vv-selected-answer').value = "Answer 2";
+  document.getElementById('vv-selected-answer').value = document.getElementById('vv-answer2').value;
 }
 
 function submitAnswer3() {
-  document.getElementById('vv-selected-answer').value = "Answer 3";
+  document.getElementById('vv-selected-answer').value = document.getElementById('vv-answer3').value;
 }
 
 function submitAnswer4() {
-  document.getElementById('vv-selected-answer').value = "Answer 4";
+  document.getElementById('vv-selected-answer').value = document.getElementById('vv-answer4').value;
 }
